@@ -74,25 +74,25 @@ export default function Navbar({
                 }}
                 className="flex items-center gap-2.5 group cursor-pointer"
               >
-                <div className="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white font-extrabold text-sm tracking-tight shadow-xs group-hover:bg-brand-primary transition-colors">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center text-white font-black text-sm tracking-tight shadow-sm shadow-red-500/25 ring-2 ring-red-100 group-hover:scale-105 transition-all">
                   SM
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-extrabold text-sm tracking-tight text-slate-900 leading-none">
+                  <span className="font-extrabold text-sm tracking-tight text-slate-900 group-hover:text-red-600 transition-colors leading-none">
                     SHRI METRO
                   </span>
                   <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mt-0.5">
-                    Industrial Moulded Furniture
+                    Plastic Moulded Furniture
                   </span>
                 </div>
               </a>
 
               {/* Status Badge (Dashboard Feel) */}
               <div className="hidden xl:flex items-center gap-2 pl-4 border-l border-slate-200 text-xs text-slate-500">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Kumbalgodu Works</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                <span className="font-medium text-slate-700">Kumbalgodu Works</span>
                 <span className="text-slate-300">•</span>
-                <span className="font-mono text-[11px] text-slate-600">GSTIN: {companyDetails.gstin}</span>
+                <span className="font-mono text-[11px] text-slate-500">GSTIN: {companyDetails.gstin}</span>
               </div>
             </div>
 
@@ -102,7 +102,7 @@ export default function Navbar({
                 <button
                   key={item.label}
                   onClick={() => handleNavClick(item)}
-                  className="px-3.5 py-1.5 rounded-lg hover:text-slate-900 hover:bg-white transition-all cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-lg hover:text-red-600 hover:bg-white transition-all cursor-pointer"
                 >
                   {item.label}
                 </button>
@@ -119,7 +119,7 @@ export default function Navbar({
                   placeholder="Search catalogue..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-7 py-1.5 text-xs bg-slate-50 hover:bg-slate-100/70 focus:bg-white rounded-lg border border-slate-200 focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 outline-none transition-all"
+                  className="w-full pl-8 pr-7 py-1.5 text-xs bg-slate-50 hover:bg-slate-100/70 focus:bg-white rounded-lg border border-slate-200 focus:border-red-500 focus:ring-1 focus:ring-red-500/20 outline-none transition-all"
                 />
                 {searchQuery && (
                   <button
@@ -136,13 +136,13 @@ export default function Navbar({
               <button
                 type="button"
                 onClick={onOpenQuoteDrawer}
-                className="relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
+                className="relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-red-50/50 border border-slate-200 hover:border-red-200 text-slate-700 hover:text-red-700 font-bold text-xs transition-colors cursor-pointer shadow-2xs"
                 title="View wholesale quote list"
               >
-                <ShoppingBag className="w-3.5 h-3.5 text-brand-primary" />
+                <ShoppingBag className="w-3.5 h-3.5 text-red-600" />
                 <span className="hidden lg:inline font-semibold">Quote Cart</span>
                 {quoteListCount > 0 && (
-                  <span className="w-4 h-4 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  <span className="w-4 h-4 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center shadow-xs shadow-red-500/30">
                     {quoteListCount}
                   </span>
                 )}
@@ -153,9 +153,9 @@ export default function Navbar({
                 href={companyDetails.whatsappLink}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-sm shadow-red-600/25 transition-all cursor-pointer"
               >
-                <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                <MessageCircle className="w-3.5 h-3.5 text-white" />
                 <span>Sales Desk</span>
               </a>
             </div>
@@ -165,11 +165,11 @@ export default function Navbar({
               <button
                 type="button"
                 onClick={onOpenQuoteDrawer}
-                className="relative p-2 rounded-lg bg-slate-100 text-slate-800 text-xs"
+                className="relative p-2 rounded-lg bg-red-50 text-slate-800 text-xs border border-red-100"
               >
-                <ShoppingBag className="w-4 h-4 text-brand-primary" />
+                <ShoppingBag className="w-4 h-4 text-red-600" />
                 {quoteListCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-brand-primary text-white text-[9px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-600 text-white text-[9px] font-bold flex items-center justify-center shadow-xs">
                     {quoteListCount}
                   </span>
                 )}

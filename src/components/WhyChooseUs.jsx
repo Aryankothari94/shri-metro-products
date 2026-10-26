@@ -80,15 +80,15 @@ export default function WhyChooseUs() {
           {benchmarks.map((item, idx) => (
             <div
               key={idx}
-              className="bg-slate-50/70 p-4 sm:p-5 rounded-xl border border-slate-200/80 hover:bg-slate-50 transition-colors"
+              className="bg-white p-4 sm:p-5 rounded-xl border border-slate-200/80 hover:border-red-200 hover:shadow-xs transition-all group"
             >
-              <div className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">
+              <div className="text-[10px] font-mono font-bold text-red-600 uppercase tracking-wider mb-2">
                 0{idx + 1} • Benchmark
               </div>
-              <h3 className="font-bold text-slate-900 text-sm leading-snug">
+              <h3 className="font-bold text-slate-900 text-sm leading-snug group-hover:text-red-600 transition-colors">
                 {item.title}
               </h3>
-              <p className="text-[11px] font-semibold text-brand-primary mt-0.5 mb-2">
+              <p className="text-[11px] font-semibold text-red-600 mt-0.5 mb-2">
                 {item.spec}
               </p>
               <p className="text-xs text-slate-600 leading-relaxed">
@@ -100,8 +100,9 @@ export default function WhyChooseUs() {
 
         {/* Clean Minimal Comparison Table */}
         <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs">
-          <div className="px-5 py-3 bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-800 uppercase tracking-wider">
-            Material Grade Comparison: Shri Metro vs Generic Commercial Market
+          <div className="px-5 py-3 bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+            <span>Material Grade Comparison: Shri Metro vs Generic Commercial Market</span>
+            <span className="text-[10px] text-red-700 font-bold bg-red-50 border border-red-200/70 px-2 py-0.5 rounded">Lab Verified</span>
           </div>
 
           <div className="overflow-x-auto">
@@ -109,7 +110,7 @@ export default function WhyChooseUs() {
               <thead>
                 <tr className="border-b border-slate-200 text-slate-500 text-[10px] uppercase tracking-wider bg-slate-50/30">
                   <th className="py-2.5 px-4 font-bold">Standard Parameter</th>
-                  <th className="py-2.5 px-4 font-bold text-slate-900 bg-blue-50/40">SHRI METRO SPECIFICATION</th>
+                  <th className="py-2.5 px-4 font-bold text-red-700 bg-red-50/60">SHRI METRO SPECIFICATION</th>
                   <th className="py-2.5 px-4 font-bold text-slate-500">Generic Market Plastic</th>
                 </tr>
               </thead>
@@ -119,8 +120,8 @@ export default function WhyChooseUs() {
                     <td className="py-3 px-4 font-semibold text-slate-700">
                       {row.parameter}
                     </td>
-                    <td className="py-3 px-4 font-bold text-slate-900 bg-blue-50/20 flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <td className="py-3 px-4 font-bold text-slate-900 bg-red-50/20 flex items-center gap-2">
+                      <Check className="w-3.5 h-3.5 text-red-600 shrink-0" />
                       <span>{row.shriMetro}</span>
                     </td>
                     <td className="py-3 px-4 text-slate-500">

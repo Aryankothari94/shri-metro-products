@@ -26,7 +26,7 @@ export default function CategoryGrid({ onSelectCategory, selectedCategory }) {
 
           <button
             onClick={() => handleCategorySelect("All Products")}
-            className="text-xs font-bold text-brand-primary hover:text-blue-700 transition-colors cursor-pointer"
+            className="text-xs font-bold text-red-600 hover:text-red-700 transition-colors cursor-pointer"
           >
             Show All 10 Models
           </button>
@@ -43,8 +43,8 @@ export default function CategoryGrid({ onSelectCategory, selectedCategory }) {
                 onClick={() => handleCategorySelect(cat.filterValue)}
                 className={`group rounded-xl p-3.5 border transition-all duration-200 cursor-pointer flex flex-col justify-between ${
                   isSelected
-                    ? 'bg-white border-brand-primary ring-2 ring-brand-primary/10 shadow-xs'
-                    : 'bg-white hover:bg-slate-50 border-slate-200/80 hover:border-slate-300'
+                    ? 'bg-white border-red-500 ring-2 ring-red-500/15 shadow-xs'
+                    : 'bg-white hover:bg-red-50/20 border-slate-200/80 hover:border-red-200'
                 }`}
               >
                 <div>
@@ -53,12 +53,12 @@ export default function CategoryGrid({ onSelectCategory, selectedCategory }) {
                       {cat.count}
                     </span>
                     {isSelected && (
-                      <span className="w-4 h-4 rounded-full bg-brand-primary text-white flex items-center justify-center">
+                      <span className="w-4 h-4 rounded-full bg-red-600 text-white flex items-center justify-center shadow-xs">
                         <Check className="w-2.5 h-2.5" />
                       </span>
                     )}
                   </div>
-                  <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-brand-primary transition-colors leading-tight">
+                  <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-red-600 transition-colors leading-tight">
                     {cat.name}
                   </h4>
                   <p className="text-[11px] text-slate-500 mt-1 line-clamp-1">
@@ -66,7 +66,7 @@ export default function CategoryGrid({ onSelectCategory, selectedCategory }) {
                   </p>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-brand-primary">
+                <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-red-600">
                   <span>Filter View</span>
                   <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                 </div>

@@ -9,8 +9,13 @@
   }
 
   body {
-    background-color: #F8FAFC;
+    background-color: #FAFAFA;
     color: #0F172A;
+  }
+
+  ::selection {
+    background-color: #FEE2E2;
+    color: #B91C1C;
   }
 }
 

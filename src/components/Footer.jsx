@@ -41,7 +41,7 @@ export default function Footer({ onSelectCategory }) {
           {/* Brand Info (5 cols) */}
           <div className="md:col-span-5 space-y-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white font-extrabold text-xs">
+              <div className="w-8 h-8 rounded-lg bg-red-600 text-white font-extrabold text-xs flex items-center justify-center shadow-xs">
                 SM
               </div>
               <div>
@@ -60,7 +60,7 @@ export default function Footer({ onSelectCategory }) {
 
             <div className="text-slate-400 text-xs font-mono space-y-0.5 pt-1">
               <p>Proprietor: <strong className="text-slate-200">{companyDetails.proprietor}</strong></p>
-              <p>GSTIN: <strong className="text-slate-200">{companyDetails.gstin}</strong></p>
+              <p>GSTIN: <strong className="text-red-400 font-bold">{companyDetails.gstin}</strong></p>
             </div>
           </div>
 
@@ -74,7 +74,7 @@ export default function Footer({ onSelectCategory }) {
                 <li key={idx}>
                   <button
                     onClick={() => handleCategoryNav(item.value)}
-                    className="hover:text-white transition-colors cursor-pointer text-left"
+                    className="hover:text-red-400 transition-colors cursor-pointer text-left"
                   >
                     {item.label}
                   </button>
@@ -94,7 +94,7 @@ export default function Footer({ onSelectCategory }) {
 
             <div className="pt-2 space-y-1 text-slate-300">
               <p>
-                <a href={`tel:${companyDetails.phoneRaw}`} className="hover:text-white transition-colors">
+                <a href={`tel:${companyDetails.phoneRaw}`} className="hover:text-red-400 transition-colors">
                   Tel: {companyDetails.phone}
                 </a>
               </p>
@@ -115,7 +115,7 @@ export default function Footer({ onSelectCategory }) {
             <span>Kumbalgodu Industrial Estate, Bangalore</span>
             <button
               onClick={scrollToTop}
-              className="hover:text-slate-300 transition-colors flex items-center gap-1 cursor-pointer"
+              className="hover:text-red-400 transition-colors flex items-center gap-1 cursor-pointer"
             >
               <span>Back to Top</span>
               <ArrowUp className="w-3 h-3" />

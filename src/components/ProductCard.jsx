@@ -16,12 +16,12 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
   const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColor)}%20color.`;
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:border-slate-300 hover:shadow-sm transition-all duration-200 flex flex-col group">
+    <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:border-red-300 hover:shadow-md transition-all duration-200 flex flex-col group">
       
       {/* Product Image Frame (Clean Neutral Canvas) */}
       <div 
         onClick={() => (onViewDetails ? onViewDetails(product) : onQuickView(product))}
-        className="relative h-52 bg-slate-50 p-4 flex items-center justify-center cursor-pointer overflow-hidden border-b border-slate-100"
+        className="relative h-52 bg-slate-50/70 p-4 flex items-center justify-center cursor-pointer overflow-hidden border-b border-slate-100 group-hover:bg-red-50/10 transition-colors"
       >
         <img
           src={product.image}
@@ -31,13 +31,13 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
         />
 
         {/* Minimal Model Pill Top Left */}
-        <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-white/90 backdrop-blur-xs text-slate-700 text-[10px] font-mono font-bold border border-slate-200 shadow-2xs">
+        <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-white/95 backdrop-blur-xs text-slate-700 text-[10px] font-mono font-bold border border-slate-200 shadow-2xs group-hover:border-red-200 transition-colors">
           {product.modelCode}
         </span>
 
         {/* Featured Tag */}
         {product.isFeatured && (
-          <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded bg-amber-500/10 text-amber-700 text-[10px] font-bold border border-amber-500/20">
+          <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-red-50 text-red-700 text-[10px] font-bold border border-red-200/80">
             Featured
           </span>
         )}
@@ -49,9 +49,9 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
             e.stopPropagation();
             onQuickView(product);
           }}
-          className="absolute bottom-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1 rounded bg-slate-900/90 text-white text-[11px] font-medium flex items-center gap-1 shadow-xs"
+          className="absolute bottom-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1 rounded bg-white/95 text-slate-800 hover:text-red-600 border border-slate-200 hover:border-red-200 text-[11px] font-medium flex items-center gap-1 shadow-xs"
         >
-          <Eye className="w-3 h-3" />
+          <Eye className="w-3 h-3 text-red-600" />
           <span>Quick View</span>
         </button>
       </div>
@@ -67,7 +67,7 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
           {/* Product Name */}
           <h3
             onClick={() => (onViewDetails ? onViewDetails(product) : onQuickView(product))}
-            className="font-bold text-slate-900 text-sm hover:text-brand-primary transition-colors cursor-pointer line-clamp-1"
+            className="font-bold text-slate-900 text-sm hover:text-red-600 transition-colors cursor-pointer line-clamp-1"
             title={product.name}
           >
             {product.name}
@@ -77,7 +77,7 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
           <div className="mt-3 pt-2.5 border-t border-slate-100 grid grid-cols-2 gap-1.5 text-[11px] text-slate-600">
             <div className="flex items-center gap-1 text-slate-500">
               <Weight className="w-3 h-3 text-slate-400 shrink-0" />
-              <span>Load: <strong className="text-slate-800">{product.weightCapacity}</strong></span>
+              <span>Load: <strong className="text-red-600 font-bold">{product.weightCapacity}</strong></span>
             </div>
             <div className="flex items-center gap-1 text-slate-500">
               <Layers className="w-3 h-3 text-slate-400 shrink-0" />
@@ -102,7 +102,7 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
                     title={c.name}
                     onClick={() => setSelectedColor(c.name)}
                     className={`w-3.5 h-3.5 rounded-full border transition-all cursor-pointer ${
-                      isSelected ? 'ring-2 ring-brand-primary border-white scale-110' : 'border-slate-300'
+                      isSelected ? 'ring-2 ring-red-600 border-white scale-110' : 'border-slate-300'
                     }`}
                     style={{ backgroundColor: c.hex }}
                   />
@@ -117,7 +117,7 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
           <button
             type="button"
             onClick={() => (onViewDetails ? onViewDetails(product) : onQuickView(product))}
-            className="flex-1 py-1.5 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer text-center"
+            className="flex-1 py-1.5 px-2.5 rounded-lg bg-slate-50 hover:bg-red-50/60 border border-slate-200 hover:border-red-200 text-slate-700 hover:text-red-700 font-bold text-xs transition-colors cursor-pointer text-center"
           >
             Specs
           </button>
@@ -126,9 +126,9 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
             href={whatsappInquiryUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors shadow-2xs"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-colors shadow-sm shadow-red-500/20"
           >
-            <MessageCircle className="w-3 h-3 text-emerald-400" />
+            <MessageCircle className="w-3 h-3 text-white" />
             <span>Quote</span>
           </a>
         </div>

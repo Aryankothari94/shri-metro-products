@@ -91,11 +91,11 @@ export default function ContactPage({ prefilledMessage = '' }) {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-brand-primary text-xs font-bold uppercase tracking-wider mb-3">
-            <Building2 className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-700 border border-red-200/80 text-xs font-bold uppercase tracking-wider mb-3">
+            <Building2 className="w-3.5 h-3.5 text-red-600" />
             <span>Manufacturing Works & Head Office</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-brand-dark tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
             Factory Location & Contact
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-2 leading-relaxed">
@@ -114,15 +114,15 @@ export default function ContactPage({ prefilledMessage = '' }) {
               
               {/* Header Profile */}
               <div className="flex items-center gap-3.5 pb-6 border-b border-slate-100">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-dark to-brand-primary flex items-center justify-center text-white font-black text-xl shadow-md">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-red-600 to-red-700 flex items-center justify-center text-white font-black text-xl shadow-md shadow-red-500/20">
                   SM
                 </div>
                 <div>
-                  <h3 className="text-xl font-extrabold text-brand-dark tracking-tight leading-none">
+                  <h3 className="text-xl font-extrabold text-slate-900 tracking-tight leading-none">
                     {companyDetails.name}
                   </h3>
-                  <p className="text-xs font-semibold text-brand-primary mt-1 flex items-center gap-1">
-                    <UserCheck className="w-3.5 h-3.5" />
+                  <p className="text-xs font-semibold text-red-600 mt-1 flex items-center gap-1">
+                    <UserCheck className="w-3.5 h-3.5 text-red-600" />
                     Proprietor: {companyDetails.proprietor}
                   </p>
                 </div>
@@ -133,7 +133,7 @@ export default function ContactPage({ prefilledMessage = '' }) {
                 
                 {/* Works Address */}
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-brand-primary flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0 mt-0.5 border border-red-100">
                     <MapPin className="w-4 h-4" />
                   </div>
                   <div className="text-slate-700 leading-relaxed">
@@ -266,7 +266,7 @@ export default function ContactPage({ prefilledMessage = '' }) {
 
                 {/* Pinpoint Landmark */}
                 <div className="relative z-10 self-center text-center">
-                  <div className="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center mx-auto shadow-lg shadow-amber-500/30 animate-pulse">
+                  <div className="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center mx-auto shadow-lg shadow-red-600/30 animate-pulse">
                     <Building2 className="w-6 h-6" />
                   </div>
                   <div className="mt-2 bg-slate-950/90 backdrop-blur-md px-3 py-1 rounded-lg border border-slate-700 text-white text-xs font-bold inline-block">
@@ -290,7 +290,7 @@ export default function ContactPage({ prefilledMessage = '' }) {
                   href={companyDetails.location.googleMapsUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-primary hover:bg-blue-700 text-white text-xs font-bold shadow-md transition-all active:scale-95 shrink-0"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-md shadow-red-500/20 transition-all active:scale-95 shrink-0"
                 >
                   <Navigation className="w-3.5 h-3.5" />
                   <span>Get Factory Directions</span>
@@ -305,7 +305,7 @@ export default function ContactPage({ prefilledMessage = '' }) {
           <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-elevated">
             
             <div className="mb-6">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-amber-600 block mb-1">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-red-600 block mb-1">
                 Direct Wholesale Quotation
               </span>
               <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">

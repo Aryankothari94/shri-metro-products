@@ -65,16 +65,16 @@ export default function BulkQuoteDrawer({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Drawer Header */}
-        <div className="p-5 sm:p-6 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+        <div className="p-5 sm:p-6 bg-gradient-to-r from-red-600 to-red-700 text-white flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center font-bold">
               <ShoppingBag className="w-5 h-5" />
             </div>
             <div>
               <h3 className="font-extrabold text-base leading-tight">
                 Wholesale Inquiry Cart
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-red-100">
                 {items.length} product{items.length === 1 ? '' : 's'} • {totalUnits} total units
               </p>
             </div>
@@ -82,7 +82,7 @@ export default function BulkQuoteDrawer({
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-black/20 hover:bg-black/30 text-white flex items-center justify-center transition-colors cursor-pointer"
             aria-label="Close drawer"
           >
             <X className="w-4 h-4" />
@@ -93,7 +93,7 @@ export default function BulkQuoteDrawer({
         <div className="p-4 sm:p-6 flex-1 overflow-y-auto divide-y divide-slate-100 space-y-4">
           {items.length === 0 ? (
             <div className="py-16 text-center text-slate-500 space-y-3">
-              <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+              <div className="w-16 h-16 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center mx-auto border border-red-100">
                 <ShoppingBag className="w-8 h-8" />
               </div>
               <h4 className="font-bold text-slate-800 text-base">Your Quote List is Empty</h4>
@@ -102,7 +102,7 @@ export default function BulkQuoteDrawer({
               </p>
               <button
                 onClick={onClose}
-                className="mt-2 px-5 py-2.5 rounded-xl bg-brand-primary text-white font-bold text-xs hover:bg-blue-700 shadow-sm cursor-pointer"
+                className="mt-2 px-5 py-2.5 rounded-xl bg-red-600 text-white font-bold text-xs hover:bg-red-700 shadow-md shadow-red-500/20 cursor-pointer"
               >
                 Explore Catalogue
               </button>
@@ -210,9 +210,9 @@ export default function BulkQuoteDrawer({
             {onNavigateToContactForm && (
               <button
                 onClick={handleUseForm}
-                className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 border border-slate-200 transition-colors cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-red-50/50 text-slate-700 hover:text-red-700 font-bold text-xs flex items-center justify-center gap-1.5 border border-slate-200 hover:border-red-200 transition-colors cursor-pointer"
               >
-                <FileText className="w-3.5 h-3.5 text-brand-primary" />
+                <FileText className="w-3.5 h-3.5 text-red-600" />
                 <span>Submit via Website Inquiry Form</span>
               </button>
             )}
@@ -221,7 +221,7 @@ export default function BulkQuoteDrawer({
               <span>Direct factory dispatch from Kumbalgodu</span>
               <button
                 onClick={onClearAll}
-                className="text-slate-500 hover:text-rose-600 underline cursor-pointer"
+                className="text-slate-500 hover:text-red-600 underline cursor-pointer"
               >
                 Clear all
               </button>

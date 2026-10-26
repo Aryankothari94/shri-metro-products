@@ -9,7 +9,8 @@ import {
   MessageCircle, 
   Phone,
   Sparkles,
-  Info
+  Info,
+  ExternalLink
 } from 'lucide-react';
 import { companyDetails } from '../data/companyData';
 
@@ -43,7 +44,7 @@ export default function ProductModal({ product, onClose, onOpenPDP }) {
               className="w-full h-full object-cover max-h-[380px] md:max-h-full"
             />
             {product.isFeatured && (
-              <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-amber-500 text-slate-950 text-xs font-bold shadow-md flex items-center gap-1">
+              <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-red-600 text-white text-xs font-bold shadow-md flex items-center gap-1">
                 <Sparkles className="w-3.5 h-3.5" /> Featured Model
               </span>
             )}
@@ -56,7 +57,7 @@ export default function ProductModal({ product, onClose, onOpenPDP }) {
           <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6">
             <div>
               {/* Category */}
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
+              <span className="text-xs font-bold uppercase tracking-wider text-red-600">
                 {product.category}
               </span>
 
@@ -139,7 +140,7 @@ export default function ProductModal({ product, onClose, onOpenPDP }) {
                     onClose();
                     onOpenPDP(product);
                   }}
-                  className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-brand-primary text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm shadow-red-500/20"
                 >
                   <span>Interactive Spec Sheet & Bulk Estimator</span>
                   <ExternalLink className="w-3.5 h-3.5" />

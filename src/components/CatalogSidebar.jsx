@@ -42,7 +42,7 @@ export default function CatalogSidebar({
             Filters
           </h3>
           {activeFilterCount > 0 && (
-            <span className="w-4 h-4 rounded-full bg-slate-900 text-white text-[10px] font-bold flex items-center justify-center">
+            <span className="w-4 h-4 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
               {activeFilterCount}
             </span>
           )}
@@ -51,7 +51,7 @@ export default function CatalogSidebar({
         {activeFilterCount > 0 && (
           <button
             onClick={onResetFilters}
-            className="text-[11px] text-slate-400 hover:text-slate-800 font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+            className="text-[11px] text-red-600 hover:text-red-700 font-semibold flex items-center gap-1 transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3 h-3" />
             <span>Reset</span>
@@ -71,7 +71,7 @@ export default function CatalogSidebar({
             placeholder="Search code or name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-8 pr-7 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:outline-none focus:border-slate-400 transition-all"
+            className="w-full pl-8 pr-7 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/20 transition-all"
           />
           {searchQuery && (
             <button
@@ -100,8 +100,8 @@ export default function CatalogSidebar({
                 onClick={() => onSelectCategory(cat.value)}
                 className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-all text-left cursor-pointer ${
                   isSelected
-                    ? 'bg-slate-900 text-white font-bold'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium'
+                    ? 'bg-red-600 text-white font-bold shadow-xs shadow-red-500/20'
+                    : 'text-slate-600 hover:bg-red-50/40 hover:text-red-700 font-medium'
                 }`}
               >
                 <span>{cat.label}</span>
@@ -129,7 +129,7 @@ export default function CatalogSidebar({
           aria-checked={stackableOnly}
           onClick={onToggleStackable}
           className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-            stackableOnly ? 'bg-slate-900' : 'bg-slate-200'
+            stackableOnly ? 'bg-red-600' : 'bg-slate-200'
           }`}
         >
           <span
@@ -149,7 +149,7 @@ export default function CatalogSidebar({
           {selectedColor && (
             <button
               onClick={() => onSelectColor(null)}
-              className="text-[10px] text-slate-500 hover:text-slate-900 underline"
+              className="text-[10px] text-red-600 hover:text-red-700 font-semibold underline"
             >
               Clear
             </button>
@@ -168,7 +168,7 @@ export default function CatalogSidebar({
                 onClick={() => onSelectColor(isSelected ? null : color.name)}
                 className={`w-7 h-7 rounded-lg border transition-all flex items-center justify-center cursor-pointer ${
                   isSelected
-                    ? 'ring-2 ring-slate-900 border-white scale-105'
+                    ? 'ring-2 ring-red-600 border-white scale-105'
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
                 style={{ backgroundColor: color.hex }}

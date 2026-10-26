@@ -8,13 +8,15 @@ export default {
     extend: {
       colors: {
         brand: {
-          dark: '#0F172A',      // Deep Slate Blue
-          primary: '#1E40AF',   // Royal Blue
-          secondary: '#1D4ED8', // Vibrant Blue
-          accent: '#F59E0B',    // Warm Industrial Gold / Amber
-          accentHover: '#D97706',
-          bg: '#F8FAFC',        // Soft Slate Light Gray
-          surface: '#FFFFFF',
+          primary: '#DC2626',      // Vibrant Red (Red-600)
+          primaryDark: '#B91C1C',  // Deep Crimson (Red-700)
+          primaryLight: '#EF4444', // Energetic Red (Red-500)
+          redSoft: '#FEF2F2',      // Soft Red Tint (Red-50)
+          redBorder: '#FECACA',    // Soft Red Border (Red-200)
+          accent: '#DC2626',
+          dark: '#0F172A',         // Slate Charcoal for high contrast text
+          bg: '#FAFAFA',           // Clean crisp off-white canvas
+          surface: '#FFFFFF',      // Pure White Cards & Panels
           muted: '#64748B',
           border: '#E2E8F0',
         },

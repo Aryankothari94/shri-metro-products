@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import CategoryGrid from './components/CategoryGrid';
-import FeaturedProducts from './components/FeaturedProducts';
+import ProductCatalog from './components/ProductCatalog';
 import WhyChooseUs from './components/WhyChooseUs';
 import OwnerContactCard from './components/OwnerContactCard';
 import BulkQuoteModal from './components/BulkQuoteModal';
@@ -40,8 +40,8 @@ export default function App() {
       {/* 3. Category Grid Showcase */}
       <CategoryGrid onSelectCategory={handleSelectCategory} />
 
-      {/* 4. Featured Products Catalogue & Quick Spec Cards */}
-      <FeaturedProducts
+      {/* 4. Dynamic Product Catalogue (PLP) with Dual Views (Grid vs. Spec Table) & Sidebar Filters */}
+      <ProductCatalog
         selectedCategory={selectedCategory}
         onSelectCategory={handleSelectCategory}
         searchQuery={searchQuery}

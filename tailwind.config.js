@@ -7,15 +7,27 @@ export default {
   theme: {
     extend: {
       colors: {
+        red: {
+          50: '#FDF2F2',
+          100: '#FDE4E4',
+          200: '#FBCACA',
+          300: '#F69D9D',
+          400: '#D62828',
+          500: '#B8001F', // Sharp Carmine Blood Red
+          600: '#9B111E', // True Ruby Blood Red (Signature)
+          700: '#7E0C17', // Deep Blood Velvet
+          800: '#5F0911',
+          900: '#43060C',
+        },
         brand: {
-          primary: '#DC2626',      // Vibrant Red (Red-600)
-          primaryDark: '#B91C1C',  // Deep Crimson (Red-700)
-          primaryLight: '#EF4444', // Energetic Red (Red-500)
-          redSoft: '#FEF2F2',      // Soft Red Tint (Red-50)
-          redBorder: '#FECACA',    // Soft Red Border (Red-200)
-          accent: '#DC2626',
-          dark: '#0F172A',         // Slate Charcoal for high contrast text
-          bg: '#FAFAFA',           // Clean crisp off-white canvas
+          primary: '#9B111E',      // Sharp Blood Red
+          primaryDark: '#7E0C17',  // Deep Blood Velvet
+          primaryLight: '#B8001F', // Vivid Blood Red
+          redSoft: '#FDF2F2',      // Soft Tint
+          redBorder: '#FBCACA',    // Subtle Border
+          accent: '#9B111E',
+          dark: '#0F172A',         // Slate Charcoal
+          bg: '#FAFAFA',           // Off-white canvas
           surface: '#FFFFFF',      // Pure White Cards & Panels
           muted: '#64748B',
           border: '#E2E8F0',

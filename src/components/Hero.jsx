@@ -128,7 +128,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
             {/* Dynamic Headline */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 tracking-tight leading-[1.15]">
               Precision Moulded <br className="hidden sm:inline" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-red-500 to-rose-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-700 via-red-600 to-red-500">
                 Plastic Furniture.
               </span>
             </h1>
@@ -236,7 +236,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
               )}
 
               {/* Accent Top Border Bar */}
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-rose-500 to-red-600 rounded-t-2xl"></div>
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-700 via-red-600 to-red-700 rounded-t-2xl"></div>
 
               {/* Card Header & Studio Mode Switcher */}
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">

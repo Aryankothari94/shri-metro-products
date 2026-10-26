@@ -11,9 +11,11 @@ import {
 import { companyDetails } from '../data/companyData';
 
 export default function ProductCard({ product, onQuickView, onViewDetails }) {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]?.name || '');
+  const [activeColor, setActiveColor] = useState(product.colors[0] || null);
+  const selectedColorName = activeColor?.name || product.colors[0]?.name || '';
+  const currentImage = activeColor?.image || product.image;
 
-  const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColor)}%20color.`;
+  const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColorName)}%20color.`;
 
   return (
     <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:border-red-300 hover:shadow-md transition-all duration-200 flex flex-col group">
@@ -24,9 +26,10 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
         className="relative h-52 bg-slate-50/70 p-4 flex items-center justify-center cursor-pointer overflow-hidden border-b border-slate-100 group-hover:bg-red-50/10 transition-colors"
       >
         <img
-          src={product.image}
+          src={currentImage}
           alt={product.name}
-          className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
+          key={currentImage}
+          className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-all duration-300"
           loading="lazy"
         />
 
@@ -78,18 +81,21 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
 
           {/* Color Dots */}
           <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
-            <span className="text-slate-400 text-[10px]">Shade: {selectedColor}</span>
-            <div className="flex items-center gap-1">
+            <span className="text-slate-400 text-[10px]">Finish: {selectedColorName}</span>
+            <div className="flex items-center gap-1.5">
               {product.colors.map((c, idx) => {
-                const isSelected = selectedColor === c.name;
+                const isSelected = selectedColorName === c.name;
                 return (
                   <button
                     key={idx}
                     type="button"
                     title={c.name}
-                    onClick={() => setSelectedColor(c.name)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveColor(c);
+                    }}
                     className={`w-3.5 h-3.5 rounded-full border transition-all cursor-pointer ${
-                      isSelected ? 'ring-2 ring-red-600 border-white scale-110' : 'border-slate-300'
+                      isSelected ? 'ring-2 ring-red-600 border-white scale-110 shadow-xs' : 'border-slate-300 hover:scale-105'
                     }`}
                     style={{ backgroundColor: c.hex }}
                   />

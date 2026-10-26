@@ -6,7 +6,6 @@ import ProductDetailPage from './components/ProductDetailPage';
 import CatalogueBookPage from './components/CatalogueBookPage';
 import WhyChooseUs from './components/WhyChooseUs';
 import ContactPage from './components/ContactPage';
-import BulkQuoteModal from './components/BulkQuoteModal';
 import BulkQuoteDrawer from './components/BulkQuoteDrawer';
 import FloatingInquiryButton from './components/FloatingInquiryButton';
 import Footer from './components/Footer';
@@ -15,7 +14,6 @@ export default function App() {
   const [isCatalogueBookOpen, setIsCatalogueBookOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [searchQuery, setSearchQuery] = useState("");
-  const [isBulkQuoteOpen, setIsBulkQuoteOpen] = useState(false);
   const [selectedProductForPDP, setSelectedProductForPDP] = useState(null);
   const [quoteList, setQuoteList] = useState([]);
   const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
@@ -128,7 +126,6 @@ export default function App() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         onSelectCategory={handleSelectCategory}
-        onOpenBulkQuote={() => setIsBulkQuoteOpen(true)}
         quoteListCount={quoteList.length}
         onOpenQuoteDrawer={() => setIsQuoteDrawerOpen(true)}
         onNavigateContact={handleNavigateContact}
@@ -164,7 +161,6 @@ export default function App() {
             onSelectCategory={handleSelectCategory}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            onOpenBulkQuote={() => setIsBulkQuoteOpen(true)}
             onSelectProductForPDP={handleOpenPDP}
             externalViewMode={catalogViewMode}
           />
@@ -190,12 +186,7 @@ export default function App() {
         onClick={() => setIsQuoteDrawerOpen(true)}
       />
 
-      {/* 9. Modals & Drawers */}
-      <BulkQuoteModal
-        isOpen={isBulkQuoteOpen}
-        onClose={() => setIsBulkQuoteOpen(false)}
-      />
-
+      {/* 9. Wholesale Quote List Drawer */}
       <BulkQuoteDrawer
         isOpen={isQuoteDrawerOpen}
         onClose={() => setIsQuoteDrawerOpen(false)}

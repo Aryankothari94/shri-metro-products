@@ -18,7 +18,6 @@ export default function ProductCatalog({
   onSelectCategory,
   searchQuery,
   setSearchQuery,
-  onOpenBulkQuote,
   onSelectProductForPDP,
   externalViewMode = null
 }) {

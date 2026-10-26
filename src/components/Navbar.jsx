@@ -17,7 +17,6 @@ export default function Navbar({
   searchQuery, 
   setSearchQuery, 
   onSelectCategory, 
-  onOpenBulkQuote,
   quoteListCount = 0,
   onOpenQuoteDrawer,
   onNavigateContact,

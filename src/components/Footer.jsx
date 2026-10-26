@@ -1,12 +1,5 @@
 import React from 'react';
-import { 
-  Building2, 
-  MapPin, 
-  Phone, 
-  MessageCircle, 
-  ArrowUp, 
-  ExternalLink 
-} from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import { companyDetails } from '../data/companyData';
 
 export default function Footer({ onSelectCategory }) {
@@ -14,108 +7,90 @@ export default function Footer({ onSelectCategory }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const footerCategories = [
-    { label: "Plastic Armrest Chairs", value: "Plastic Chairs (Armrest)" },
-    { label: "Plastic Armless Chairs", value: "Plastic Chairs (Armless)" },
-    { label: "Designer Center Tables", value: "Center Tables" },
-    { label: "4 & 6-Seater Dining Tables", value: "Dining Tables" },
-    { label: "Heavy Duty Stools", value: "Stools" },
-    { label: "Anti-Skid Patlas", value: "Patlas" },
-  ];
-
-  const handleCategoryNav = (cat) => {
-    onSelectCategory(cat);
-    const catalogElement = document.getElementById('catalog-section');
-    if (catalogElement) {
-      catalogElement.scrollIntoView({ behavior: 'smooth' });
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 pt-10 pb-8 text-xs">
+    <footer className="bg-white border-t border-slate-200/90 text-slate-600 py-8 sm:py-10 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Main Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-slate-800">
-          
-          {/* Brand Info (5 cols) */}
-          <div className="md:col-span-5 space-y-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-red-600 text-white font-extrabold text-xs flex items-center justify-center shadow-xs">
-                SM
-              </div>
-              <div>
-                <span className="font-extrabold text-white text-sm tracking-tight block">
-                  {companyDetails.name}
-                </span>
-                <span className="text-[10px] text-slate-400 uppercase tracking-wider">
-                  Moulded Furniture Mfg • Bangalore
-                </span>
-              </div>
+        {/* Top: Identity & Quick Navigation */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-slate-100">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold text-slate-900 text-sm tracking-tight">
+                {companyDetails.name}
+              </span>
+              <span className="text-slate-300">|</span>
+              <span className="text-slate-500 font-medium">
+                Moulded Furniture Manufacturer
+              </span>
             </div>
-
-            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              Manufacturer of 100% Virgin Polypropylene commercial moulded furniture. Certified load tested for banquets, institutions, and wholesale distribution across Karnataka.
+            <p className="text-slate-400 text-xs mt-1">
+              Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore — 560074
             </p>
-
-            <div className="text-slate-400 text-xs font-mono space-y-0.5 pt-1">
-              <p>Proprietor: <strong className="text-slate-200">{companyDetails.proprietor}</strong></p>
-              <p>GSTIN: <strong className="text-red-400 font-bold">{companyDetails.gstin}</strong></p>
-            </div>
           </div>
 
-          {/* Quick Categories (3 cols) */}
-          <div className="md:col-span-3 space-y-2.5">
-            <span className="font-bold text-slate-200 uppercase tracking-wider text-[11px] block">
-              Categories
-            </span>
-            <ul className="space-y-1.5 text-slate-400">
-              {footerCategories.map((item, idx) => (
-                <li key={idx}>
-                  <button
-                    onClick={() => handleCategoryNav(item.value)}
-                    className="hover:text-red-400 transition-colors cursor-pointer text-left"
-                  >
-                    {item.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Works & Contact (4 cols) */}
-          <div className="md:col-span-4 space-y-2.5">
-            <span className="font-bold text-slate-200 uppercase tracking-wider text-[11px] block">
-              Factory Unit & Dispatch
-            </span>
-            <p className="text-slate-400 leading-relaxed">
-              {companyDetails.location.fullAddress}
-            </p>
-
-            <div className="pt-2 space-y-1 text-slate-300">
-              <p>
-                <a href={`tel:${companyDetails.phoneRaw}`} className="hover:text-red-400 transition-colors">
-                  Tel: {companyDetails.phone}
-                </a>
-              </p>
-              <p>
-                <a href={companyDetails.whatsappLink} target="_blank" rel="noreferrer" className="text-emerald-400 hover:text-emerald-300 transition-colors">
-                  WhatsApp: +91 9845287888
-                </a>
-              </p>
-            </div>
-          </div>
-
+          {/* Classy, understated navigation links */}
+          <nav className="flex flex-wrap items-center gap-5 sm:gap-6 text-xs font-medium text-slate-600">
+            <button 
+              type="button"
+              onClick={() => scrollToSection('catalog-section')}
+              className="hover:text-slate-900 transition-colors cursor-pointer"
+            >
+              Catalog
+            </button>
+            <button 
+              type="button"
+              onClick={() => scrollToSection('why-choose-us')}
+              className="hover:text-slate-900 transition-colors cursor-pointer"
+            >
+              Factory Benchmarks
+            </button>
+            <button 
+              type="button"
+              onClick={() => scrollToSection('contact-section')}
+              className="hover:text-slate-900 transition-colors cursor-pointer"
+            >
+              Location & Contact
+            </button>
+            <a 
+              href={`tel:${companyDetails.phoneRaw}`}
+              className="hover:text-slate-900 transition-colors"
+            >
+              {companyDetails.phone}
+            </a>
+            <a 
+              href={companyDetails.whatsappLink}
+              target="_blank"
+              rel="noreferrer"
+              className="text-red-600 hover:text-red-700 font-semibold transition-colors"
+            >
+              WhatsApp Desk →
+            </a>
+          </nav>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-slate-500 text-[11px] gap-2">
-          <p>© {new Date().getFullYear()} {companyDetails.name}. All rights reserved.</p>
+        {/* Bottom: Legal, Credentials & Back to Top */}
+        <div className="pt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px] text-slate-400">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span>Proprietor: <strong className="text-slate-600 font-medium">{companyDetails.proprietor}</strong></span>
+            <span>•</span>
+            <span>GSTIN: <span className="font-mono text-slate-600 font-medium">{companyDetails.gstin}</span></span>
+            <span>•</span>
+            <span>B2B Input Tax Credit</span>
+          </div>
+
           <div className="flex items-center gap-4">
-            <span>Kumbalgodu Industrial Estate, Bangalore</span>
+            <span>© {new Date().getFullYear()} Shri Metro Products</span>
             <button
+              type="button"
               onClick={scrollToTop}
-              className="hover:text-red-400 transition-colors flex items-center gap-1 cursor-pointer"
+              className="hover:text-slate-900 transition-colors flex items-center gap-1 cursor-pointer font-medium"
             >
               <span>Back to Top</span>
               <ArrowUp className="w-3 h-3" />

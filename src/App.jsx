@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import CategoryGrid from './components/CategoryGrid';
 import ProductCatalog from './components/ProductCatalog';
 import ProductDetailPage from './components/ProductDetailPage';
 import WhyChooseUs from './components/WhyChooseUs';
@@ -137,13 +136,7 @@ export default function App() {
             onSwitchToTable={handleSwitchToTable}
           />
 
-          {/* 3. Compact Category Switcher Bar */}
-          <CategoryGrid 
-            onSelectCategory={handleSelectCategory}
-            selectedCategory={selectedCategory}
-          />
-
-          {/* 4. Product Catalog Workbench (PLP) with Clean Dual Views & Filters */}
+          {/* 3. Product Catalog Workbench (PLP) with Clean Dual Views & Filters */}
           <ProductCatalog
             selectedCategory={selectedCategory}
             onSelectCategory={handleSelectCategory}

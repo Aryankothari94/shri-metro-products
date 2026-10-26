@@ -158,7 +158,7 @@ export default function ProductDetailPage({
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
                     Select Color Finish To Preview Image:
                   </span>
-                  <div className="grid grid-cols-4 gap-2.5">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                     {product.colors.map((color, idx) => {
                       const isSelected = selectedColor?.name === color.name;
                       return (

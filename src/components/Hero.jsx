@@ -105,11 +105,11 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
             </p>
 
             {/* Reliable Primary Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-1">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
               <button
                 type="button"
                 onClick={onExploreCatalog}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-sm shadow-red-600/25 hover:shadow-md cursor-pointer active:scale-95 group"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-sm shadow-red-600/25 hover:shadow-md cursor-pointer active:scale-95 group"
               >
                 <span>Browse Product Catalog</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -118,7 +118,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
               <button
                 type="button"
                 onClick={onOpenCatalogueBook}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-800 font-bold text-xs sm:text-sm transition-all shadow-2xs cursor-pointer active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-800 font-bold text-xs sm:text-sm transition-all shadow-2xs cursor-pointer active:scale-95"
               >
                 <BookOpen className="w-4 h-4 text-red-600" />
                 <span>Open Digital Catalogue</span>
@@ -246,7 +246,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
                       <span className="font-bold text-slate-900">{currentColor.name}</span>
                     </div>
 
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {heroProduct.colors.map((color, idx) => (
                         <button
                           key={color.name}

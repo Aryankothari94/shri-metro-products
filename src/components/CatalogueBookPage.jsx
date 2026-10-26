@@ -16,7 +16,7 @@ import {
 import { useData } from '../context/DataContext';
 
 // Duration of one full page turn (keep in sync with --flip-ms on the stage)
-const FLIP_MS = 1000;
+const FLIP_MS = 900;
 
 const useMediaQuery = (query, fallback = false) => {
   const [matches, setMatches] = useState(() =>
@@ -38,8 +38,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeColorIdx, setActiveColorIdx] = useState(0);
   const [viewMode, setViewMode] = useState('book'); // 'book' | 'grid'
-  const [flip, setFlip] = useState(null); // { dir: 'next' | 'prev', to: number } – desktop 3D turn
-  const [mobileAnim, setMobileAnim] = useState(null); // simple turn on small screens
+  const [flip, setFlip] = useState(null); // { dir: 'next' | 'prev', to: number } – 3D sheet turn (horizontal on desktop, vertical on mobile)
   const [orderQuantity, setOrderQuantity] = useState(50);
   const [addedId, setAddedId] = useState(null);
 
@@ -47,8 +46,9 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
 
   const flipTimer = useRef(null);
-  const mobileTimer = useRef(null);
   const toastTimer = useRef(null);
+  const touchStartY = useRef(null);
+  const touchStartX = useRef(null);
 
   // Dynamic available categories with reactive counts
   const categories = [
@@ -74,7 +74,6 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
   // Clear timers on unmount
   useEffect(() => () => {
     clearTimeout(flipTimer.current);
-    clearTimeout(mobileTimer.current);
     clearTimeout(toastTimer.current);
   }, []);
 
@@ -87,7 +86,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
 
   /* ---------------- Page turning ---------------- */
   const turnTo = (to) => {
-    if (flip || mobileAnim) return;
+    if (flip) return;
     if (to === currentIndex || to < 0 || to >= filteredProducts.length) return;
     const dir = to > currentIndex ? 'next' : 'prev';
 
@@ -98,16 +97,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
       return;
     }
 
-    // Small screens: pages are stacked, so use a lighter single-sheet turn
-    if (!isDesktop) {
-      setMobileAnim(dir);
-      setActiveColorIdx(0);
-      setCurrentIndex(to);
-      mobileTimer.current = setTimeout(() => setMobileAnim(null), 450);
-      return;
-    }
-
-    // Desktop: real two-sided sheet turning on the spine
+    // Both Desktop (horizontal 3D fold on vertical spine) and Mobile (vertical 3D fold up to back on horizontal spine)
     setFlip({ dir, to });
     flipTimer.current = setTimeout(() => {
       setCurrentIndex(to);
@@ -119,6 +109,39 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
   const handleNextPage = () => turnTo(currentIndex + 1);
   const handlePrevPage = () => turnTo(currentIndex - 1);
 
+  // Touch Swipe handlers for mobile vertical folding
+  const handleTouchStart = (e) => {
+    if (!e.touches || e.touches.length === 0) return;
+    touchStartY.current = e.touches[0].clientY;
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartY.current === null) return;
+    const endY = e.changedTouches[0].clientY;
+    const endX = e.changedTouches[0].clientX;
+    const deltaY = endY - touchStartY.current;
+    const deltaX = endX - touchStartX.current;
+
+    // Vertical swipe: swipe up -> next page (fold vertically up to back), swipe down -> prev page
+    if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 35) {
+      if (deltaY < 0) {
+        handleNextPage();
+      } else {
+        handlePrevPage();
+      }
+    } else if (Math.abs(deltaX) > 45) {
+      if (deltaX < 0) {
+        handleNextPage();
+      } else {
+        handlePrevPage();
+      }
+    }
+
+    touchStartY.current = null;
+    touchStartX.current = null;
+  };
+
   // Jump without animation (used when coming from the grid index)
   const openPageDirect = (idx) => {
     clearTimeout(flipTimer.current);
@@ -128,12 +151,12 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
     setViewMode('book');
   };
 
-  // Keyboard navigation (← →)
+  // Keyboard navigation (← → or ↑ ↓)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (viewMode !== 'book') return;
-      if (e.key === 'ArrowRight') handleNextPage();
-      else if (e.key === 'ArrowLeft') handlePrevPage();
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') handleNextPage();
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') handlePrevPage();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -365,7 +388,207 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
     );
   };
 
-  /* ---------------- Compose the spread ---------------- */
+  /* =========================================================
+     MOBILE-SPECIFIC VERTICAL SPREAD PAGE RENDERERS
+     Top page: Visuals, photo, load badge, swatches.
+     Bottom page: Technical specifications & Wholesale quote actions.
+     Separated by a central horizontal binding spine.
+     ========================================================= */
+  const renderTopPage = (product, colorIdx, interactive) => {
+    if (!product) return null;
+    const color = getColor(product, colorIdx);
+    const pageIdx = filteredProducts.indexOf(product);
+
+    return (
+      <div className="relative h-full w-full bg-gradient-to-br from-slate-50 via-white to-slate-50 flex flex-col p-3.5 sm:p-4 select-none justify-between overflow-hidden">
+        {/* Inner gutter shading near the center horizontal spine */}
+        <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-slate-900/[0.08] to-transparent pointer-events-none z-10" />
+
+        {/* Model watermark top right */}
+        <div className="absolute top-2.5 right-3 text-slate-200/90 font-black text-xl sm:text-2xl tracking-widest pointer-events-none">
+          {product.modelCode}
+        </div>
+
+        {/* Badges */}
+        <div className="relative z-10 flex items-center gap-1.5 flex-wrap">
+          <span className="px-2 py-0.5 rounded-full bg-red-50 text-red-700 border border-red-200/70 text-[10px] font-bold">
+            {product.category}
+          </span>
+          {product.isFeatured && (
+            <span className="px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[9px] font-bold">
+              ★ Flagship Series
+            </span>
+          )}
+        </div>
+
+        {/* Product photo with floating pills */}
+        <div className="relative flex-1 min-h-[130px] my-1 flex items-center justify-center">
+          <img
+            src={color.image || product.image}
+            alt={product.name}
+            key={color.image || product.image}
+            draggable="false"
+            className="max-h-[140px] w-auto object-contain p-1 drop-shadow-md"
+          />
+          <div className="absolute top-1 left-1 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 shadow-2xs text-[9px] font-bold text-slate-800">
+            <ShieldCheck className="w-3 h-3 text-red-600" />
+            <span>{product.loadCapacityKg} Tested</span>
+          </div>
+          <div className="absolute bottom-1 left-1 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 shadow-2xs text-[9px] font-bold text-slate-800">
+            <Layers className="w-3 h-3 text-slate-700" />
+            <span>{product.stackabilityLimit}</span>
+          </div>
+        </div>
+
+        {/* Finish selector */}
+        <div className="relative z-20 space-y-1.5 pt-1.5 border-t border-slate-100">
+          <div className="flex items-center justify-between text-[11px]">
+            <span className="text-slate-500 font-medium text-[10px]">Finish:</span>
+            <span className="font-bold text-slate-900 text-[11px]">{color.name}</span>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {product.colors?.map((c, idx) => (
+              <button
+                key={c.name}
+                type="button"
+                tabIndex={interactive ? 0 : -1}
+                onClick={interactive ? (e) => { e.stopPropagation(); setActiveColorIdx(idx); } : undefined}
+                className={`flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] transition-all ${
+                  interactive ? 'cursor-pointer active:scale-95' : 'cursor-default'
+                } ${
+                  colorIdx === idx
+                    ? 'border-red-600 bg-red-50 text-slate-900 font-bold shadow-2xs ring-1 ring-red-500/20'
+                    : 'border-slate-200 hover:border-slate-300 bg-white text-slate-600'
+                }`}
+              >
+                <span
+                  className="w-2.5 h-2.5 rounded-full border border-slate-300 shadow-2xs shrink-0"
+                  style={{ backgroundColor: c.hex }}
+                />
+                <span className="truncate max-w-[70px]">{c.name.split(' ')[0]}</span>
+              </button>
+            ))}
+          </div>
+          <div className="pt-1 flex items-center justify-between text-[10px] text-slate-400">
+            <span>PAGE {String(pageIdx * 2 + 1).padStart(2, '0')}</span>
+            <span>SHRI METRO WORKS • KUMBALGODU</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderBottomPage = (product, colorIdx, interactive) => {
+    if (!product) return null;
+    const color = getColor(product, colorIdx);
+    const pageIdx = filteredProducts.indexOf(product);
+    const justAdded = addedId === product.id;
+
+    return (
+      <div className="relative h-full w-full bg-white flex flex-col p-3.5 sm:p-4 select-none justify-between overflow-hidden">
+        {/* Inner gutter shading near the center horizontal spine */}
+        <div className="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-slate-900/[0.08] to-transparent pointer-events-none z-10" />
+
+        <div className="relative z-10 flex-1 flex flex-col justify-between space-y-2">
+          {/* Header */}
+          <div>
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-red-600">
+                {product.modelCode}
+              </span>
+              <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                ISO VIRGIN PP
+              </span>
+            </div>
+            <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-tight mt-0.5">
+              {product.name}
+            </h2>
+            <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5 leading-snug">
+              {product.description}
+            </p>
+          </div>
+
+          {/* Technical specifications (compact table) */}
+          <div className="border border-slate-200/90 rounded-lg overflow-hidden text-[10px] bg-slate-50/50">
+            <div className="divide-y divide-slate-100">
+              <div className="flex items-center justify-between px-2.5 py-1">
+                <span className="text-slate-500">Dimensions:</span>
+                <span className="font-mono font-semibold text-slate-800">{product.dimensions}</span>
+              </div>
+              <div className="flex items-center justify-between px-2.5 py-1">
+                <span className="text-slate-500">Load Tolerance:</span>
+                <span className="font-bold text-red-600">{product.loadCapacityKg} Static Tested</span>
+              </div>
+              <div className="flex items-center justify-between px-2.5 py-1">
+                <span className="text-slate-500">Net Weight / Finish:</span>
+                <span className="font-semibold text-slate-800">{product.netWeight} • Virgin PP</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Wholesale order box */}
+          <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-slate-800 text-[11px]">Wholesale Qty:</span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  tabIndex={interactive ? 0 : -1}
+                  onClick={interactive ? (e) => { e.stopPropagation(); setOrderQuantity(prev => Math.max(25, prev - 25)); } : undefined}
+                  className="w-6 h-6 rounded bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center cursor-pointer active:scale-95"
+                  aria-label="Decrease quantity"
+                >
+                  <Minus className="w-3 h-3" />
+                </button>
+                <span className="font-black text-red-600 w-10 text-center text-xs">
+                  {orderQuantity}
+                </span>
+                <button
+                  type="button"
+                  tabIndex={interactive ? 0 : -1}
+                  onClick={interactive ? (e) => { e.stopPropagation(); setOrderQuantity(prev => prev + 25); } : undefined}
+                  className="w-6 h-6 rounded bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center cursor-pointer active:scale-95"
+                  aria-label="Increase quantity"
+                >
+                  <Plus className="w-3 h-3" />
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                tabIndex={interactive ? 0 : -1}
+                onClick={interactive ? (e) => { e.stopPropagation(); handleAddQuote(product, color); } : undefined}
+                className="w-full py-2 px-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs active:scale-95"
+              >
+                <ShoppingBag className="w-3 h-3 text-red-300" />
+                <span>{justAdded ? '✓ Added' : 'Add to Quote'}</span>
+              </button>
+              <a
+                href={buildWhatsAppLink(product, color)}
+                target="_blank"
+                rel="noreferrer"
+                tabIndex={interactive ? 0 : -1}
+                onClick={(e) => e.stopPropagation()}
+                className="w-full py-2 px-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs active:scale-95"
+              >
+                <MessageCircle className="w-3 h-3 text-white" />
+                <span>WhatsApp</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+          <span>PAGE {String(pageIdx * 2 + 2).padStart(2, '0')}</span>
+          <span className="font-mono">GSTIN: {companyDetails.gstin}</span>
+        </div>
+      </div>
+    );
+  };
+
+  /* ---------------- Compose Desktop Spread ---------------- */
   // Static layer under the turning sheet:
   //  next → left stays current, right already shows the upcoming page
   //  prev → left already shows the previous page, right stays current
@@ -377,7 +600,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
     ? renderRightPage(targetProduct, 0, false)
     : renderRightPage(currentProduct, activeColorIdx, !flip);
 
-  // Turning sheet faces
+  // Desktop turning sheet faces
   const sheetFront = flip
     ? (flip.dir === 'next'
         ? renderRightPage(currentProduct, activeColorIdx, false)
@@ -388,6 +611,33 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
     ? (flip.dir === 'next'
         ? renderLeftPage(targetProduct, 0, false)
         : renderRightPage(targetProduct, 0, false))
+    : null;
+
+  /* ---------------- Compose Mobile Vertical Spread ---------------- */
+  // Static layer under the turning sheet:
+  //  next → top stays current, bottom already shows upcoming page
+  //  prev → top already shows previous page, bottom stays current
+  const baseTopMobile = flip?.dir === 'prev'
+    ? renderTopPage(targetProduct, 0, false)
+    : renderTopPage(currentProduct, activeColorIdx, !flip);
+
+  const baseBottomMobile = flip?.dir === 'next'
+    ? renderBottomPage(targetProduct, 0, false)
+    : renderBottomPage(currentProduct, activeColorIdx, !flip);
+
+  // Mobile turning sheet faces
+  //  next → bottom lifts and folds vertically UPWARDS onto top page ("up to back")
+  //  prev → top lifts and folds vertically DOWNWARDS onto bottom page
+  const mobileSheetFront = flip
+    ? (flip.dir === 'next'
+        ? renderBottomPage(currentProduct, activeColorIdx, false)
+        : renderTopPage(currentProduct, activeColorIdx, false))
+    : null;
+
+  const mobileSheetBack = flip
+    ? (flip.dir === 'next'
+        ? renderTopPage(targetProduct, 0, false)
+        : renderBottomPage(targetProduct, 0, false))
     : null;
 
   const canPrev = currentIndex > 0;
@@ -614,30 +864,133 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
               </button>
             </div>
 
-            {/* ================= MOBILE: STACKED PAGES ================= */}
-            <div className="md:hidden perspective-1000">
-              <div className={`bg-white rounded-2xl shadow-xl border border-slate-200/90 overflow-hidden ${
-                mobileAnim === 'next' ? 'animate-book-flip-next' : mobileAnim === 'prev' ? 'animate-book-flip-prev' : ''
-              }`}>
-                <div className="border-b border-slate-200">{renderLeftPage(currentProduct, activeColorIdx, true)}</div>
-                <div>{renderRightPage(currentProduct, activeColorIdx, true)}</div>
+            {/* ================= MOBILE: REAL 3D VERTICAL PAGE FOLD ================= */}
+            <div className="md:hidden w-full max-w-md mx-auto">
+              {/* Vertical book stage */}
+              <div 
+                className={`book-stage-vertical relative h-[590px] ${flip ? 'pointer-events-none' : ''}`}
+                style={{ '--flip-ms': `${FLIP_MS}ms` }}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+              >
+                {/* Soft floor shadow */}
+                <div className="absolute -bottom-4 left-6 right-6 h-10 bg-slate-900/20 blur-xl rounded-full pointer-events-none" />
+
+                {/* Stacked paper edges on top & bottom */}
+                <div 
+                  className="book-edge-vertical absolute left-3 right-3 rounded-t-md pointer-events-none"
+                  style={{ top: `-${Math.min(2 + currentIndex * 2, 8)}px`, height: `${Math.min(2 + currentIndex * 2, 8)}px` }}
+                />
+                <div 
+                  className="book-edge-vertical absolute left-3 right-3 rounded-b-md pointer-events-none"
+                  style={{ 
+                    bottom: `-${Math.min(2 + (filteredProducts.length - 1 - currentIndex) * 2, 8)}px`, 
+                    height: `${Math.min(2 + (filteredProducts.length - 1 - currentIndex) * 2, 8)}px` 
+                  }}
+                />
+
+                {/* Static spread (Top & Bottom halves) */}
+                <div className="absolute inset-0 grid grid-rows-2 rounded-2xl shadow-xl shadow-slate-900/10 overflow-hidden border border-slate-200/90 bg-white">
+                  {/* Top half */}
+                  <div className="relative overflow-hidden border-b border-slate-200/90">
+                    {baseTopMobile}
+                    {flip?.dir === 'next' && (
+                      <div className="cast-shadow-reveal-vertical absolute inset-0 pointer-events-none bg-gradient-to-t from-slate-900/35 via-slate-900/10 to-transparent z-25" />
+                    )}
+                    {flip?.dir === 'prev' && (
+                      <div className="cast-shadow-cover-vertical absolute inset-0 pointer-events-none bg-gradient-to-t from-slate-900/30 via-slate-900/10 to-transparent z-25" />
+                    )}
+                    {!flip && canPrev && (
+                      <button 
+                        type="button" 
+                        onClick={handlePrevPage} 
+                        className="page-curl-vertical-prev" 
+                        aria-label="Fold to previous page" 
+                        title="Previous page (fold down)" 
+                      />
+                    )}
+                  </div>
+
+                  {/* Bottom half */}
+                  <div className="relative overflow-hidden">
+                    {baseBottomMobile}
+                    {flip?.dir === 'next' && (
+                      <div className="cast-shadow-cover-vertical absolute inset-0 pointer-events-none bg-gradient-to-b from-slate-900/30 via-slate-900/10 to-transparent z-25" />
+                    )}
+                    {flip?.dir === 'prev' && (
+                      <div className="cast-shadow-reveal-vertical absolute inset-0 pointer-events-none bg-gradient-to-b from-slate-900/35 via-slate-900/10 to-transparent z-25" />
+                    )}
+                    {!flip && canNext && (
+                      <button 
+                        type="button" 
+                        onClick={handleNextPage} 
+                        className="page-curl-vertical-next" 
+                        aria-label="Fold to next page" 
+                        title="Next page (fold vertically up to back)" 
+                      />
+                    )}
+                  </div>
+                </div>
+
+                {/* Horizontal binding spine in the center */}
+                <div className="book-spine-horizontal absolute inset-x-0 top-1/2 -translate-y-1/2 h-8 z-20 pointer-events-none" />
+
+                {/* Mobile 3D turning sheet (folds vertically around center horizontal spine) */}
+                {flip && (
+                  <div
+                    key={`mobile-${flip.dir}-${flip.to}`}
+                    className={`page-flipper-vertical absolute inset-x-0 z-30 ${
+                      flip.dir === 'next'
+                        ? 'top-1/2 bottom-0 animate-page-turn-next-vertical'
+                        : 'top-0 h-1/2 animate-page-turn-prev-vertical'
+                    }`}
+                    aria-hidden="true"
+                  >
+                    {/* Front face */}
+                    <div className={`page-face-vertical shadow-xl ${flip.dir === 'next' ? 'rounded-b-2xl' : 'rounded-t-2xl'}`}>
+                      {mobileSheetFront}
+                      <div className="flip-shade-front-vertical flip-shade bg-gradient-to-b from-slate-900/5 via-slate-900/25 to-slate-900/40" />
+                      <div className="flip-sheen-vertical" />
+                    </div>
+
+                    {/* Back face (rotated 180deg so after 3D vertical turn it lands upright) */}
+                    <div className={`page-face-vertical page-face-vertical-back shadow-xl ${flip.dir === 'next' ? 'rounded-t-2xl' : 'rounded-b-2xl'}`}>
+                      {mobileSheetBack}
+                      <div className="flip-shade-back-vertical flip-shade bg-gradient-to-t from-slate-900/5 via-slate-900/25 to-slate-900/40" />
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="flex items-center justify-between mt-3">
+
+              {/* Mobile Navigation Controls */}
+              <div className="flex items-center justify-between gap-2 mt-4 px-1">
                 <button
                   type="button"
                   onClick={handlePrevPage}
-                  disabled={!canPrev}
-                  className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-bold text-slate-700 disabled:opacity-40"
+                  disabled={!canPrev || !!flip}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-2xs disabled:opacity-40 cursor-pointer active:scale-95 transition-all"
                 >
-                  <ChevronLeft className="w-4 h-4" /> Previous
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>Prev Model</span>
                 </button>
+
+                <div className="text-center">
+                  <span className="text-[11px] font-bold text-slate-800 block">
+                    {displayIndex + 1} of {filteredProducts.length}
+                  </span>
+                  <span className="text-[10px] text-slate-400 block">
+                    Swipe up or tap Next
+                  </span>
+                </div>
+
                 <button
                   type="button"
                   onClick={handleNextPage}
-                  disabled={!canNext}
-                  className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-red-600 text-white text-xs font-bold disabled:opacity-40"
+                  disabled={!canNext || !!flip}
+                  className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white text-xs font-bold shadow-md shadow-red-500/20 disabled:opacity-40 cursor-pointer active:scale-95 transition-all"
                 >
-                  Next <ChevronRight className="w-4 h-4" />
+                  <span>Next Model</span>
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>

@@ -354,15 +354,204 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-page-turn-next,
   .animate-page-turn-prev,
+  .animate-page-turn-next-vertical,
+  .animate-page-turn-prev-vertical,
   .flip-shade-front,
   .flip-shade-back,
+  .flip-shade-front-vertical,
+  .flip-shade-back-vertical,
   .flip-sheen,
+  .flip-sheen-vertical,
   .cast-shadow-reveal,
   .cast-shadow-cover,
+  .cast-shadow-reveal-vertical,
+  .cast-shadow-cover-vertical,
   .page-curl {
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+/* =========================================================
+   REALISTIC VERTICAL BOOK PAGE-TURN SYSTEM (MOBILE & VERTICAL SCREENS)
+   A double-sided sheet hinged on the horizontal center spine.
+   Folds vertically "up to back" in 3D perspective!
+   ========================================================= */
+.book-stage-vertical {
+  perspective: 2400px;
+  perspective-origin: 50% 50%;
+}
+
+.page-flipper-vertical {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.page-face-vertical {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #ffffff;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.page-face-vertical-back {
+  transform: rotateX(180deg);
+}
+
+/* Vertical Sheet rotation – bottom page folds UPWARDS over center horizontal spine onto top page */
+@keyframes pageTurnNextVertical {
+  0%   { transform: translateZ(0px)  rotateX(0deg); }
+  50%  { transform: translateZ(40px) rotateX(90deg); }
+  100% { transform: translateZ(0px)  rotateX(180deg); }
+}
+
+/* Top page folds DOWNWARDS over center horizontal spine onto bottom page */
+@keyframes pageTurnPrevVertical {
+  0%   { transform: translateZ(0px)  rotateX(0deg); }
+  50%  { transform: translateZ(40px) rotateX(-90deg); }
+  100% { transform: translateZ(0px)  rotateX(-180deg); }
+}
+
+.animate-page-turn-next-vertical {
+  transform-origin: top center;
+  animation: pageTurnNextVertical var(--flip-ms, 900ms) cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+}
+
+.animate-page-turn-prev-vertical {
+  transform-origin: bottom center;
+  animation: pageTurnPrevVertical var(--flip-ms, 900ms) cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+}
+
+/* Vertical shading pass */
+@keyframes flipShadeFrontVertical {
+  0%   { opacity: 0; }
+  50%  { opacity: 0.6; }
+  100% { opacity: 0.75; }
+}
+
+@keyframes flipShadeBackVertical {
+  0%   { opacity: 0.75; }
+  50%  { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+.flip-shade-front-vertical {
+  animation: flipShadeFrontVertical var(--flip-ms, 900ms) ease-in forwards;
+}
+
+.flip-shade-back-vertical {
+  animation: flipShadeBackVertical var(--flip-ms, 900ms) ease-out forwards;
+}
+
+/* Glossy light sweep vertically across paper */
+@keyframes flipSheenVertical {
+  0%   { background-position: 0 120%; opacity: 0; }
+  35%  { opacity: 1; }
+  100% { background-position: 0 -20%; opacity: 0; }
+}
+
+.flip-sheen-vertical {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    190deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.65) 50%,
+    transparent 65%
+  );
+  background-size: 100% 250%;
+  animation: flipSheenVertical var(--flip-ms, 900ms) ease-in-out forwards;
+}
+
+/* Vertical shadows cast by the sheet */
+@keyframes castRevealVertical {
+  0%   { opacity: 1; }
+  60%  { opacity: 0.45; }
+  100% { opacity: 0; }
+}
+
+@keyframes castCoverVertical {
+  0%   { opacity: 0; }
+  50%  { opacity: 0; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.cast-shadow-reveal-vertical {
+  animation: castRevealVertical var(--flip-ms, 900ms) ease-out forwards;
+}
+
+.cast-shadow-cover-vertical {
+  animation: castCoverVertical var(--flip-ms, 900ms) ease-in forwards;
+}
+
+/* Horizontal center binding crease */
+.book-spine-horizontal {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(15, 23, 42, 0.05) 30%,
+    rgba(15, 23, 42, 0.18) 50%,
+    rgba(15, 23, 42, 0.05) 70%,
+    transparent 100%
+  );
+}
+
+/* Stacked paper edges on the top/bottom of the vertical book */
+.book-edge-vertical {
+  background: repeating-linear-gradient(
+    to bottom,
+    #ffffff 0px,
+    #ffffff 1px,
+    #e2e8f0 1px,
+    #e2e8f0 2px
+  );
+}
+
+/* Dog-ear corner curl for mobile vertical book */
+.page-curl-vertical-next {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  z-index: 15;
+  cursor: pointer;
+  border-top-left-radius: 8px;
+  background: linear-gradient(
+    to top left,
+    #e8ecf2 0%,
+    #e8ecf2 50%,
+    #c9d2de 50%,
+    #eef2f7 62%,
+    #ffffff 100%
+  );
+  filter: drop-shadow(-3px -3px 4px rgba(15, 23, 42, 0.14));
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.page-curl-vertical-prev {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  z-index: 15;
+  cursor: pointer;
+  border-bottom-left-radius: 8px;
+  background: linear-gradient(
+    to bottom left,
+    #e8ecf2 0%,
+    #e8ecf2 50%,
+    #c9d2de 50%,
+    #eef2f7 62%,
+    #ffffff 100%
+  );
+  filter: drop-shadow(-3px 3px 4px rgba(15, 23, 42, 0.14));
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* Custom clean scrollbars */

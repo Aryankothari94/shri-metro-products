@@ -24,7 +24,7 @@ export default function ProductModal({ product, onClose, onOpenPDP }) {
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
       {/* Modal Card */}
       <div 
-        className="relative bg-white rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl border border-slate-200 transform transition-all"
+        className="relative bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200 transform transition-all"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}

@@ -147,6 +147,224 @@
   );
 }
 
+/* =========================================================
+   REALISTIC BOOK PAGE-TURN SYSTEM
+   A double-sided sheet hinged on the spine, with lift,
+   light/shade passes and shadows cast on the pages below.
+   ========================================================= */
+.book-stage {
+  perspective: 2400px;
+  perspective-origin: 50% 35%;
+}
+
+.page-flipper {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.page-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #ffffff;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.page-face-back {
+  transform: rotateY(180deg);
+}
+
+/* Sheet rotation – lifts slightly off the book at mid-turn */
+@keyframes pageTurnNext {
+  0%   { transform: translateZ(0px)  rotateY(0deg); }
+  50%  { transform: translateZ(36px) rotateY(-90deg); }
+  100% { transform: translateZ(0px)  rotateY(-180deg); }
+}
+
+@keyframes pageTurnPrev {
+  0%   { transform: translateZ(0px)  rotateY(0deg); }
+  50%  { transform: translateZ(36px) rotateY(90deg); }
+  100% { transform: translateZ(0px)  rotateY(180deg); }
+}
+
+.animate-page-turn-next {
+  transform-origin: left center;
+  animation: pageTurnNext var(--flip-ms, 1000ms) cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+}
+
+.animate-page-turn-prev {
+  transform-origin: right center;
+  animation: pageTurnPrev var(--flip-ms, 1000ms) cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+}
+
+/* Shading on the turning sheet (darkens as it turns away from the light) */
+.flip-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+@keyframes flipShadeFront {
+  0%   { opacity: 0; }
+  50%  { opacity: 0.55; }
+  100% { opacity: 0.7; }
+}
+
+@keyframes flipShadeBack {
+  0%   { opacity: 0.7; }
+  50%  { opacity: 0.55; }
+  100% { opacity: 0; }
+}
+
+.flip-shade-front {
+  animation: flipShadeFront var(--flip-ms, 1000ms) ease-in forwards;
+}
+
+.flip-shade-back {
+  animation: flipShadeBack var(--flip-ms, 1000ms) ease-out forwards;
+}
+
+/* Glossy light sweep across the paper while it turns */
+@keyframes flipSheen {
+  0%   { background-position: 120% 0; opacity: 0; }
+  35%  { opacity: 1; }
+  100% { background-position: -20% 0; opacity: 0; }
+}
+
+.flip-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.65) 50%,
+    transparent 65%
+  );
+  background-size: 250% 100%;
+  animation: flipSheen var(--flip-ms, 1000ms) ease-in-out forwards;
+}
+
+/* Shadows cast by the sheet onto the pages underneath */
+@keyframes castReveal {
+  0%   { opacity: 1; }
+  60%  { opacity: 0.45; }
+  100% { opacity: 0; }
+}
+
+@keyframes castCover {
+  0%   { opacity: 0; }
+  50%  { opacity: 0; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.cast-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 25;
+}
+
+.cast-shadow-reveal {
+  animation: castReveal var(--flip-ms, 1000ms) ease-out forwards;
+}
+
+.cast-shadow-cover {
+  animation: castCover var(--flip-ms, 1000ms) ease-in forwards;
+}
+
+/* Center binding crease */
+.book-spine {
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(15, 23, 42, 0.05) 30%,
+    rgba(15, 23, 42, 0.16) 50%,
+    rgba(15, 23, 42, 0.05) 70%,
+    transparent 100%
+  );
+}
+
+/* Stacked paper edges on the sides of the book */
+.book-edge {
+  background: repeating-linear-gradient(
+    to right,
+    #ffffff 0px,
+    #ffffff 1px,
+    #e2e8f0 1px,
+    #e2e8f0 2px
+  );
+}
+
+/* Dog-ear corner curl (hover to peek, click to turn) */
+@keyframes curlHint {
+  0%, 100% { width: 30px; height: 30px; }
+  50%      { width: 44px; height: 44px; }
+}
+
+.page-curl {
+  position: absolute;
+  bottom: 0;
+  width: 30px;
+  height: 30px;
+  z-index: 15;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: curlHint 2.4s ease-in-out 1.2s 2;
+}
+
+.page-curl:hover {
+  animation: none;
+  width: 76px;
+  height: 76px;
+}
+
+.page-curl-next {
+  right: 0;
+  border-top-left-radius: 8px;
+  background: linear-gradient(
+    to top left,
+    #e8ecf2 0%,
+    #e8ecf2 50%,
+    #c9d2de 50%,
+    #eef2f7 62%,
+    #ffffff 100%
+  );
+  filter: drop-shadow(-3px -3px 4px rgba(15, 23, 42, 0.14));
+}
+
+.page-curl-prev {
+  left: 0;
+  border-top-right-radius: 8px;
+  background: linear-gradient(
+    to top right,
+    #e8ecf2 0%,
+    #e8ecf2 50%,
+    #c9d2de 50%,
+    #eef2f7 62%,
+    #ffffff 100%
+  );
+  filter: drop-shadow(3px -3px 4px rgba(15, 23, 42, 0.14));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-turn-next,
+  .animate-page-turn-prev,
+  .flip-shade-front,
+  .flip-shade-back,
+  .flip-sheen,
+  .cast-shadow-reveal,
+  .cast-shadow-cover,
+  .page-curl {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
 /* Custom clean scrollbars */
 ::-webkit-scrollbar {
   width: 8px;

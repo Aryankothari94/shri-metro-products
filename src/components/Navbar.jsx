@@ -23,12 +23,13 @@ export default function Navbar({
   onNavigateContact,
   onLogoClick,
   activeView = 'catalogue',
-  onSwitchView
+  onSwitchView,
+  onOpenCatalogueBook
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { label: "Catalogue", id: "catalog-section" },
+    { label: "Catalogue", id: "catalog-section", isCatalogue: true },
     { label: "Wholesale Specs", id: "catalog-section", isTableTrigger: true },
     { label: "Quality Testing", id: "why-us" },
     { label: "Factory & Works", id: "contact-section", isContact: true }
@@ -36,6 +37,10 @@ export default function Navbar({
 
   const handleNavClick = (item) => {
     setMobileMenuOpen(false);
+    if (item.isCatalogue && onOpenCatalogueBook) {
+      onOpenCatalogueBook();
+      return;
+    }
     if (item.isContact) {
       if (onNavigateContact) onNavigateContact();
       return;

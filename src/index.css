@@ -97,6 +97,56 @@
   transform-style: preserve-3d;
 }
 
+/* Book Spread Flip Animations */
+@keyframes bookFlipNext {
+  0% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+  45% {
+    transform: rotateY(-18deg) scale(0.98);
+    opacity: 0.85;
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bookFlipPrev {
+  0% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+  45% {
+    transform: rotateY(18deg) scale(0.98);
+    opacity: 0.85;
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-book-flip-next {
+  animation: bookFlipNext 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-book-flip-prev {
+  animation: bookFlipPrev 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.book-spine-gradient {
+  background: linear-gradient(
+    to right, 
+    rgba(15, 23, 42, 0.08) 0%, 
+    rgba(15, 23, 42, 0.03) 25%, 
+    transparent 50%, 
+    rgba(15, 23, 42, 0.03) 75%, 
+    rgba(15, 23, 42, 0.08) 100%
+  );
+}
+
 /* Custom clean scrollbars */
 ::-webkit-scrollbar {
   width: 8px;

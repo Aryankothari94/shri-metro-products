@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowUp } from 'lucide-react';
 import { companyDetails } from '../data/companyData';
 
-export default function Footer({ onSelectCategory }) {
+export default function Footer({ onSelectCategory, onOpenCatalogueBook }) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -39,7 +39,10 @@ export default function Footer({ onSelectCategory }) {
           <nav className="flex flex-wrap items-center gap-5 sm:gap-6 text-xs font-medium text-slate-600">
             <button 
               type="button"
-              onClick={() => scrollToSection('catalog-section')}
+              onClick={() => {
+                if (onOpenCatalogueBook) onOpenCatalogueBook();
+                else scrollToSection('catalog-section');
+              }}
               className="hover:text-slate-900 transition-colors cursor-pointer"
             >
               Catalog

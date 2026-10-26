@@ -21,7 +21,7 @@ import {
 import { companyDetails } from '../data/companyData';
 import { productsData } from '../data/productsData';
 
-export default function Hero({ onExploreCatalog, onSwitchToTable }) {
+export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogueBook }) {
   // Showcase chair (SMP-CHR-901A)
   const heroProduct = productsData[0];
   
@@ -142,7 +142,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable }) {
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <button
                 type="button"
-                onClick={onExploreCatalog}
+                onClick={onOpenCatalogueBook || onExploreCatalog}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-sm shadow-red-500/25 hover:shadow-md hover:shadow-red-500/35 cursor-pointer active:scale-95 group"
               >
                 <span>Browse Product Catalog</span>

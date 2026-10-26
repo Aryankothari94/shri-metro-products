@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductCatalog from './components/ProductCatalog';
 import ProductDetailPage from './components/ProductDetailPage';
+import CatalogueBookPage from './components/CatalogueBookPage';
 import WhyChooseUs from './components/WhyChooseUs';
 import ContactPage from './components/ContactPage';
 import BulkQuoteModal from './components/BulkQuoteModal';
@@ -11,6 +12,7 @@ import FloatingInquiryButton from './components/FloatingInquiryButton';
 import Footer from './components/Footer';
 
 export default function App() {
+  const [isCatalogueBookOpen, setIsCatalogueBookOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [searchQuery, setSearchQuery] = useState("");
   const [isBulkQuoteOpen, setIsBulkQuoteOpen] = useState(false);
@@ -19,6 +21,18 @@ export default function App() {
   const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
   const [prefilledInquiryMessage, setPrefilledInquiryMessage] = useState("");
   const [catalogViewMode, setCatalogViewMode] = useState('grid'); // 'grid' | 'table'
+
+  const handleOpenCatalogueBook = () => {
+    setSelectedProductForPDP(null);
+    setIsCatalogueBookOpen(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBackToDashboard = () => {
+    setIsCatalogueBookOpen(false);
+    setSelectedProductForPDP(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleExploreCatalog = () => {
     setSelectedProductForPDP(null);
@@ -70,6 +84,7 @@ export default function App() {
 
   const handleLogoClick = () => {
     setSelectedProductForPDP(null);
+    setIsCatalogueBookOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -119,13 +134,19 @@ export default function App() {
         onNavigateContact={handleNavigateContact}
         onLogoClick={handleLogoClick}
         onSwitchView={setCatalogViewMode}
+        onOpenCatalogueBook={handleOpenCatalogueBook}
       />
 
-      {/* Conditional: Either show full Product Detail Page (PDP) OR the Clean Dashboard Views */}
+      {/* Conditional: Either show full Product Detail Page (PDP), Full Catalogue Lookbook, OR the Clean Dashboard */}
       {selectedProductForPDP ? (
         <ProductDetailPage
           product={selectedProductForPDP}
           onBack={handleBackFromPDP}
+          onAddToQuoteList={handleAddToQuoteList}
+        />
+      ) : isCatalogueBookOpen ? (
+        <CatalogueBookPage
+          onBackToDashboard={handleBackToDashboard}
           onAddToQuoteList={handleAddToQuoteList}
         />
       ) : (
@@ -134,6 +155,7 @@ export default function App() {
           <Hero 
             onExploreCatalog={handleExploreCatalog}
             onSwitchToTable={handleSwitchToTable}
+            onOpenCatalogueBook={handleOpenCatalogueBook}
           />
 
           {/* 3. Product Catalog Workbench (PLP) with Clean Dual Views & Filters */}
@@ -156,7 +178,10 @@ export default function App() {
       )}
 
       {/* 7. Minimal Clean Footer */}
-      <Footer onSelectCategory={handleSelectCategory} />
+      <Footer 
+        onSelectCategory={handleSelectCategory} 
+        onOpenCatalogueBook={handleOpenCatalogueBook}
+      />
 
       {/* 8. Floating Inquiry Cart Button */}
       <FloatingInquiryButton

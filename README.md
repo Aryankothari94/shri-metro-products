@@ -1,16 +1,52 @@
-# React + Vite
+# SHRI METRO PRODUCTS - Plastic Moulded Furniture Showcase
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Official showcase and product catalogue web application for **SHRI METRO PRODUCTS**, premier manufacturer of heavy-duty moulded plastic furniture based in Bangalore, Karnataka.
 
-Currently, two official plugins are available:
+## 🏭 Company Information
+- **Manufacturer**: SHRI METRO PRODUCTS
+- **Proprietor**: Rakesh R Jain
+- **Contact / WhatsApp**: +91 9845287888
+- **GSTIN**: 29AKZPJ1388F1ZH
+- **Factory Works**: Site no: 10,11 Gerupalya, Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore - 560074
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🎨 Design System & Palette
+- **Deep Slate Blue**: `#0F172A`
+- **Royal Blue**: `#1E40AF`
+- **Warm Industrial Gold/Amber**: `#F59E0B`
+- **Soft Slate Background**: `#F8FAFC`
 
-## React Compiler
+## 📦 Tech Stack
+- **Framework**: React 19 (Vite)
+- **Styling**: Tailwind CSS v3.4 + PostCSS + Autoprefixer
+- **Icons**: Lucide React (`lucide-react`)
+- **Typography**: Plus Jakarta Sans / Inter
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Getting Started
+```bash
+# Install dependencies
+npm install
 
-## Expanding the Oxlint configuration
+# Start development server
+npm run dev
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+# Build for production
+npm run build
+```
+
+## 📂 Project Structure
+```
+shri-metro-products/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── data/
+│   │   ├── companyData.js       # Pre-loaded business details & WhatsApp links
+│   │   └── productsData.js      # 10 mock products across 6 categories
+│   ├── App.jsx                  # Main catalogue showcase & filter UI
+│   ├── index.css                # Tailwind directives & glassmorphic utilities
+│   └── main.jsx                 # Application entry point
+├── index.html                   # SEO metadata & Google Fonts
+├── postcss.config.js            # PostCSS configuration
+├── tailwind.config.js           # Brand colors & design tokens
+└── package.json
+```

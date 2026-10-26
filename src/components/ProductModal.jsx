@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { companyDetails } from '../data/companyData';
 
-export default function ProductModal({ product, onClose }) {
+export default function ProductModal({ product, onClose, onOpenPDP }) {
   if (!product) return null;
 
   const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20bulk%20quotation%20for%20${encodeURIComponent(product.name)}%20(Model%20Code%3A%20${product.modelCode}).`;
@@ -131,24 +131,40 @@ export default function ProductModal({ product, onClose }) {
             </div>
 
             {/* CTAs */}
-            <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row gap-3">
-              <a
-                href={whatsappInquiryUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors shadow-sm"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Get WhatsApp Quote</span>
-              </a>
+            <div className="pt-4 border-t border-slate-200 space-y-2.5">
+              {onOpenPDP && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onOpenPDP(product);
+                  }}
+                  className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-brand-primary text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <span>Interactive Spec Sheet & Bulk Estimator</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </button>
+              )}
 
-              <a
-                href={`tel:${companyDetails.phoneRaw}`}
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors"
-              >
-                <Phone className="w-4 h-4 text-slate-600" />
-                <span>Call Factory</span>
-              </a>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a
+                  href={whatsappInquiryUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors shadow-sm"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Get WhatsApp Quote</span>
+                </a>
+
+                <a
+                  href={`tel:${companyDetails.phoneRaw}`}
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors"
+                >
+                  <Phone className="w-4 h-4 text-slate-600" />
+                  <span>Call Factory</span>
+                </a>
+              </div>
             </div>
 
           </div>

@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { companyDetails } from '../data/companyData';
 
-export default function ProductCard({ product, onQuickView }) {
+export default function ProductCard({ product, onQuickView, onViewDetails }) {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]?.name || '');
 
   const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColor)}%20color.`;
@@ -67,7 +67,7 @@ export default function ProductCard({ product, onQuickView }) {
 
           {/* Product Name */}
           <h3
-            onClick={() => onQuickView(product)}
+            onClick={() => (onViewDetails ? onViewDetails(product) : onQuickView(product))}
             className="font-extrabold text-slate-900 text-base line-clamp-1 hover:text-brand-primary transition-colors cursor-pointer"
             title={product.name}
           >
@@ -145,7 +145,7 @@ export default function ProductCard({ product, onQuickView }) {
 
           <button
             type="button"
-            onClick={() => onQuickView(product)}
+            onClick={() => (onViewDetails ? onViewDetails(product) : onQuickView(product))}
             className="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
           >
             View Details

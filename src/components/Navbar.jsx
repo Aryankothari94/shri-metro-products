@@ -9,7 +9,8 @@ import {
   Sparkles,
   ArrowRight,
   ShieldCheck,
-  MapPin
+  MapPin,
+  ShoppingBag
 } from 'lucide-react';
 import { companyDetails } from '../data/companyData';
 
@@ -17,7 +18,9 @@ export default function Navbar({
   searchQuery, 
   setSearchQuery, 
   onSelectCategory, 
-  onOpenBulkQuote 
+  onOpenBulkQuote,
+  quoteListCount = 0,
+  onOpenQuoteDrawer
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -144,6 +147,22 @@ export default function Navbar({
                 )}
               </form>
 
+              {/* Bulk Quote List Trigger */}
+              <button
+                type="button"
+                onClick={onOpenQuoteDrawer}
+                className="relative inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors shrink-0 cursor-pointer"
+                title="View your compiled bulk quote list"
+              >
+                <ShoppingBag className="w-4 h-4 text-brand-primary" />
+                <span className="hidden md:inline">Quote List</span>
+                {quoteListCount > 0 && (
+                  <span className="w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center -mr-1">
+                    {quoteListCount}
+                  </span>
+                )}
+              </button>
+
               {/* Request Bulk Quote CTA Button */}
               <button
                 type="button"
@@ -157,6 +176,18 @@ export default function Navbar({
 
             {/* Mobile Menu & Search Icon Trigger */}
             <div className="flex sm:hidden items-center gap-2">
+              <button
+                type="button"
+                onClick={onOpenQuoteDrawer}
+                className="relative p-2 rounded-lg bg-slate-100 text-slate-800 font-bold text-xs"
+              >
+                <ShoppingBag className="w-4 h-4 text-brand-primary" />
+                {quoteListCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-brand-primary text-white text-[9px] font-bold flex items-center justify-center">
+                    {quoteListCount}
+                  </span>
+                )}
+              </button>
               <button
                 type="button"
                 onClick={onOpenBulkQuote}

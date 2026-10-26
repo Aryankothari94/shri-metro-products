@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { companyDetails } from '../data/companyData';
 
-export default function SpecTableView({ products, onQuickView }) {
+export default function SpecTableView({ products, onQuickView, onViewDetails }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-subtle">
       {/* Wholesale Header Banner */}
@@ -75,7 +75,7 @@ export default function SpecTableView({ products, onQuickView }) {
                           {product.modelCode}
                         </span>
                         <button
-                          onClick={() => onQuickView(product)}
+                          onClick={() => (onViewDetails ? onViewDetails(product) : onQuickView(product))}
                           className="font-bold text-slate-900 group-hover:text-brand-primary transition-colors text-left text-xs line-clamp-1 cursor-pointer"
                         >
                           {product.name}
@@ -140,7 +140,7 @@ export default function SpecTableView({ products, onQuickView }) {
                   <td className="py-3.5 px-4 text-right whitespace-nowrap">
                     <div className="flex items-center justify-end gap-1.5">
                       <button
-                        onClick={() => onQuickView(product)}
+                        onClick={() => (onViewDetails ? onViewDetails(product) : onQuickView(product))}
                         className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors cursor-pointer"
                       >
                         Specs

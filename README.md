@@ -44,6 +44,7 @@ shri-metro-products/
 │   │   ├── companyData.js       # Pre-loaded business details & WhatsApp links
 │   │   └── productsData.js      # 10 mock products across 6 categories
 │   ├── components/
+│   │   ├── BulkQuoteDrawer.jsx  # Slide-over quote list drawer with bulk quantity & WhatsApp dispatch
 │   │   ├── BulkQuoteModal.jsx   # Interactive B2B bulk inquiry dialog
 │   │   ├── CatalogSidebar.jsx   # Search, category, stackable switch & color swatches
 │   │   ├── CategoryGrid.jsx     # Visual cards for Chairs, Tables, Stools, Patlas
@@ -53,6 +54,7 @@ shri-metro-products/
 │   │   ├── OwnerContactCard.jsx # Rakesh R Jain executive contact & GSTIN badge
 │   │   ├── ProductCard.jsx      # Interactive card with hover zoom & dimension badges
 │   │   ├── ProductCatalog.jsx   # PLP dual view orchestrator with live filters
+│   │   ├── ProductDetailPage.jsx# Interactive PDP with color switcher, specs & bulk estimator
 │   │   ├── ProductModal.jsx     # Deep lightbox spec inspection & WhatsApp quote
 │   │   ├── SpecTableView.jsx    # High-density wholesale comparison table
 │   │   └── WhyChooseUs.jsx      # UV resistance, 100% virgin PP & load benchmarks

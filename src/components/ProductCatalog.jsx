@@ -22,7 +22,8 @@ export default function ProductCatalog({
   onSelectCategory,
   searchQuery,
   setSearchQuery,
-  onOpenBulkQuote
+  onOpenBulkQuote,
+  onSelectProductForPDP
 }) {
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'table'
   const [selectedColor, setSelectedColor] = useState(null);
@@ -343,6 +344,7 @@ export default function ProductCatalog({
                     key={product.id}
                     product={product}
                     onQuickView={(p) => setActiveModalProduct(p)}
+                    onViewDetails={onSelectProductForPDP}
                   />
                 ))}
               </div>
@@ -351,6 +353,7 @@ export default function ProductCatalog({
               <SpecTableView
                 products={filteredProducts}
                 onQuickView={(p) => setActiveModalProduct(p)}
+                onViewDetails={onSelectProductForPDP}
               />
             )}
 
@@ -415,6 +418,7 @@ export default function ProductCatalog({
         <ProductModal
           product={activeModalProduct}
           onClose={() => setActiveModalProduct(null)}
+          onOpenPDP={onSelectProductForPDP}
         />
       )}
     </section>

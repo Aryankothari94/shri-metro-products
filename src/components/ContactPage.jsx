@@ -417,23 +417,14 @@ export default function ContactPage({ prefilledMessage = '' }) {
                 ></textarea>
               </div>
 
-              {/* Action Buttons */}
-              <div className="pt-3 space-y-3">
+              {/* Action Button */}
+              <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-700/20 transition-all cursor-pointer active:scale-95"
+                  className="w-full py-3 px-6 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm shadow-red-500/25 transition-all cursor-pointer active:scale-95"
                 >
                   <MessageCircle className="w-4 h-4 shrink-0" />
-                  <span>Send Inquiry via Factory WhatsApp (+91 9845287888)</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleDirectSubmit}
-                  className="w-full py-2.5 px-6 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                >
-                  <Send className="w-3.5 h-3.5 text-slate-600" />
-                  <span>Submit Web Form Directly</span>
+                  <span>Send Wholesale Inquiry to Factory Desk</span>
                 </button>
               </div>
 

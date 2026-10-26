@@ -200,10 +200,10 @@ export default function BulkQuoteDrawer({
             {/* Single "Send Consolidated Wholesale Inquiry" button via WhatsApp */}
             <button
               onClick={handleSendConsolidatedWhatsApp}
-              className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-700/20 transition-all cursor-pointer active:scale-95"
+              className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-red-500/25 transition-all cursor-pointer active:scale-95"
             >
               <MessageCircle className="w-4 h-4 shrink-0" />
-              <span>Send Consolidated Wholesale Inquiry</span>
+              <span>Send Wholesale Quote via WhatsApp</span>
             </button>
 
             {/* Option to send via Contact Form */}

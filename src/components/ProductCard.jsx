@@ -41,19 +41,6 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
             Featured
           </span>
         )}
-
-        {/* Quick View Button */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onQuickView(product);
-          }}
-          className="absolute bottom-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1 rounded bg-white/95 text-slate-800 hover:text-red-600 border border-slate-200 hover:border-red-200 text-[11px] font-medium flex items-center gap-1 shadow-xs"
-        >
-          <Eye className="w-3 h-3 text-red-600" />
-          <span>Quick View</span>
-        </button>
       </div>
 
       {/* Card Content Body */}

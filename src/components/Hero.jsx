@@ -18,21 +18,6 @@ export default function Hero({ onExploreCatalog, onSwitchToTable }) {
     <section className="bg-white border-b border-slate-200/80 py-10 sm:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Top Operational Pill */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pb-6 mb-8 border-b border-slate-100 text-xs">
-          <div className="flex items-center gap-2 text-slate-600">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="font-semibold text-slate-900">Direct Factory Manufacturing Unit</span>
-            <span className="text-slate-300">•</span>
-            <span>Kumbalgodu, Bangalore - 560074</span>
-          </div>
-          <div className="flex items-center gap-4 text-slate-500 text-[11px] font-mono">
-            <span>GSTIN: <strong className="text-slate-800">{companyDetails.gstin}</strong></span>
-            <span className="hidden sm:inline text-slate-300">|</span>
-            <span className="hidden sm:inline">Proprietor: <strong className="text-slate-800">{companyDetails.proprietor}</strong></span>
-          </div>
-        </div>
-
         {/* Dashboard Title & Overview Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
@@ -51,35 +36,16 @@ export default function Hero({ onExploreCatalog, onSwitchToTable }) {
               Manufactured using <strong className="text-slate-900 font-semibold">100% Virgin Polypropylene</strong> with <strong className="text-red-600 font-semibold">200 kg load tolerance</strong>. Direct factory supply for event caterers, banquet halls, restaurants, schools, and wholesale dealers across Karnataka.
             </p>
 
-            {/* Clean Dashboard Actions */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            {/* Clean Single Primary Action (No redundant duplicate buttons) */}
+            <div className="pt-2">
               <button
                 type="button"
                 onClick={onExploreCatalog}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm transition-all shadow-sm shadow-red-500/25 hover:shadow-md hover:shadow-red-500/30 cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm transition-all shadow-sm shadow-red-500/25 hover:shadow-md hover:shadow-red-500/30 cursor-pointer active:scale-95"
               >
                 <span>Browse Products</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
-
-              <button
-                type="button"
-                onClick={onSwitchToTable || onExploreCatalog}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-red-50/60 text-slate-800 hover:text-red-600 font-bold text-xs sm:text-sm border border-slate-200 hover:border-red-200 transition-all shadow-2xs cursor-pointer"
-              >
-                <FileSpreadsheet className="w-4 h-4 text-red-600" />
-                <span>Wholesale Spec Table</span>
-              </button>
-
-              <a
-                href={companyDetails.whatsappLink}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-emerald-50/80 text-slate-800 hover:text-emerald-700 font-bold text-xs sm:text-sm border border-slate-200 hover:border-emerald-200 transition-all shadow-2xs"
-              >
-                <MessageCircle className="w-4 h-4 text-emerald-600" />
-                <span>WhatsApp: +91 9845287888</span>
-              </a>
             </div>
           </div>
 

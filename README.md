@@ -48,6 +48,8 @@ shri-metro-products/
 │   │   ├── BulkQuoteModal.jsx   # Interactive B2B bulk inquiry dialog
 │   │   ├── CatalogSidebar.jsx   # Search, category, stackable switch & color swatches
 │   │   ├── CategoryGrid.jsx     # Visual cards for Chairs, Tables, Stools, Patlas
+│   │   ├── ContactPage.jsx      # Factory works, Google Maps directions & interactive inquiry form
+│   │   ├── FloatingInquiryButton.jsx# Permanent bottom-right wholesale inquiry cart trigger
 │   │   ├── Footer.jsx           # Full contact, works directions & category links
 │   │   ├── Hero.jsx             # High-impact industrial hero section
 │   │   ├── Navbar.jsx           # Top announcement bar + sticky navigation + search

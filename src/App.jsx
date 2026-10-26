@@ -6,8 +6,10 @@ import ProductCatalog from './components/ProductCatalog';
 import ProductDetailPage from './components/ProductDetailPage';
 import WhyChooseUs from './components/WhyChooseUs';
 import OwnerContactCard from './components/OwnerContactCard';
+import ContactPage from './components/ContactPage';
 import BulkQuoteModal from './components/BulkQuoteModal';
 import BulkQuoteDrawer from './components/BulkQuoteDrawer';
+import FloatingInquiryButton from './components/FloatingInquiryButton';
 import Footer from './components/Footer';
 
 export default function App() {
@@ -17,6 +19,7 @@ export default function App() {
   const [selectedProductForPDP, setSelectedProductForPDP] = useState(null);
   const [quoteList, setQuoteList] = useState([]);
   const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
+  const [prefilledInquiryMessage, setPrefilledInquiryMessage] = useState("");
 
   const handleExploreCatalog = () => {
     setSelectedProductForPDP(null);
@@ -46,6 +49,21 @@ export default function App() {
     }, 50);
   };
 
+  const handleNavigateContact = () => {
+    setSelectedProductForPDP(null);
+    setTimeout(() => {
+      const contactElement = document.getElementById('contact-section');
+      if (contactElement) {
+        contactElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 50);
+  };
+
+  const handleLogoClick = () => {
+    setSelectedProductForPDP(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Bulk Quote List Handlers
   const handleAddToQuoteList = (item) => {
     setQuoteList(prev => {
@@ -72,6 +90,13 @@ export default function App() {
     setQuoteList([]);
   };
 
+  const handleTransferToContactForm = (messageSummary) => {
+    setPrefilledInquiryMessage(messageSummary);
+    handleNavigateContact();
+  };
+
+  const totalQuoteUnits = quoteList.reduce((acc, curr) => acc + (Number(curr.quantity) || 0), 0);
+
   return (
     <div className="min-h-screen bg-brand-bg text-brand-dark flex flex-col font-sans selection:bg-amber-400 selection:text-slate-950">
       {/* 1. Header & Navigation */}
@@ -82,6 +107,8 @@ export default function App() {
         onOpenBulkQuote={() => setIsBulkQuoteOpen(true)}
         quoteListCount={quoteList.length}
         onOpenQuoteDrawer={() => setIsQuoteDrawerOpen(true)}
+        onNavigateContact={handleNavigateContact}
+        onLogoClick={handleLogoClick}
       />
 
       {/* Conditional: Either show full Product Detail Page (PDP) OR the Homepage / PLP */}
@@ -114,13 +141,23 @@ export default function App() {
 
           {/* 6. Direct Owner Contact Card */}
           <OwnerContactCard />
+
+          {/* 7. Comprehensive Contact & Factory Location Page with Map & Interactive Form */}
+          <ContactPage prefilledMessage={prefilledInquiryMessage} />
         </>
       )}
 
-      {/* 7. Footer */}
+      {/* 8. Footer */}
       <Footer onSelectCategory={handleSelectCategory} />
 
-      {/* 8. Modals & Drawers */}
+      {/* 9. Floating Inquiry Cart Button */}
+      <FloatingInquiryButton
+        itemCount={quoteList.length}
+        totalUnits={totalQuoteUnits}
+        onClick={() => setIsQuoteDrawerOpen(true)}
+      />
+
+      {/* 10. Modals & Drawers */}
       <BulkQuoteModal
         isOpen={isBulkQuoteOpen}
         onClose={() => setIsBulkQuoteOpen(false)}
@@ -133,6 +170,7 @@ export default function App() {
         onUpdateQuantity={handleUpdateQuoteQuantity}
         onRemoveItem={handleRemoveQuoteItem}
         onClearAll={handleClearQuoteList}
+        onNavigateToContactForm={handleTransferToContactForm}
       />
     </div>
   );

@@ -8,7 +8,8 @@ import {
   ShoppingBag, 
   ArrowRight,
   ShieldCheck,
-  Building2
+  Building2,
+  FileText
 } from 'lucide-react';
 import { companyDetails } from '../data/companyData';
 
@@ -18,16 +19,17 @@ export default function BulkQuoteDrawer({
   items, 
   onUpdateQuantity, 
   onRemoveItem, 
-  onClearAll 
+  onClearAll,
+  onNavigateToContactForm 
 }) {
   if (!isOpen) return null;
 
   const totalUnits = items.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
 
-  const handleSendCombinedWhatsApp = () => {
+  const handleSendConsolidatedWhatsApp = () => {
     if (items.length === 0) return;
 
-    let text = `*Bulk Wholesale Procurement Request - SHRI METRO PRODUCTS*%0A%0A`;
+    let text = `*Consolidated Wholesale Procurement Inquiry - SHRI METRO PRODUCTS*%0A%0A`;
     text += `Hello Rakesh R Jain, I would like to request factory wholesale quotation for the following items:%0A%0A`;
 
     items.forEach((item, index) => {
@@ -44,8 +46,20 @@ export default function BulkQuoteDrawer({
     window.open(`https://wa.me/${companyDetails.whatsappNumber}?text=${text}`, '_blank');
   };
 
+  const handleUseForm = () => {
+    let summary = `Inquiry for ${totalUnits} units across ${items.length} product(s):\n`;
+    items.forEach((item, idx) => {
+      summary += `${idx + 1}. ${item.name} (${item.modelCode}) - ${item.quantity} units [Color: ${item.color}]\n`;
+    });
+
+    if (onNavigateToContactForm) {
+      onNavigateToContactForm(summary);
+    }
+    onClose();
+  };
+
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950/70 backdrop-blur-sm flex justify-end animate-fadeIn">
+    <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950/75 backdrop-blur-sm flex justify-end animate-fadeIn">
       <div 
         className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col justify-between border-l border-slate-200"
         onClick={(e) => e.stopPropagation()}
@@ -53,22 +67,23 @@ export default function BulkQuoteDrawer({
         {/* Drawer Header */}
         <div className="p-5 sm:p-6 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center">
               <ShoppingBag className="w-5 h-5" />
             </div>
             <div>
               <h3 className="font-extrabold text-base leading-tight">
-                Bulk Quote List
+                Wholesale Inquiry Cart
               </h3>
               <p className="text-xs text-slate-400">
-                {items.length} unique products • {totalUnits} total units
+                {items.length} product{items.length === 1 ? '' : 's'} • {totalUnits} total units
               </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+            aria-label="Close drawer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -82,14 +97,14 @@ export default function BulkQuoteDrawer({
                 <ShoppingBag className="w-8 h-8" />
               </div>
               <h4 className="font-bold text-slate-800 text-base">Your Quote List is Empty</h4>
-              <p className="text-xs text-slate-500 max-w-xs mx-auto">
-                Explore our catalog and click "Add to Bulk Quote List" on any product to compile your wholesale order.
+              <p className="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
+                Add products from our catalog (e.g. 50 Chairs + 10 Tables) to compile your wholesale requisition.
               </p>
               <button
                 onClick={onClose}
-                className="mt-2 px-4 py-2 rounded-xl bg-brand-primary text-white font-bold text-xs hover:bg-blue-700"
+                className="mt-2 px-5 py-2.5 rounded-xl bg-brand-primary text-white font-bold text-xs hover:bg-blue-700 shadow-sm cursor-pointer"
               >
-                Browse Products
+                Explore Catalogue
               </button>
             </div>
           ) : (
@@ -117,8 +132,8 @@ export default function BulkQuoteDrawer({
                     </div>
                     <button
                       onClick={() => onRemoveItem(item.id)}
-                      className="text-slate-400 hover:text-rose-600 p-1 transition-colors"
-                      title="Remove item"
+                      className="text-slate-400 hover:text-rose-600 p-1 transition-colors cursor-pointer"
+                      title="Remove product"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -140,7 +155,8 @@ export default function BulkQuoteDrawer({
                     <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
                       <button
                         onClick={() => onUpdateQuantity(item.id, Math.max(5, item.quantity - 10))}
-                        className="px-2 py-1 text-slate-600 hover:bg-slate-200"
+                        className="px-2 py-1 text-slate-600 hover:bg-slate-200 cursor-pointer"
+                        title="Decrease by 10"
                       >
                         <Minus className="w-3 h-3" />
                       </button>
@@ -149,7 +165,8 @@ export default function BulkQuoteDrawer({
                       </span>
                       <button
                         onClick={() => onUpdateQuantity(item.id, item.quantity + 10)}
-                        className="px-2 py-1 text-slate-600 hover:bg-slate-200"
+                        className="px-2 py-1 text-slate-600 hover:bg-slate-200 cursor-pointer"
+                        title="Increase by 10"
                       >
                         <Plus className="w-3 h-3" />
                       </button>
@@ -165,31 +182,43 @@ export default function BulkQuoteDrawer({
           )}
         </div>
 
-        {/* Drawer Footer & WhatsApp Action */}
+        {/* Drawer Footer & Consolidated Wholesale Inquiry */}
         {items.length > 0 && (
           <div className="p-5 sm:p-6 bg-slate-50 border-t border-slate-200 space-y-3">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-600 font-medium">Total Quantity:</span>
+              <span className="text-slate-600 font-medium">Total Bulk Requisition:</span>
               <strong className="text-sm font-black text-slate-900 font-mono">
                 {totalUnits} Units
               </strong>
             </div>
 
             <div className="flex items-center justify-between text-xs pb-1">
-              <span className="text-slate-500">Factory Invoicing:</span>
-              <span className="font-semibold text-emerald-700">GST Input Tax Credit Eligible</span>
+              <span className="text-slate-500">Billing:</span>
+              <span className="font-semibold text-emerald-700">Official GST Invoice + ITC</span>
             </div>
 
+            {/* Single "Send Consolidated Wholesale Inquiry" button via WhatsApp */}
             <button
-              onClick={handleSendCombinedWhatsApp}
-              className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-700/20 transition-all cursor-pointer"
+              onClick={handleSendConsolidatedWhatsApp}
+              className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-700/20 transition-all cursor-pointer active:scale-95"
             >
               <MessageCircle className="w-4 h-4 shrink-0" />
-              <span>Send Full Inquiry on WhatsApp</span>
+              <span>Send Consolidated Wholesale Inquiry</span>
             </button>
 
+            {/* Option to send via Contact Form */}
+            {onNavigateToContactForm && (
+              <button
+                onClick={handleUseForm}
+                className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 border border-slate-200 transition-colors cursor-pointer"
+              >
+                <FileText className="w-3.5 h-3.5 text-brand-primary" />
+                <span>Submit via Website Inquiry Form</span>
+              </button>
+            )}
+
             <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
-              <span>Direct factory chat with Proprietor</span>
+              <span>Direct factory dispatch from Kumbalgodu</span>
               <button
                 onClick={onClearAll}
                 className="text-slate-500 hover:text-rose-600 underline cursor-pointer"

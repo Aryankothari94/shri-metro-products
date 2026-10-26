@@ -6,9 +6,10 @@ import {
   Weight, 
   Maximize2
 } from 'lucide-react';
-import { companyDetails } from '../data/companyData';
+import { useData } from '../context/DataContext';
 
 export default function SpecTableView({ products, onQuickView, onViewDetails }) {
+  const { company: companyDetails } = useData();
   return (
     <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs">
       

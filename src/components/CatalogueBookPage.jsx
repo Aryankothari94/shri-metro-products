@@ -13,8 +13,7 @@ import {
   ShoppingBag, 
   SlidersHorizontal
 } from 'lucide-react';
-import { productsData } from '../data/productsData';
-import { companyDetails } from '../data/companyData';
+import { useData } from '../context/DataContext';
 
 // Duration of one full page turn (keep in sync with --flip-ms on the stage)
 const FLIP_MS = 1000;
@@ -33,6 +32,8 @@ const useMediaQuery = (query, fallback = false) => {
 };
 
 export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList }) {
+  const { activeProducts, categories: dataCategories, company: companyDetails } = useData();
+
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeColorIdx, setActiveColorIdx] = useState(0);
@@ -49,20 +50,18 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
   const mobileTimer = useRef(null);
   const toastTimer = useRef(null);
 
-  // Available categories with counts
+  // Dynamic available categories with reactive counts
   const categories = [
-    { name: "All Categories", count: productsData.length },
-    { name: "Plastic Chairs (Armrest)", count: productsData.filter(p => p.category === "Plastic Chairs (Armrest)").length },
-    { name: "Plastic Chairs (Armless)", count: productsData.filter(p => p.category === "Plastic Chairs (Armless)").length },
-    { name: "Center Tables", count: productsData.filter(p => p.category === "Center Tables").length },
-    { name: "Dining Tables", count: productsData.filter(p => p.category === "Dining Tables").length },
-    { name: "Stools", count: productsData.filter(p => p.category === "Stools").length },
-    { name: "Patlas", count: productsData.filter(p => p.category === "Patlas").length },
+    { name: "All Categories", count: activeProducts.length },
+    ...dataCategories.map(c => ({
+      name: c.name,
+      count: activeProducts.filter(p => p.category === c.name).length
+    }))
   ];
 
   const filteredProducts = selectedCategory === "All Categories" 
-    ? productsData 
-    : productsData.filter(p => p.category === selectedCategory);
+    ? activeProducts 
+    : activeProducts.filter(p => p.category === selectedCategory);
 
   // Reset to first page whenever the category changes (cancel any in-flight turn)
   useEffect(() => {

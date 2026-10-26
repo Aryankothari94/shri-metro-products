@@ -11,7 +11,7 @@ import {
   Building2,
   FileText
 } from 'lucide-react';
-import { companyDetails } from '../data/companyData';
+import { useData } from '../context/DataContext';
 
 export default function BulkQuoteDrawer({ 
   isOpen, 
@@ -22,12 +22,25 @@ export default function BulkQuoteDrawer({
   onClearAll,
   onNavigateToContactForm 
 }) {
+  const { company: companyDetails, addInquiry } = useData();
+
   if (!isOpen) return null;
 
   const totalUnits = items.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
 
   const handleSendConsolidatedWhatsApp = () => {
     if (items.length === 0) return;
+
+    if (addInquiry) {
+      addInquiry({
+        customerName: 'Consolidated Wholesale Buyer',
+        businessName: 'Cart Procurement Requisition',
+        phone: 'WhatsApp Requisition',
+        quantity: totalUnits,
+        productName: items.map(i => `${i.name} (x${i.quantity})`).join(', '),
+        message: `Consolidated quotation requested for ${totalUnits} units across ${items.length} product lines.`
+      });
+    }
 
     let text = `*Consolidated Wholesale Procurement Inquiry - SHRI METRO PRODUCTS*%0A%0A`;
     text += `Hello Rakesh R Jain, I would like to request factory wholesale quotation for the following items:%0A%0A`;

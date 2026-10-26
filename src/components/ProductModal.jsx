@@ -12,9 +12,10 @@ import {
   Info,
   ExternalLink
 } from 'lucide-react';
-import { companyDetails } from '../data/companyData';
+import { useData } from '../context/DataContext';
 
 export default function ProductModal({ product, onClose, onOpenPDP }) {
+  const { company: companyDetails } = useData();
   if (!product) return null;
 
   const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20bulk%20quotation%20for%20${encodeURIComponent(product.name)}%20(Model%20Code%3A%20${product.modelCode}).`;

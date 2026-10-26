@@ -6,7 +6,7 @@ import {
   ShoppingBag, 
   ChevronRight
 } from 'lucide-react';
-import { companyDetails } from '../data/companyData';
+import { useData } from '../context/DataContext';
 
 export default function Navbar({ 
   quoteListCount = 0,
@@ -15,6 +15,7 @@ export default function Navbar({
   onLogoClick,
   onOpenCatalogueBook
 }) {
+  const { company: companyDetails } = useData();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [

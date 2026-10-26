@@ -18,18 +18,19 @@ import {
   HelpCircle,
   FileText
 } from 'lucide-react';
-import { companyDetails } from '../data/companyData';
+import { useData } from '../context/DataContext';
 
 export default function ProductDetailPage({ 
   product, 
   onBack, 
   onAddToQuoteList 
 }) {
+  const { company: companyDetails } = useData();
   if (!product) return null;
 
   // 1. Color Switcher State
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [activeImage, setActiveImage] = useState(product.colors[0]?.image || product.image);
+  const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || { name: 'Standard', hex: '#9B111E' });
+  const [activeImage, setActiveImage] = useState(product.colors?.[0]?.image || product.image);
 
   // 2. Bulk Quantity Estimator State
   const [quantity, setQuantity] = useState(50);

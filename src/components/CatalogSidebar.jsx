@@ -8,6 +8,8 @@ import {
   Check
 } from 'lucide-react';
 
+import { useData } from '../context/DataContext';
+
 export default function CatalogSidebar({
   searchQuery,
   setSearchQuery,
@@ -22,13 +24,11 @@ export default function CatalogSidebar({
   categoryCounts,
   colorOptions
 }) {
+  const { categories: dynamicCategories } = useData();
+
   const categories = [
     { label: "All Products", value: "All Products" },
-    { label: "Plastic Chairs", value: "Plastic Chairs" },
-    { label: "Center Tables", value: "Center Tables" },
-    { label: "Dining Tables", value: "Dining Tables" },
-    { label: "Stools", value: "Stools" },
-    { label: "Patlas", value: "Patlas" }
+    ...dynamicCategories.map(c => ({ label: c.name, value: c.name }))
   ];
 
   return (

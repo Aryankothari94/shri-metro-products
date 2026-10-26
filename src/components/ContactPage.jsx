@@ -14,9 +14,11 @@ import {
   Send,
   FileCheck2
 } from 'lucide-react';
-import { companyDetails } from '../data/companyData';
+import { useData } from '../context/DataContext';
 
 export default function ContactPage({ prefilledMessage = '' }) {
+  const { company: companyDetails, addInquiry } = useData();
+
   const [formData, setFormData] = useState({
     name: '',
     companyName: '',
@@ -65,6 +67,18 @@ export default function ContactPage({ prefilledMessage = '' }) {
 
     window.open(`https://wa.me/${companyDetails.whatsappNumber}?text=${text}`, '_blank');
     
+    // Automatically log into Admin Inquiries
+    if (addInquiry) {
+      addInquiry({
+        customerName: formData.name,
+        businessName: formData.companyName || 'Wholesale Buyer',
+        phone: formData.phone,
+        quantity: 'Direct Inquiry',
+        productName: formData.city ? `Delivery Hub: ${formData.city}` : 'Product Catalog Inquiry',
+        message: formData.message || 'Direct factory inquiry submitted via contact form.'
+      });
+    }
+
     setSubmissionRef(`SMP-${Math.floor(100000 + Math.random() * 900000)}`);
     setFormSubmitted(true);
   };

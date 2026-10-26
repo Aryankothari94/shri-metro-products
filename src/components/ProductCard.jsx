@@ -8,12 +8,13 @@ import {
   Check, 
   ExternalLink 
 } from 'lucide-react';
-import { companyDetails } from '../data/companyData';
+import { useData } from '../context/DataContext';
 
 export default function ProductCard({ product, onQuickView, onViewDetails }) {
-  const [activeColor, setActiveColor] = useState(product.colors[0] || null);
-  const selectedColorName = activeColor?.name || product.colors[0]?.name || '';
-  const currentImage = activeColor?.image || product.image;
+  const { company: companyDetails } = useData();
+  const [activeColor, setActiveColor] = useState(product?.colors?.[0] || null);
+  const selectedColorName = activeColor?.name || product?.colors?.[0]?.name || '';
+  const currentImage = activeColor?.image || product?.image;
 
   const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColorName)}%20color.`;
 

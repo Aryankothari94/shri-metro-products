@@ -9,8 +9,15 @@ import ContactPage from './components/ContactPage';
 import BulkQuoteDrawer from './components/BulkQuoteDrawer';
 import FloatingInquiryButton from './components/FloatingInquiryButton';
 import Footer from './components/Footer';
+import { useData } from './context/DataContext';
+import { useRouter } from './hooks/useRouter';
+import AdminLayout from './components/admin/AdminLayout';
+import AdminLogin from './components/admin/AdminLogin';
 
 export default function App() {
+  const { isAuthenticated } = useData();
+  const { isAdmin, isLogin, navigate } = useRouter();
+
   const [isCatalogueBookOpen, setIsCatalogueBookOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,6 +27,34 @@ export default function App() {
   const [prefilledInquiryMessage, setPrefilledInquiryMessage] = useState("");
   const [catalogViewMode, setCatalogViewMode] = useState('grid'); // 'grid' | 'table'
 
+  // ROUTE 1: /admin/login
+  if (isLogin) {
+    if (isAuthenticated) {
+      navigate('/admin');
+      return null;
+    }
+    return (
+      <AdminLogin 
+        onLoginSuccess={() => navigate('/admin')} 
+        onGoHome={() => navigate('/')} 
+      />
+    );
+  }
+
+  // ROUTE 2: /admin
+  if (isAdmin) {
+    if (!isAuthenticated) {
+      navigate('/admin/login');
+      return null;
+    }
+    return (
+      <AdminLayout 
+        onGoHome={() => navigate('/')} 
+      />
+    );
+  }
+
+  // ROUTE 3: Public Website
   const handleOpenCatalogueBook = () => {
     setSelectedProductForPDP(null);
     setIsCatalogueBookOpen(true);
@@ -173,10 +208,11 @@ export default function App() {
         </>
       )}
 
-      {/* 7. Minimal Clean Footer */}
+      {/* 7. Minimal Clean Footer with Admin Portal Access */}
       <Footer 
         onSelectCategory={handleSelectCategory} 
         onOpenCatalogueBook={handleOpenCatalogueBook}
+        onNavigateAdmin={() => navigate('/admin')}
       />
 
       {/* 8. Floating Inquiry Cart Button */}

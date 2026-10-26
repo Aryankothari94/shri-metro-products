@@ -11,8 +11,7 @@ import {
   SlidersHorizontal,
   X
 } from 'lucide-react';
-import { productsData } from '../data/productsData';
-import { companyDetails } from '../data/companyData';
+import { useData } from '../context/DataContext';
 import ProductModal from './ProductModal';
 
 export default function FeaturedProducts({ 
@@ -22,6 +21,7 @@ export default function FeaturedProducts({
   setSearchQuery,
   onOpenBulkQuote
 }) {
+  const { activeProducts: productsData, company: companyDetails } = useData();
   const [activeModalProduct, setActiveModalProduct] = useState(null);
   const [activeColorSelection, setActiveColorSelection] = useState({});
 

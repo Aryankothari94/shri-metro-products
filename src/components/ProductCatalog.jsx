@@ -7,7 +7,7 @@ import {
   ChevronDown,
   Filter
 } from 'lucide-react';
-import { productsData } from '../data/productsData';
+import { useData } from '../context/DataContext';
 import ProductCard from './ProductCard';
 import SpecTableView from './SpecTableView';
 import CatalogSidebar from './CatalogSidebar';
@@ -21,6 +21,8 @@ export default function ProductCatalog({
   onSelectProductForPDP,
   externalViewMode = null
 }) {
+  const { activeProducts, categories } = useData();
+
   const [viewMode, setViewMode] = useState(externalViewMode || 'grid'); // 'grid' | 'table'
   const [selectedColor, setSelectedColor] = useState(null);
   const [stackableOnly, setStackableOnly] = useState(false);
@@ -35,11 +37,11 @@ export default function ProductCatalog({
     }
   }, [externalViewMode]);
 
-  // Calculate unique colors
+  // Calculate unique colors from reactive active products
   const colorOptions = useMemo(() => {
     const map = new Map();
-    productsData.forEach(p => {
-      p.colors.forEach(c => {
+    activeProducts.forEach(p => {
+      (p.colors || []).forEach(c => {
         if (!map.has(c.name)) {
           map.set(c.name, { name: c.name, hex: c.hex, count: 1 });
         } else {
@@ -48,33 +50,32 @@ export default function ProductCatalog({
       });
     });
     return Array.from(map.values()).sort((a, b) => b.count - a.count);
-  }, []);
+  }, [activeProducts]);
 
-  // Calculate product counts per category
+  // Calculate product counts per category dynamically
   const categoryCounts = useMemo(() => {
     const counts = {
-      "All Products": productsData.length,
-      "Plastic Chairs": 0,
-      "Center Tables": 0,
-      "Dining Tables": 0,
-      "Stools": 0,
-      "Patlas": 0
+      "All Products": activeProducts.length
     };
 
-    productsData.forEach(p => {
-      if (p.category.includes("Plastic Chairs")) counts["Plastic Chairs"] += 1;
-      if (p.category.includes("Center Tables")) counts["Center Tables"] += 1;
-      if (p.category.includes("Dining Tables")) counts["Dining Tables"] += 1;
-      if (p.category.includes("Stools")) counts["Stools"] += 1;
-      if (p.category.includes("Patlas")) counts["Patlas"] += 1;
+    categories.forEach(c => {
+      counts[c.name] = 0;
+    });
+
+    activeProducts.forEach(p => {
+      if (counts[p.category] !== undefined) {
+        counts[p.category] += 1;
+      } else {
+        counts[p.category] = 1;
+      }
     });
 
     return counts;
-  }, []);
+  }, [activeProducts, categories]);
 
   // Filter products
   const filteredProducts = useMemo(() => {
-    return productsData.filter(product => {
+    return activeProducts.filter(product => {
       if (selectedCategory !== "All Products") {
         if (selectedCategory === "Plastic Chairs") {
           if (!product.category.includes("Plastic Chairs")) return false;
@@ -86,17 +87,17 @@ export default function ProductCatalog({
       if (stackableOnly && !product.isStackable) return false;
 
       if (selectedColor) {
-        const hasColor = product.colors.some(c => c.name.toLowerCase() === selectedColor.toLowerCase());
+        const hasColor = product.colors?.some(c => c.name.toLowerCase() === selectedColor.toLowerCase());
         if (!hasColor) return false;
       }
 
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const matchesName = product.name.toLowerCase().includes(q);
-        const matchesCode = product.modelCode.toLowerCase().includes(q);
-        const matchesCategory = product.category.toLowerCase().includes(q);
-        const matchesMaterial = product.material.toLowerCase().includes(q);
-        const matchesColors = product.colors.some(c => c.name.toLowerCase().includes(q));
+        const matchesName = product.name?.toLowerCase().includes(q);
+        const matchesCode = product.modelCode?.toLowerCase().includes(q);
+        const matchesCategory = product.category?.toLowerCase().includes(q);
+        const matchesMaterial = product.material?.toLowerCase().includes(q);
+        const matchesColors = product.colors?.some(c => c.name.toLowerCase().includes(q));
         if (!matchesName && !matchesCode && !matchesCategory && !matchesMaterial && !matchesColors) {
           return false;
         }
@@ -108,19 +109,19 @@ export default function ProductCatalog({
         return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
       }
       if (sortBy === 'capacity-desc') {
-        const capA = parseInt(a.weightCapacity) || 0;
-        const capB = parseInt(b.weightCapacity) || 0;
+        const capA = parseInt(a.loadCapacityKg || a.weightCapacity) || 0;
+        const capB = parseInt(b.loadCapacityKg || b.weightCapacity) || 0;
         return capB - capA;
       }
       if (sortBy === 'name-asc') {
-        return a.name.localeCompare(b.name);
+        return (a.name || '').localeCompare(b.name || '');
       }
       if (sortBy === 'model-asc') {
-        return a.modelCode.localeCompare(b.modelCode);
+        return (a.modelCode || '').localeCompare(b.modelCode || '');
       }
       return 0;
     });
-  }, [selectedCategory, stackableOnly, selectedColor, searchQuery, sortBy]);
+  }, [activeProducts, selectedCategory, stackableOnly, selectedColor, searchQuery, sortBy]);
 
   const activeFilterCount = useMemo(() => {
     let count = 0;

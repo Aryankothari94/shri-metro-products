@@ -11,10 +11,10 @@ import {
   ExternalLink,
   Clock,
   Send
-} from 'lucide-react';
-import { companyDetails } from '../data/companyData';
+import { useData } from '../context/DataContext';
 
 export default function OwnerContactCard() {
+  const { company: companyDetails } = useData();
   const [copiedGstin, setCopiedGstin] = useState(false);
 
   const handleCopyGstin = () => {

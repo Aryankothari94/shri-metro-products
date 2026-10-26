@@ -6,7 +6,7 @@ export const categoriesData = [
     subcategories: ["Plastic Chairs (Armrest)", "Plastic Chairs (Armless)"],
     tagline: "High-Back & Armless Ergonomic Seating",
     count: "4 Models Available",
-    image: "https://images.unsplash.com/photo-1580481077195-c3a821a58875?auto=format&fit=crop&w=700&q=80",
+    image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=700&q=80",
     description: "Engineered for banquet halls, event rentals, cafes, offices, and lawns with up to 200 kg load tolerance."
   },
   {

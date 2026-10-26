@@ -4,10 +4,8 @@ import {
   MapPin, 
   Phone, 
   MessageCircle, 
-  ShieldCheck, 
   ArrowUp, 
-  Sparkles,
-  ExternalLink
+  ExternalLink 
 } from 'lucide-react';
 import { companyDetails } from '../data/companyData';
 
@@ -34,55 +32,49 @@ export default function Footer({ onSelectCategory }) {
   };
 
   return (
-    <footer className="bg-slate-950 text-slate-300 border-t border-slate-850 pt-16 pb-12 relative">
+    <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 pt-10 pb-8 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Top Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-800">
+        {/* Main Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-slate-800">
           
-          {/* Col 1: Brand Info */}
-          <div className="lg:col-span-5 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-primary to-blue-600 flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-blue-900/30">
+          {/* Brand Info (5 cols) */}
+          <div className="md:col-span-5 space-y-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white font-extrabold text-xs">
                 SM
               </div>
               <div>
-                <h3 className="font-black text-white text-lg tracking-tight leading-none">
+                <span className="font-extrabold text-white text-sm tracking-tight block">
                   {companyDetails.name}
-                </h3>
-                <span className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider">
-                  Moulded Furniture Manufacturer
+                </span>
+                <span className="text-[10px] text-slate-400 uppercase tracking-wider">
+                  Moulded Furniture Mfg • Bangalore
                 </span>
               </div>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              Bangalore's dedicated manufacturer of 100% Virgin Polypropylene plastic chairs, dining tables, coffee tables, stools, and patlas. Engineered for extreme load tolerance and commercial longevity.
+            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
+              Manufacturer of 100% Virgin Polypropylene commercial moulded furniture. Certified load tested for banquets, institutions, and wholesale distribution across Karnataka.
             </p>
 
-            <div className="pt-2 text-xs text-slate-300 space-y-1.5">
-              <p className="flex items-center gap-2">
-                <span className="text-slate-500">Proprietor:</span>
-                <strong className="text-white font-semibold">{companyDetails.proprietor}</strong>
-              </p>
-              <p className="flex items-center gap-2">
-                <span className="text-slate-500">GSTIN:</span>
-                <strong className="font-mono text-amber-400 font-bold tracking-wider">{companyDetails.gstin}</strong>
-              </p>
+            <div className="text-slate-400 text-xs font-mono space-y-0.5 pt-1">
+              <p>Proprietor: <strong className="text-slate-200">{companyDetails.proprietor}</strong></p>
+              <p>GSTIN: <strong className="text-slate-200">{companyDetails.gstin}</strong></p>
             </div>
           </div>
 
-          {/* Col 2: Categories */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-              Product Categories
-            </h4>
-            <ul className="space-y-2 text-xs">
+          {/* Quick Categories (3 cols) */}
+          <div className="md:col-span-3 space-y-2.5">
+            <span className="font-bold text-slate-200 uppercase tracking-wider text-[11px] block">
+              Categories
+            </span>
+            <ul className="space-y-1.5 text-slate-400">
               {footerCategories.map((item, idx) => (
                 <li key={idx}>
                   <button
                     onClick={() => handleCategoryNav(item.value)}
-                    className="text-slate-400 hover:text-white transition-colors cursor-pointer text-left"
+                    className="hover:text-white transition-colors cursor-pointer text-left"
                   >
                     {item.label}
                   </button>
@@ -91,64 +83,42 @@ export default function Footer({ onSelectCategory }) {
             </ul>
           </div>
 
-          {/* Col 3: Works Location & Direct Contact */}
-          <div className="lg:col-span-4 space-y-4">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-              Factory Unit & Works
-            </h4>
-            <div className="flex items-start gap-2.5 text-xs text-slate-300">
-              <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-              <div className="leading-relaxed">
-                <p className="font-medium text-white">{companyDetails.location.siteNo}</p>
-                <p>{companyDetails.location.estate}</p>
-                <p>{companyDetails.location.area}</p>
-                <p>{companyDetails.location.city} - {companyDetails.location.pincode}</p>
-                <a
-                  href={companyDetails.location.googleMapsUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 font-semibold mt-1"
-                >
-                  <span>Google Maps Directions</span>
-                  <ExternalLink className="w-3 h-3" />
+          {/* Works & Contact (4 cols) */}
+          <div className="md:col-span-4 space-y-2.5">
+            <span className="font-bold text-slate-200 uppercase tracking-wider text-[11px] block">
+              Factory Unit & Dispatch
+            </span>
+            <p className="text-slate-400 leading-relaxed">
+              {companyDetails.location.fullAddress}
+            </p>
+
+            <div className="pt-2 space-y-1 text-slate-300">
+              <p>
+                <a href={`tel:${companyDetails.phoneRaw}`} className="hover:text-white transition-colors">
+                  Tel: {companyDetails.phone}
                 </a>
-              </div>
-            </div>
-
-            <div className="pt-2 border-t border-slate-800 space-y-2 text-xs">
-              <a 
-                href={`tel:${companyDetails.phoneRaw}`}
-                className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors"
-              >
-                <Phone className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>Direct Line: {companyDetails.phone}</span>
-              </a>
-
-              <a 
-                href={companyDetails.whatsappLink}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors font-medium"
-              >
-                <MessageCircle className="w-4 h-4 shrink-0" />
-                <span>Factory WhatsApp: +91 9845287888</span>
-              </a>
+              </p>
+              <p>
+                <a href={companyDetails.whatsappLink} target="_blank" rel="noreferrer" className="text-emerald-400 hover:text-emerald-300 transition-colors">
+                  WhatsApp: +91 9845287888
+                </a>
+              </p>
             </div>
           </div>
 
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-slate-500 text-[11px] gap-2">
           <p>© {new Date().getFullYear()} {companyDetails.name}. All rights reserved.</p>
-          <div className="flex items-center gap-6">
-            <span className="text-slate-400">Kumbalgodu Industrial Estate, Bangalore</span>
+          <div className="flex items-center gap-4">
+            <span>Kumbalgodu Industrial Estate, Bangalore</span>
             <button
               onClick={scrollToTop}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 transition-colors text-xs font-semibold"
+              className="hover:text-slate-300 transition-colors flex items-center gap-1 cursor-pointer"
             >
               <span>Back to Top</span>
-              <ArrowUp className="w-3.5 h-3.5" />
+              <ArrowUp className="w-3 h-3" />
             </button>
           </div>
         </div>

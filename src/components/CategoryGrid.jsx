@@ -1,8 +1,8 @@
 import React from 'react';
-import { ArrowUpRight, Layers } from 'lucide-react';
+import { Layers, ArrowRight, Check } from 'lucide-react';
 import { categoriesData } from '../data/categoriesData';
 
-export default function CategoryGrid({ onSelectCategory }) {
+export default function CategoryGrid({ onSelectCategory, selectedCategory }) {
   const handleCategorySelect = (categoryFilter) => {
     onSelectCategory(categoryFilter);
     const catalogElement = document.getElementById('catalog-section');
@@ -12,84 +12,67 @@ export default function CategoryGrid({ onSelectCategory }) {
   };
 
   return (
-    <section className="py-16 sm:py-20 bg-white border-b border-slate-200">
+    <section className="bg-slate-50/60 border-b border-slate-200/80 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-blue-50 text-brand-primary text-xs font-bold tracking-wider uppercase mb-2">
-              <Layers className="w-3.5 h-3.5" />
-              <span>Manufacturing Portfolio</span>
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
-              Explore By Product Category
-            </h2>
-            <p className="text-slate-600 text-sm sm:text-base mt-1.5 max-w-xl">
-              Precision moulded commercial & residential plastic furniture, tested for heavy continuous daily load.
-            </p>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+              Product Categories
+            </span>
+            <span className="text-xs text-slate-400">• Click to Filter</span>
           </div>
 
           <button
             onClick={() => handleCategorySelect("All Products")}
-            className="text-xs sm:text-sm font-bold text-brand-primary hover:text-blue-700 flex items-center gap-1 self-start md:self-auto group cursor-pointer"
+            className="text-xs font-bold text-brand-primary hover:text-blue-700 transition-colors cursor-pointer"
           >
-            <span>View All Products (10)</span>
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            Show All 10 Models
           </button>
         </div>
 
-        {/* Categories Grid (5 Cards) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-          {categoriesData.map((cat) => (
-            <div
-              key={cat.id}
-              onClick={() => handleCategorySelect(cat.filterValue)}
-              className="group relative bg-brand-bg rounded-2xl overflow-hidden border border-slate-200/90 shadow-subtle hover:shadow-card hover:border-brand-primary/40 transition-all duration-300 flex flex-col cursor-pointer"
-            >
-              {/* Card Image */}
-              <div className="relative h-44 overflow-hidden bg-slate-200">
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
-                
-                {/* Count Badge */}
-                <span className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-md text-[11px] font-bold text-slate-800 shadow-sm">
-                  {cat.count}
-                </span>
+        {/* 5 Minimal Category Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {categoriesData.map((cat) => {
+            const isSelected = selectedCategory === cat.filterValue;
 
-                {/* Category title overlay */}
-                <div className="absolute bottom-3 left-3 right-3 text-white">
-                  <h3 className="font-extrabold text-base leading-tight group-hover:text-amber-400 transition-colors">
-                    {cat.name}
-                  </h3>
-                </div>
-              </div>
-
-              {/* Card Body */}
-              <div className="p-4 flex-1 flex flex-col justify-between">
+            return (
+              <div
+                key={cat.id}
+                onClick={() => handleCategorySelect(cat.filterValue)}
+                className={`group rounded-xl p-3.5 border transition-all duration-200 cursor-pointer flex flex-col justify-between ${
+                  isSelected
+                    ? 'bg-white border-brand-primary ring-2 ring-brand-primary/10 shadow-xs'
+                    : 'bg-white hover:bg-slate-50 border-slate-200/80 hover:border-slate-300'
+                }`}
+              >
                 <div>
-                  <p className="text-xs font-semibold text-brand-primary mb-1">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] font-mono text-slate-400 font-semibold">
+                      {cat.count}
+                    </span>
+                    {isSelected && (
+                      <span className="w-4 h-4 rounded-full bg-brand-primary text-white flex items-center justify-center">
+                        <Check className="w-2.5 h-2.5" />
+                      </span>
+                    )}
+                  </div>
+                  <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-brand-primary transition-colors leading-tight">
+                    {cat.name}
+                  </h4>
+                  <p className="text-[11px] text-slate-500 mt-1 line-clamp-1">
                     {cat.tagline}
                   </p>
-                  <p className="text-[12px] text-slate-500 line-clamp-2 leading-relaxed">
-                    {cat.description}
-                  </p>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-200/70 flex items-center justify-between text-xs font-bold text-slate-700 group-hover:text-brand-primary transition-colors">
-                  <span>Explore Models</span>
-                  <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-slate-700 group-hover:bg-brand-primary group-hover:text-white transition-all shadow-xs">
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
+                <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-brand-primary">
+                  <span>Filter View</span>
+                  <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       </div>

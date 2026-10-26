@@ -17,7 +17,7 @@ export const productsData = [
     modelCode: "SMP-CHR-901A",
     tagline: "Heavy-duty ergonomic banquet chair with reinforced ribbing",
     description: "Ergonomically engineered premium arm chair with rattan weave textured backrest and reinforced arm supports. Built for heavy-duty banquet, veranda, restaurant, and office visitor seating.",
-    image: "https://images.unsplash.com/photo-1580481077195-c3a821a58875?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80",
     dimensions: "L: 580mm x W: 560mm x H: 880mm",
     netWeight: "2.95 kg ± 2%",
     loadCapacityKg: "200 kg",
@@ -33,7 +33,7 @@ export const productsData = [
       { 
         name: "Teak Wood", 
         hex: "#5C3A21", 
-        image: "https://images.unsplash.com/photo-1580481077195-c3a821a58875?auto=format&fit=crop&w=800&q=80" 
+        image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80" 
       },
       { 
         name: "Marble Beige", 
@@ -88,7 +88,7 @@ export const productsData = [
       { 
         name: "Terracotta Red", 
         hex: "#9E3A24", 
-        image: "https://images.unsplash.com/photo-1580481077195-c3a821a58875?auto=format&fit=crop&w=800&q=80" 
+        image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80" 
       }
     ],
     isFeatured: false,
@@ -133,7 +133,7 @@ export const productsData = [
       { 
         name: "Emerald Green", 
         hex: "#065F46", 
-        image: "https://images.unsplash.com/photo-1580481077195-c3a821a58875?auto=format&fit=crop&w=800&q=80" 
+        image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80" 
       }
     ],
     isFeatured: true,
@@ -173,7 +173,7 @@ export const productsData = [
       { 
         name: "Granite Red", 
         hex: "#881337", 
-        image: "https://images.unsplash.com/photo-1580481077195-c3a821a58875?auto=format&fit=crop&w=800&q=80" 
+        image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80" 
       }
     ],
     isFeatured: false,
@@ -333,7 +333,7 @@ export const productsData = [
       { 
         name: "Teak Brown", 
         hex: "#4A2E18", 
-        image: "https://images.unsplash.com/photo-1580481077195-c3a821a58875?auto=format&fit=crop&w=800&q=80" 
+        image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80" 
       },
       { 
         name: "Forest Green", 
@@ -378,7 +378,7 @@ export const productsData = [
       { 
         name: "Pastel Pink", 
         hex: "#F472B6", 
-        image: "https://images.unsplash.com/photo-1580481077195-c3a821a58875?auto=format&fit=crop&w=800&q=80" 
+        image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80" 
       },
       { 
         name: "Ivory White", 

@@ -5,7 +5,6 @@ import CategoryGrid from './components/CategoryGrid';
 import ProductCatalog from './components/ProductCatalog';
 import ProductDetailPage from './components/ProductDetailPage';
 import WhyChooseUs from './components/WhyChooseUs';
-import OwnerContactCard from './components/OwnerContactCard';
 import ContactPage from './components/ContactPage';
 import BulkQuoteModal from './components/BulkQuoteModal';
 import BulkQuoteDrawer from './components/BulkQuoteDrawer';
@@ -20,9 +19,20 @@ export default function App() {
   const [quoteList, setQuoteList] = useState([]);
   const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
   const [prefilledInquiryMessage, setPrefilledInquiryMessage] = useState("");
+  const [catalogViewMode, setCatalogViewMode] = useState('grid'); // 'grid' | 'table'
 
   const handleExploreCatalog = () => {
     setSelectedProductForPDP(null);
+    setCatalogViewMode('grid');
+    const catalogElement = document.getElementById('catalog-section');
+    if (catalogElement) {
+      catalogElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleSwitchToTable = () => {
+    setSelectedProductForPDP(null);
+    setCatalogViewMode('table');
     const catalogElement = document.getElementById('catalog-section');
     if (catalogElement) {
       catalogElement.scrollIntoView({ behavior: 'smooth' });
@@ -98,8 +108,8 @@ export default function App() {
   const totalQuoteUnits = quoteList.reduce((acc, curr) => acc + (Number(curr.quantity) || 0), 0);
 
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-dark flex flex-col font-sans selection:bg-amber-400 selection:text-slate-950">
-      {/* 1. Header & Navigation */}
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-slate-900 selection:text-white antialiased">
+      {/* 1. Sleek Dashboard Header Bar */}
       <Navbar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -109,9 +119,10 @@ export default function App() {
         onOpenQuoteDrawer={() => setIsQuoteDrawerOpen(true)}
         onNavigateContact={handleNavigateContact}
         onLogoClick={handleLogoClick}
+        onSwitchView={setCatalogViewMode}
       />
 
-      {/* Conditional: Either show full Product Detail Page (PDP) OR the Homepage / PLP */}
+      {/* Conditional: Either show full Product Detail Page (PDP) OR the Clean Dashboard Views */}
       {selectedProductForPDP ? (
         <ProductDetailPage
           product={selectedProductForPDP}
@@ -120,13 +131,19 @@ export default function App() {
         />
       ) : (
         <>
-          {/* 2. Hero Section */}
-          <Hero onExploreCatalog={handleExploreCatalog} />
+          {/* 2. Executive Dashboard Overview & KPIs */}
+          <Hero 
+            onExploreCatalog={handleExploreCatalog}
+            onSwitchToTable={handleSwitchToTable}
+          />
 
-          {/* 3. Category Grid Showcase */}
-          <CategoryGrid onSelectCategory={handleSelectCategory} />
+          {/* 3. Compact Category Switcher Bar */}
+          <CategoryGrid 
+            onSelectCategory={handleSelectCategory}
+            selectedCategory={selectedCategory}
+          />
 
-          {/* 4. Dynamic Product Catalogue (PLP) with Dual Views (Grid vs. Spec Table) & Sidebar Filters */}
+          {/* 4. Product Catalog Workbench (PLP) with Clean Dual Views & Filters */}
           <ProductCatalog
             selectedCategory={selectedCategory}
             onSelectCategory={handleSelectCategory}
@@ -134,30 +151,28 @@ export default function App() {
             setSearchQuery={setSearchQuery}
             onOpenBulkQuote={() => setIsBulkQuoteOpen(true)}
             onSelectProductForPDP={handleOpenPDP}
+            externalViewMode={catalogViewMode}
           />
 
-          {/* 5. "Why Choose Us" Quality Badges */}
+          {/* 5. Clean Quality & Technical Standards Benchmark */}
           <WhyChooseUs />
 
-          {/* 6. Direct Owner Contact Card */}
-          <OwnerContactCard />
-
-          {/* 7. Comprehensive Contact & Factory Location Page with Map & Interactive Form */}
+          {/* 6. Comprehensive Factory Location, Route Map & Interactive Inquiry Form */}
           <ContactPage prefilledMessage={prefilledInquiryMessage} />
         </>
       )}
 
-      {/* 8. Footer */}
+      {/* 7. Minimal Clean Footer */}
       <Footer onSelectCategory={handleSelectCategory} />
 
-      {/* 9. Floating Inquiry Cart Button */}
+      {/* 8. Floating Inquiry Cart Button */}
       <FloatingInquiryButton
         itemCount={quoteList.length}
         totalUnits={totalQuoteUnits}
         onClick={() => setIsQuoteDrawerOpen(true)}
       />
 
-      {/* 10. Modals & Drawers */}
+      {/* 9. Modals & Drawers */}
       <BulkQuoteModal
         isOpen={isBulkQuoteOpen}
         onClose={() => setIsBulkQuoteOpen(false)}

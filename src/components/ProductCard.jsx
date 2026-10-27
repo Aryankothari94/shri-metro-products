@@ -24,14 +24,17 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
       {/* Product Image Frame (Clean Neutral Canvas) */}
       <div 
         onClick={() => (onViewDetails ? onViewDetails(product) : onQuickView(product))}
-        className="relative h-52 bg-slate-50/70 p-4 flex items-center justify-center cursor-pointer overflow-hidden border-b border-slate-100 group-hover:bg-red-50/10 transition-colors"
+        className="relative h-52 bg-[#F8FAFC] p-3 sm:p-4 flex items-center justify-center cursor-pointer overflow-hidden border-b border-slate-100 group-hover:bg-slate-100/70 transition-colors"
       >
         <img
-          src={currentImage}
+          src={currentImage || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'}
           alt={product.name}
           key={currentImage}
-          className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-all duration-300"
+          className="w-full h-full object-contain group-hover:scale-105 transition-all duration-300 drop-shadow-2xs"
           loading="lazy"
+          onError={(e) => {
+            e.currentTarget.src = 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80';
+          }}
         />
 
         {/* Minimal Model Pill Top Left */}
@@ -81,9 +84,11 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
           </div>
 
           {/* Color Dots */}
-          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
-            <span className="text-slate-400 text-[10px]">Finish: {selectedColorName}</span>
-            <div className="flex items-center gap-1.5">
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2 text-[11px]">
+            <span className="text-slate-400 text-[10px] truncate max-w-[110px] sm:max-w-[130px]">
+              Finish: {selectedColorName}
+            </span>
+            <div className="flex items-center gap-1.5 flex-wrap justify-end">
               {product.colors.map((c, idx) => {
                 const isSelected = selectedColorName === c.name;
                 return (

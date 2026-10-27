@@ -113,15 +113,18 @@ export default function ProductDetailPage({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
             
             {/* Left Column: Interactive Product Visuals & Color Previews (5 Cols) */}
-            <div className="lg:col-span-5 p-6 sm:p-8 bg-slate-50/70 border-b lg:border-b-0 lg:border-r border-slate-200 flex flex-col justify-between">
+            <div className="lg:col-span-5 p-4 sm:p-8 bg-slate-50/70 border-b lg:border-b-0 lg:border-r border-slate-200 flex flex-col justify-between">
               
               <div>
                 {/* Main Image Box */}
                 <div className="relative rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm aspect-square max-h-[480px] w-full flex items-center justify-center">
                   <img
-                    src={activeImage}
+                    src={activeImage || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'}
                     alt={`${product.name} in ${selectedColor?.name}`}
-                    className="w-full h-full object-cover transition-all duration-500 ease-out"
+                    className="w-full h-full object-contain p-4 transition-all duration-500 ease-out drop-shadow-sm"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80';
+                    }}
                   />
 
                   {/* Badges on image */}
@@ -206,7 +209,7 @@ export default function ProductDetailPage({
             </div>
 
             {/* Right Column: Title, Interactive Color Switcher, Specs Table & WhatsApp Generator (7 Cols) */}
-            <div className="lg:col-span-7 p-6 sm:p-10 space-y-7">
+            <div className="lg:col-span-7 p-4 sm:p-8 lg:p-10 space-y-6 sm:space-y-7">
               
               {/* Product Header */}
               <div>
@@ -289,77 +292,91 @@ export default function ProductDetailPage({
                       
                       {/* Dimensions (L x W x H) */}
                       <tr className="hover:bg-slate-50/80 transition-colors">
-                        <td className="py-2.5 px-4 font-semibold text-slate-500 w-2/5 flex items-center gap-1.5">
-                          <Maximize2 className="w-3.5 h-3.5 text-slate-400" />
-                          <span>Dimensions (L × W × H)</span>
+                        <td className="py-2.5 px-3 sm:px-4 font-semibold text-slate-500 w-5/12 sm:w-2/5">
+                          <div className="flex items-center gap-1.5">
+                            <Maximize2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <span>Dimensions (L × W × H)</span>
+                          </div>
                         </td>
-                        <td className="py-2.5 px-4 font-mono font-bold text-slate-800">
+                        <td className="py-2.5 px-3 sm:px-4 font-mono font-bold text-slate-800">
                           {product.dimensions}
                         </td>
                       </tr>
 
                       {/* Net Weight */}
                       <tr className="hover:bg-slate-50/80 transition-colors">
-                        <td className="py-2.5 px-4 font-semibold text-slate-500 flex items-center gap-1.5">
-                          <Weight className="w-3.5 h-3.5 text-slate-400" />
-                          <span>Net Weight</span>
+                        <td className="py-2.5 px-3 sm:px-4 font-semibold text-slate-500">
+                          <div className="flex items-center gap-1.5">
+                            <Weight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <span>Net Weight</span>
+                          </div>
                         </td>
-                        <td className="py-2.5 px-4 font-bold text-slate-800">
+                        <td className="py-2.5 px-3 sm:px-4 font-bold text-slate-800">
                           {product.netWeight || "2.85 kg ± 2%"}
                         </td>
                       </tr>
 
                       {/* Load Capacity (kg) */}
                       <tr className="hover:bg-slate-50/80 transition-colors bg-amber-50/30">
-                        <td className="py-2.5 px-4 font-semibold text-amber-900 flex items-center gap-1.5">
-                          <Weight className="w-3.5 h-3.5 text-amber-600" />
-                          <span>Load Capacity (kg)</span>
+                        <td className="py-2.5 px-3 sm:px-4 font-semibold text-amber-900">
+                          <div className="flex items-center gap-1.5">
+                            <Weight className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                            <span>Load Capacity (kg)</span>
+                          </div>
                         </td>
-                        <td className="py-2.5 px-4 font-black text-amber-700 text-sm">
+                        <td className="py-2.5 px-3 sm:px-4 font-black text-amber-700 text-sm">
                           {product.loadCapacityKg || product.weightCapacity}
                         </td>
                       </tr>
 
                       {/* Material Finish */}
                       <tr className="hover:bg-slate-50/80 transition-colors">
-                        <td className="py-2.5 px-4 font-semibold text-slate-500 flex items-center gap-1.5">
-                          <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
-                          <span>Material Finish</span>
+                        <td className="py-2.5 px-3 sm:px-4 font-semibold text-slate-500">
+                          <div className="flex items-center gap-1.5">
+                            <ShieldCheck className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <span>Material Finish</span>
+                          </div>
                         </td>
-                        <td className="py-2.5 px-4 text-slate-700 font-medium">
+                        <td className="py-2.5 px-3 sm:px-4 text-slate-700 font-medium">
                           {product.materialFinish || "Matte & High Gloss UV Virgin Polypropylene"}
                         </td>
                       </tr>
 
                       {/* Stackability Limit */}
                       <tr className="hover:bg-slate-50/80 transition-colors">
-                        <td className="py-2.5 px-4 font-semibold text-slate-500 flex items-center gap-1.5">
-                          <Layers className="w-3.5 h-3.5 text-slate-400" />
-                          <span>Stackability Limit</span>
+                        <td className="py-2.5 px-3 sm:px-4 font-semibold text-slate-500">
+                          <div className="flex items-center gap-1.5">
+                            <Layers className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <span>Stackability Limit</span>
+                          </div>
                         </td>
-                        <td className={`py-2.5 px-4 font-bold ${product.isStackable ? 'text-emerald-700' : 'text-slate-600'}`}>
+                        <td className={`py-2.5 px-3 sm:px-4 font-bold ${product.isStackable ? 'text-emerald-700' : 'text-slate-600'}`}>
                           {product.stackabilityLimit || product.stackingLimit}
                         </td>
                       </tr>
 
                       {/* Suitable Environments (Indoor/Outdoor) */}
                       <tr className="hover:bg-slate-50/80 transition-colors">
-                        <td className="py-2.5 px-4 font-semibold text-slate-500 flex items-center gap-1.5">
-                          <SunMedium className="w-3.5 h-3.5 text-slate-400" />
-                          <span>Suitable Environments</span>
+                        <td className="py-2.5 px-3 sm:px-4 font-semibold text-slate-500">
+                          <div className="flex items-center gap-1.5">
+                            <SunMedium className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <span>Suitable Environments</span>
+                          </div>
                         </td>
-                        <td className="py-2.5 px-4 text-slate-700 font-medium">
+                        <td className="py-2.5 px-3 sm:px-4 text-slate-700 font-medium">
                           {product.suitableEnvironments || "Indoor / Outdoor / Banquets / Verandas"}
                         </td>
                       </tr>
 
                       {/* Warranty */}
                       <tr className="hover:bg-slate-50/80 transition-colors">
-                        <td className="py-2.5 px-4 font-semibold text-slate-500 flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-slate-400" />
-                          <span>Commercial Warranty</span>
+                        <td className="py-2.5 px-3 sm:px-4 font-semibold text-slate-500">
+                          <div className="flex items-center gap-1.5">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <span>Commercial Warranty</span>
+                          </div>
                         </td>
-                        <td className="py-2.5 px-4 text-slate-800 font-semibold">
+                        <td className="py-2.5 px-3 sm:px-4 text-slate-800 font-semibold">
                           {product.warranty}
                         </td>
                       </tr>
@@ -370,7 +387,7 @@ export default function ProductDetailPage({
               </div>
 
               {/* 3. BULK QUANTITY ESTIMATOR & WHATSAPP GENERATOR (Clean Dashboard Card) */}
-              <div className="bg-slate-50 rounded-2xl p-5 sm:p-6 text-slate-900 space-y-4 border border-slate-200/90 shadow-2xs">
+              <div className="bg-slate-50 rounded-2xl p-4 sm:p-6 text-slate-900 space-y-4 border border-slate-200/90 shadow-2xs">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
                   <div>
                     <span className="text-slate-400 font-bold text-[10px] uppercase tracking-wider block">
@@ -387,11 +404,11 @@ export default function ProductDetailPage({
 
                 {/* Quantity Input & Preset Chips */}
                 <div className="space-y-3">
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                     <label className="text-xs text-slate-600 font-semibold shrink-0">
                       Required Quantity:
                     </label>
-                    <div className="relative w-36">
+                    <div className="relative w-32 sm:w-36">
                       <input
                         type="number"
                         min="10"
@@ -406,7 +423,7 @@ export default function ProductDetailPage({
                     </div>
 
                     {/* Quantity Tier Tag */}
-                    <div className="text-xs text-slate-600 font-medium hidden sm:flex items-center gap-1">
+                    <div className="text-xs text-slate-600 font-medium flex items-center gap-1">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                       <span>
                         {quantity >= 500 ? "Container Slab" : quantity >= 100 ? "Wholesale Slab" : "Bulk Batch"}

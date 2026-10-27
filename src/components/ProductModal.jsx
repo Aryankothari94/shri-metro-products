@@ -21,7 +21,7 @@ export default function ProductModal({ product, onClose, onOpenPDP }) {
   const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20bulk%20quotation%20for%20${encodeURIComponent(product.name)}%20(Model%20Code%3A%20${product.modelCode}).`;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn">
       {/* Modal Card */}
       <div 
         className="relative bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200 transform transition-all"
@@ -30,32 +30,35 @@ export default function ProductModal({ product, onClose, onOpenPDP }) {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center transition-colors shadow-md"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center transition-colors shadow-md cursor-pointer"
           aria-label="Close modal"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Left Column: Image & Badges */}
-          <div className="relative bg-slate-100 min-h-[280px] md:min-h-full overflow-hidden flex items-center justify-center">
+          <div className="relative bg-slate-100 min-h-[240px] sm:min-h-[280px] md:min-h-full overflow-hidden flex items-center justify-center">
             <img
-              src={product.image}
+              src={product.image || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'}
               alt={product.name}
-              className="w-full h-full object-cover max-h-[380px] md:max-h-full"
+              className="w-full h-full object-contain p-4 max-h-[300px] sm:max-h-[380px] md:max-h-full"
+              onError={(e) => {
+                e.currentTarget.src = 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80';
+              }}
             />
             {product.isFeatured && (
-              <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-red-600 text-white text-xs font-bold shadow-md flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5" /> Featured Model
+              <span className="absolute top-3 left-3 sm:top-4 sm:left-4 px-2.5 py-1 rounded-full bg-red-600 text-white text-[11px] font-bold shadow-md flex items-center gap-1">
+                <Sparkles className="w-3 h-3" /> Featured Model
               </span>
             )}
-            <div className="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur-sm text-white px-3 py-1 rounded-md text-xs font-mono">
+            <div className="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-mono">
               Model: {product.modelCode}
             </div>
           </div>
 
           {/* Right Column: Specifications & Actions */}
-          <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6">
+          <div className="p-4 sm:p-6 md:p-8 flex flex-col justify-between space-y-4 sm:space-y-6">
             <div>
               {/* Category */}
               <span className="text-xs font-bold uppercase tracking-wider text-red-600">

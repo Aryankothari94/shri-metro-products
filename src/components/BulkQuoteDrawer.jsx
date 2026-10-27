@@ -78,7 +78,7 @@ export default function BulkQuoteDrawer({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Drawer Header */}
-        <div className="p-5 sm:p-6 bg-gradient-to-r from-red-600 to-red-700 text-white flex items-center justify-between shadow-xs">
+        <div className="p-4 sm:p-6 bg-gradient-to-r from-red-600 to-red-700 text-white flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center font-bold">
               <ShoppingBag className="w-5 h-5" />
@@ -197,7 +197,7 @@ export default function BulkQuoteDrawer({
 
         {/* Drawer Footer & Consolidated Wholesale Inquiry */}
         {items.length > 0 && (
-          <div className="p-5 sm:p-6 bg-slate-50 border-t border-slate-200 space-y-3">
+          <div className="p-4 sm:p-6 bg-slate-50 border-t border-slate-200 space-y-3">
             <div className="flex items-center justify-between text-xs">
               <span className="text-slate-600 font-medium">Total Bulk Requisition:</span>
               <strong className="text-sm font-black text-slate-900 font-mono">

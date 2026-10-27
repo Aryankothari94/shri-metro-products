@@ -1,59 +1,96 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { productsData as defaultProducts } from '../data/productsData';
 import { companyDetails as defaultCompany } from '../data/companyData';
+import { persistData, retrieveIndexedDBData } from '../utils/storageHelper';
 
-// Storage keys
+// Storage keys - versioned to v2 for immediate fresh catalog activation
 const STORAGE_KEYS = {
-  PRODUCTS: 'smp_admin_products_v1',
-  CATEGORIES: 'smp_admin_categories_v1',
+  PRODUCTS: 'smp_admin_products_v2',
+  CATEGORIES: 'smp_admin_categories_v2',
   COMPANY: 'smp_admin_company_v1',
   INQUIRIES: 'smp_admin_inquiries_v1',
   AUTH: 'smp_admin_auth_v1'
 };
 
-// Initial default categories
+// Cleanup old v1 keys if present
+try {
+  if (typeof localStorage !== 'undefined') {
+    localStorage.removeItem('smp_admin_products_v1');
+    localStorage.removeItem('smp_admin_categories_v1');
+  }
+} catch {}
+
+// Official categories extracted directly from the Shri Metro Products Catalogue PDF
 const defaultCategories = [
   {
-    id: 'cat-chairs-arm',
-    name: 'Plastic Chairs (Armrest)',
-    subcategories: ['Banquet Armchair', 'Dining Armchair', 'Visitor Armchair'],
-    description: 'Heavy-duty armrest chairs with reinforced lumbar and gas-assist moulding.',
-    bannerImage: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'
+    id: 'cat-monobloc',
+    name: 'Monobloc Chairs',
+    subcategories: ['Armchair', 'Banquet Armchair', 'Tub Chair', 'Cane Chair'],
+    description: 'Heavy-duty single-piece monobloc armchairs with 200 kg load capacity and gas-assist moulding.',
+    bannerImage: '/products/alexa.jpeg'
   },
   {
-    id: 'cat-chairs-armless',
-    name: 'Plastic Chairs (Armless)',
-    subcategories: ['Dining Chair', 'Tent House Chair', 'Classroom Chair'],
-    description: 'Space-efficient stackable armless chairs engineered for high-density seating.',
-    bannerImage: 'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=800&q=80'
+    id: 'cat-armless',
+    name: 'Armless Chairs',
+    subcategories: ['Dining Chair', 'Tent House Chair', 'Wave Slat Chair'],
+    description: 'Space-efficient stackable armless chairs engineered for high-density banquet and event seating.',
+    bannerImage: '/products/platina.jpeg'
   },
   {
-    id: 'cat-center-tables',
-    name: 'Center Tables',
-    subcategories: ['Coffee Table', 'Lounge Table', 'Tea Table'],
-    description: 'Modern injection-moulded center tables with utility bottom shelves.',
-    bannerImage: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=800&q=80'
+    id: 'cat-cafeteria',
+    name: 'Cafeteria Chairs',
+    subcategories: ['Designer Tub Chair', 'Bistro Chair', 'Web Mesh Chair'],
+    description: 'Modern geometric cutout cafeteria chairs for contemporary food courts, bistros, and corporate pantries.',
+    bannerImage: '/products/crystal.jpeg'
+  },
+  {
+    id: 'cat-relax',
+    name: 'Relax Chairs',
+    subcategories: ['Lounge Armchair', 'Reclined High-Back Chair'],
+    description: 'Ergonomic deep-seat low lounge armchairs with wide arms for verandas, gardens, and resort patios.',
+    bannerImage: '/products/easy.jpeg'
+  },
+  {
+    id: 'cat-banquet',
+    name: 'Banquet Chairs',
+    subcategories: ['Royal Chiavari Chair', 'Fretwork Chair', 'Medallion Chair', 'Spindle Chair'],
+    description: 'Grand ceremonial banquet chairs with faux-wood turned detailing and cane mesh for royal wedding galas.',
+    bannerImage: '/products/bahubali.jpeg'
+  },
+  {
+    id: 'cat-baby',
+    name: 'Baby Chairs',
+    subcategories: ['Toddler Armchair', 'Teddy High-Back Chair', 'Panda Silhouette Chair'],
+    description: 'Safe, rounded, non-toxic molded chairs with cheerful animal silhouettes for preschools and playrooms.',
+    bannerImage: '/products/panda.jpeg'
   },
   {
     id: 'cat-dining-tables',
     name: 'Dining Tables',
-    subcategories: ['6-Seater Rectangular', '4-Seater Square', 'Banquet Buffet Table'],
-    description: 'Sturdy plastic moulded dining tables with reinforced under-structure.',
-    bannerImage: 'https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?auto=format&fit=crop&w=800&q=80'
+    subcategories: ['6-Seater Oval Table', 'IML Printed Top Table', 'Round Pedestal Table'],
+    description: 'Heavy-duty 4-seater and 6-seater plastic moulded dining tables with reinforced under-structure.',
+    bannerImage: '/products/party-table-print.jpeg'
+  },
+  {
+    id: 'cat-center-tables',
+    name: 'Center Tables',
+    subcategories: ['Coffee Table', 'Two-Tier Teapoy', 'Glass-Effect Printed Table', 'Wheel Trolley'],
+    description: 'Modern injection-moulded living room center tables and teapoys with lower magazine shelves and wheels.',
+    bannerImage: '/products/teapoy-print.jpeg'
   },
   {
     id: 'cat-stools',
     name: 'Stools',
-    subcategories: ['High Stool', 'Kitchen Stool', 'Industrial Round Stool'],
-    description: 'Compact, high load-bearing stools with anti-skid ribbed feet.',
-    bannerImage: 'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=800&q=80'
+    subcategories: ['Dabangg Counter Stool', 'Magic High Stool', 'Nawab Woven Stool', 'Step Stool', 'Tango Saddle Stool'],
+    description: 'Compact and high-elevation utility stools with anti-skid ribbed feet and heavy load bearing.',
+    bannerImage: '/products/step-stool.jpeg'
   },
   {
-    id: 'cat-patlas',
-    name: 'Patlas',
-    subcategories: ['Bathroom Patla', 'Low Utility Sitting Patla', 'Commercial Floor Patla'],
-    description: 'Heavy virgin polymer utility low stools with anti-skid rubber bushings.',
-    bannerImage: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'
+    id: 'cat-patla',
+    name: 'Patla',
+    subcategories: ['Anchor Round Patla', 'Captain Rectangular Patla'],
+    description: 'Heavy-gauge virgin polymer utility low sitting stools with anti-skid rubber bushings for domestic use.',
+    bannerImage: '/products/anchor.jpeg'
   }
 ];
 
@@ -171,37 +208,105 @@ export function DataProvider({ children }) {
     }
   });
 
-  // Sync state to localStorage on changes
+  // Initial asynchronous sync from IndexedDB (in case localStorage was cleared or needed backup)
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-    } catch (e) {
-      console.error('Failed to save products to localStorage', e);
+    let isMounted = true;
+    async function hydrateFromIndexedDB() {
+      try {
+        const idbProducts = await retrieveIndexedDBData(STORAGE_KEYS.PRODUCTS);
+        if (isMounted && Array.isArray(idbProducts) && idbProducts.length > 0) {
+          setProducts(idbProducts);
+        }
+
+        const idbCategories = await retrieveIndexedDBData(STORAGE_KEYS.CATEGORIES);
+        if (isMounted && Array.isArray(idbCategories) && idbCategories.length > 0) {
+          setCategories(idbCategories);
+        }
+
+        const idbCompany = await retrieveIndexedDBData(STORAGE_KEYS.COMPANY);
+        if (isMounted && idbCompany && typeof idbCompany === 'object') {
+          setCompany(idbCompany);
+        }
+
+        const idbInquiries = await retrieveIndexedDBData(STORAGE_KEYS.INQUIRIES);
+        if (isMounted && Array.isArray(idbInquiries) && idbInquiries.length > 0) {
+          setInquiries(idbInquiries);
+        }
+      } catch (err) {
+        console.warn('IndexedDB initial sync completed with notice', err);
+      }
     }
+    hydrateFromIndexedDB();
+    return () => { isMounted = false; };
+  }, []);
+
+  // Listen to multi-window storage events from other tabs/windows so website updates in real-time
+  useEffect(() => {
+    // 1. Native storage event (only fires in OTHER tabs/windows when localStorage changes)
+    const handleStorageUpdate = (e) => {
+      if (!e.newValue) return;
+      try {
+        const parsed = JSON.parse(e.newValue);
+        if (e.key === STORAGE_KEYS.PRODUCTS && Array.isArray(parsed)) {
+          setProducts(parsed);
+        } else if (e.key === STORAGE_KEYS.CATEGORIES && Array.isArray(parsed)) {
+          setCategories(parsed);
+        } else if (e.key === STORAGE_KEYS.COMPANY && typeof parsed === 'object') {
+          setCompany(parsed);
+        } else if (e.key === STORAGE_KEYS.INQUIRIES && Array.isArray(parsed)) {
+          setInquiries(parsed);
+        }
+      } catch {}
+    };
+
+    window.addEventListener('storage', handleStorageUpdate);
+
+    // 2. BroadcastChannel cross-tab listener (only fires in OTHER tabs/windows)
+    let channel = null;
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        channel = new BroadcastChannel('smp_cross_tab_sync');
+        channel.onmessage = (event) => {
+          const { key, data } = event.data || {};
+          if (!data) return;
+          if (key === STORAGE_KEYS.PRODUCTS && Array.isArray(data)) {
+            setProducts(data);
+          } else if (key === STORAGE_KEYS.CATEGORIES && Array.isArray(data)) {
+            setCategories(data);
+          } else if (key === STORAGE_KEYS.COMPANY && typeof data === 'object') {
+            setCompany(data);
+          } else if (key === STORAGE_KEYS.INQUIRIES && Array.isArray(data)) {
+            setInquiries(data);
+          }
+        };
+      }
+    } catch {}
+
+    return () => {
+      window.removeEventListener('storage', handleStorageUpdate);
+      if (channel) {
+        try {
+          channel.close();
+        } catch {}
+      }
+    };
+  }, []);
+
+  // Sync state permanently to localStorage and IndexedDB only when data actually changes
+  useEffect(() => {
+    persistData(STORAGE_KEYS.PRODUCTS, products);
   }, [products]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories));
-    } catch (e) {
-      console.error('Failed to save categories to localStorage', e);
-    }
+    persistData(STORAGE_KEYS.CATEGORIES, categories);
   }, [categories]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.COMPANY, JSON.stringify(company));
-    } catch (e) {
-      console.error('Failed to save company details to localStorage', e);
-    }
+    persistData(STORAGE_KEYS.COMPANY, company);
   }, [company]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(inquiries));
-    } catch (e) {
-      console.error('Failed to save inquiries to localStorage', e);
-    }
+    persistData(STORAGE_KEYS.INQUIRIES, inquiries);
   }, [inquiries]);
 
   // Auth methods

@@ -89,15 +89,15 @@ export default function AdminProducts() {
     <div className="space-y-6 animate-fadeIn font-sans">
       
       {/* Action Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-[#E5E7EB]">
         <div>
-          <h2 className="text-xl font-black text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl font-extrabold text-[#111827] tracking-tight flex items-center gap-2">
             <span>Product Catalog Inventory</span>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-amber-400 font-mono border border-slate-700">
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-red-50 text-[#A30D20] font-semibold border border-red-200/80">
               {products.length} Items Total
             </span>
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-[#64748B] mt-0.5 font-medium">
             Manage models, technical benchmarks, finish swatches, and live visibility across the public store.
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function AdminProducts() {
         <button
           type="button"
           onClick={handleOpenAddModal}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-amber-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-slate-950 font-black text-xs transition-all shadow-lg shadow-amber-500/20 cursor-pointer active:scale-95"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#A30D20] hover:bg-[#880A1A] text-white font-bold text-xs transition-all shadow-xs cursor-pointer active:scale-95"
         >
           <Plus className="w-4 h-4 stroke-[3]" />
           <span>Add New Product</span>
@@ -113,17 +113,17 @@ export default function AdminProducts() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl shadow-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      <div className="bg-white border border-[#E5E7EB] p-4 rounded-2xl shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         
         {/* Search Input */}
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             placeholder="Search by Product Name, Model Code (SKU), or Category..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-slate-800/80 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400 transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs text-[#111827] placeholder:text-[#64748B]/60 focus:bg-white focus:outline-none focus:border-[#A30D20] focus:ring-1 focus:ring-[#A30D20] transition-all"
           />
         </div>
 
@@ -133,7 +133,7 @@ export default function AdminProducts() {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-amber-400 cursor-pointer"
+            className="px-3 py-2 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs text-[#111827] font-medium focus:bg-white focus:outline-none focus:border-[#A30D20] cursor-pointer"
           >
             <option value="All">All Categories ({products.length})</option>
             {categories.map(c => (
@@ -147,7 +147,7 @@ export default function AdminProducts() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-amber-400 cursor-pointer"
+            className="px-3 py-2 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs text-[#111827] font-medium focus:bg-white focus:outline-none focus:border-[#A30D20] cursor-pointer"
           >
             <option value="All">Status: All</option>
             <option value="Active">Active Only</option>
@@ -160,36 +160,36 @@ export default function AdminProducts() {
       </div>
 
       {/* Interactive Products Table */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+      <div className="bg-white border border-[#E5E7EB] rounded-2xl shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full min-w-[760px] text-left text-xs">
             
             {/* Table Header */}
-            <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider text-[10px] font-bold border-b border-slate-800">
+            <thead className="bg-[#F5F6F8] text-[#64748B] uppercase tracking-wider text-[10px] font-bold border-b border-[#E5E7EB]">
               <tr>
-                <th className="py-3 px-4">Thumbnail</th>
-                <th className="py-3 px-4">Model & Name</th>
-                <th className="py-3 px-4">Category</th>
-                <th className="py-3 px-4">Technical Specs</th>
-                <th className="py-3 px-4">Finishes</th>
-                <th className="py-3 px-4">Status Badges</th>
-                <th className="py-3 px-4 text-right">Actions</th>
+                <th className="py-3.5 px-4">Thumbnail</th>
+                <th className="py-3.5 px-4">Model & Name</th>
+                <th className="py-3.5 px-4">Category</th>
+                <th className="py-3.5 px-4">Technical Specs</th>
+                <th className="py-3.5 px-4">Finishes</th>
+                <th className="py-3.5 px-4">Status Badges</th>
+                <th className="py-3.5 px-4 text-right">Actions</th>
               </tr>
             </thead>
 
             {/* Table Body */}
-            <tbody className="divide-y divide-slate-800/80 text-slate-300">
+            <tbody className="divide-y divide-[#E5E7EB] text-[#111827]">
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => {
                   const isActive = product.isActive !== false;
                   return (
                     <tr 
                       key={product.id}
-                      className={`hover:bg-slate-800/40 transition-colors ${!isActive ? 'opacity-60 bg-slate-950/30' : ''}`}
+                      className={`hover:bg-[#F5F6F8]/70 transition-colors ${!isActive ? 'opacity-60 bg-[#F5F6F8]/30' : ''}`}
                     >
                       {/* 1. Thumbnail */}
                       <td className="py-3 px-4">
-                        <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700/80 p-1 flex items-center justify-center overflow-hidden shrink-0 group">
+                        <div className="w-12 h-12 rounded-xl bg-[#F5F6F8] border border-[#E5E7EB] p-1 flex items-center justify-center overflow-hidden shrink-0 group">
                           <img 
                             src={product.image} 
                             alt={product.name}
@@ -200,24 +200,24 @@ export default function AdminProducts() {
 
                       {/* 2. Model & Name */}
                       <td className="py-3 px-4 max-w-[220px]">
-                        <span className="font-mono font-bold text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded border border-amber-400/20 text-[10px] block w-fit mb-1">
+                        <span className="font-mono font-bold text-[#A30D20] bg-red-50 px-2 py-0.5 rounded border border-red-200/80 text-[10px] block w-fit mb-1">
                           {product.modelCode}
                         </span>
-                        <p className="font-bold text-white text-xs truncate" title={product.name}>
+                        <p className="font-bold text-[#111827] text-xs truncate" title={product.name}>
                           {product.name}
                         </p>
-                        <p className="text-[11px] text-slate-400 truncate mt-0.5" title={product.tagline}>
+                        <p className="text-[11px] text-[#64748B] truncate mt-0.5" title={product.tagline}>
                           {product.tagline || product.description}
                         </p>
                       </td>
 
                       {/* 3. Category & Subcategory */}
                       <td className="py-3 px-4">
-                        <span className="inline-block px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-200 text-[11px] font-medium">
+                        <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#F5F6F8] border border-[#E5E7EB] text-[#111827] text-[11px] font-semibold">
                           {product.category}
                         </span>
                         {product.subcategory && (
-                          <span className="block text-[10px] text-slate-400 mt-1">
+                          <span className="block text-[10px] text-[#64748B] mt-1 font-medium">
                             {product.subcategory}
                           </span>
                         )}
@@ -225,9 +225,9 @@ export default function AdminProducts() {
 
                       {/* 4. Specs */}
                       <td className="py-3 px-4 text-[11px] space-y-0.5">
-                        <p className="text-slate-300 font-medium truncate max-w-[160px]">{product.dimensions}</p>
-                        <p className="text-red-400 font-semibold">{product.loadCapacityKg || product.weightCapacity}</p>
-                        <p className="text-[10px] text-slate-500">{product.netWeight}</p>
+                        <p className="text-[#111827] font-medium truncate max-w-[160px]">{product.dimensions}</p>
+                        <p className="text-[#A30D20] font-bold">{product.loadCapacityKg || product.weightCapacity}</p>
+                        <p className="text-[10px] text-[#64748B]">{product.netWeight}</p>
                       </td>
 
                       {/* 5. Colors Swatches Preview */}
@@ -237,11 +237,11 @@ export default function AdminProducts() {
                             <span
                               key={idx}
                               title={`${c.name} (${c.hex})`}
-                              className="w-3.5 h-3.5 rounded-full border border-slate-700 shadow-xs shrink-0 cursor-help"
+                              className="w-3.5 h-3.5 rounded-full border border-slate-300 shadow-xs shrink-0 cursor-help"
                               style={{ backgroundColor: c.hex }}
                             />
                           ))}
-                          <span className="text-[10px] text-slate-500 font-mono">
+                          <span className="text-[10px] text-[#64748B] font-mono font-medium">
                             ({product.colors?.length || 0})
                           </span>
                         </div>
@@ -251,25 +251,25 @@ export default function AdminProducts() {
                       <td className="py-3 px-4 space-y-1">
                         <div className="flex items-center gap-1.5 flex-wrap">
                           {isActive ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[#15803D] text-[10px] font-bold">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#15803D] animate-pulse" />
                               Active
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-400 text-[10px] font-bold">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 border border-[#E5E7EB] text-[#64748B] text-[10px] font-bold">
                               Hidden
                             </span>
                           )}
 
                           {product.isFeatured && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-950/60 border border-amber-500/40 text-amber-300 text-[10px] font-bold">
-                              <Sparkles className="w-2.5 h-2.5 text-amber-400" />
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-50 border border-red-200 text-[#A30D20] text-[10px] font-bold">
+                              <Sparkles className="w-2.5 h-2.5 text-[#A30D20]" />
                               Featured
                             </span>
                           )}
 
                           {product.isBestSeller && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-950/60 border border-blue-500/40 text-blue-300 text-[10px] font-bold">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-bold">
                               Best Seller
                             </span>
                           )}
@@ -286,8 +286,8 @@ export default function AdminProducts() {
                             onClick={() => toggleProductVisibility(product.id)}
                             className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
                               isActive
-                                ? 'bg-slate-800 border-slate-700 text-slate-300 hover:text-amber-400'
-                                : 'bg-amber-950/40 border-amber-500/40 text-amber-400 hover:bg-amber-900/40'
+                                ? 'bg-white border-[#E5E7EB] text-[#64748B] hover:text-[#A30D20] hover:border-red-200'
+                                : 'bg-red-50 border-red-200 text-[#A30D20] hover:bg-red-100'
                             }`}
                             title={isActive ? 'Hide from public site' : 'Make visible on public site'}
                           >
@@ -298,7 +298,7 @@ export default function AdminProducts() {
                           <button
                             type="button"
                             onClick={() => handleOpenEditModal(product)}
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg bg-white hover:bg-[#F5F6F8] border border-[#E5E7EB] text-[#64748B] hover:text-[#111827] transition-colors cursor-pointer"
                             title="Edit technical specs and details"
                           >
                             <Edit3 className="w-3.5 h-3.5" />
@@ -308,7 +308,7 @@ export default function AdminProducts() {
                           <button
                             type="button"
                             onClick={() => handleDelete(product.id, product.name)}
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-red-950/80 border border-slate-700 hover:border-red-500/50 text-slate-400 hover:text-red-400 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg bg-white hover:bg-red-50 border border-[#E5E7EB] hover:border-red-200 text-[#64748B] hover:text-[#A30D20] transition-colors cursor-pointer"
                             title="Delete product"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -322,9 +322,9 @@ export default function AdminProducts() {
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-slate-400">
+                  <td colSpan={7} className="py-12 text-center text-[#64748B]">
                     <p className="text-sm font-semibold">No products match your search or filter criteria.</p>
-                    <p className="text-xs text-slate-500 mt-1">Try clearing filters or add a new product.</p>
+                    <p className="text-xs text-[#64748B]/70 mt-1">Try clearing filters or add a new product.</p>
                   </td>
                 </tr>
               )}
@@ -334,9 +334,9 @@ export default function AdminProducts() {
         </div>
 
         {/* Table Summary Footer */}
-        <div className="bg-slate-950/60 px-4 py-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <div className="bg-[#F5F6F8] px-4 py-3 border-t border-[#E5E7EB] flex items-center justify-between text-xs text-[#64748B] font-medium">
           <span>Showing {filteredProducts.length} of {products.length} catalog items</span>
-          <span className="font-mono text-[11px]">Storage: Reactive LocalStorage Engine Active</span>
+          <span className="font-mono text-[11px] text-[#64748B]/80">Reactive LocalStorage Engine Active</span>
         </div>
 
       </div>

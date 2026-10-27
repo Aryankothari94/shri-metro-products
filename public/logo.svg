@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="100%" height="100%">
+  <!-- Circular Emblem -->
+  <g transform="translate(0, 0)">
+    <!-- Background Circle -->
+    <circle cx="100" cy="95" r="88" fill="#1C1A1B" />
+
+    <!-- Red M Backrest -->
+    <g fill="#E31E24">
+      <path 
+        fill-rule="evenodd"
+        d="
+          M 68 130
+          L 69 56
+          C 69 40, 80 29, 100 29
+          C 120 29, 131 40, 131 56
+          L 132 130
+          L 119 130
+          L 118 52
+          C 118 43, 114 38, 106 38
+          C 103 38, 100 41, 98 45
+          L 97 130
+          L 84 130
+          L 84 45
+          C 82 41, 79 38, 76 38
+          C 68 38, 64 43, 64 52
+          L 63 130
+          Z
+        "
+      />
+    </g>
+
+    <!-- White Chair Frame -->
+    <g stroke="#FFFFFF" stroke-linecap="square" stroke-linejoin="miter">
+      <!-- Back Uprights -->
+      <line x1="60" y1="39" x2="68" y2="132" stroke-width="6.5" />
+      <line x1="140" y1="39" x2="132" y2="132" stroke-width="6.5" />
+
+      <!-- Left Armrest -->
+      <line x1="38" y1="87" x2="59" y2="87" stroke-width="6.5" />
+
+      <!-- Right Armrest -->
+      <line x1="141" y1="87" x2="162" y2="87" stroke-width="6.5" />
+
+      <!-- Left Arm Vertical Post -->
+      <line x1="53" y1="87" x2="64" y2="132" stroke-width="6.5" />
+
+      <!-- Right Arm Vertical Post -->
+      <line x1="147" y1="87" x2="136" y2="132" stroke-width="6.5" />
+
+      <!-- Horizontal Seat Bar -->
+      <line x1="61" y1="132" x2="139" y2="132" stroke-width="7" stroke-linecap="butt" />
+
+      <!-- Left Front Leg -->
+      <line x1="65" y1="132" x2="54" y2="164" stroke-width="6.5" />
+
+      <!-- Right Front Leg -->
+      <line x1="135" y1="132" x2="146" y2="164" stroke-width="6.5" />
+    </g>
+  </g>
+
+  <!-- Typography: SHRI METRO -->
+  <text 
+    x="100" 
+    y="222" 
+    text-anchor="middle" 
+    font-family="system-ui, -apple-system, 'Plus Jakarta Sans', 'Inter', sans-serif" 
+    font-size="24" 
+    font-weight="900" 
+    letter-spacing="0.08em" 
+    fill="#1C1A1B"
+  >
+    SHRI METRO
+  </text>
+</svg>

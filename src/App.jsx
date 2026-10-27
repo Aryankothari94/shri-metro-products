@@ -15,7 +15,7 @@ import AdminLayout from './components/admin/AdminLayout';
 import AdminLogin from './components/admin/AdminLogin';
 
 export default function App() {
-  const { isAuthenticated } = useData();
+  const { isAuthenticated, activeProducts } = useData();
   const { isAdmin, isLogin, navigate } = useRouter();
 
   const [isCatalogueBookOpen, setIsCatalogueBookOpen] = useState(false);
@@ -172,7 +172,7 @@ export default function App() {
       {/* Conditional: Either show full Product Detail Page (PDP), Full Catalogue Lookbook, OR the Clean Dashboard */}
       {selectedProductForPDP ? (
         <ProductDetailPage
-          product={selectedProductForPDP}
+          product={activeProducts.find(p => p.id === selectedProductForPDP?.id) || selectedProductForPDP}
           onBack={handleBackFromPDP}
           onAddToQuoteList={handleAddToQuoteList}
         />

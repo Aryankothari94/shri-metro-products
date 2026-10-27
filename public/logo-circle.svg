@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="95" fill="#1C1A1B" />
+
+  <!-- RED M BACKREST -->
+  <g fill="#E31E24">
+    <path 
+      fill-rule="evenodd"
+      d="
+        M 65 138
+        L 66 58
+        C 66 40, 78 28, 100 28
+        C 122 28, 134 40, 134 58
+        L 135 138
+        L 121 138
+        L 120 54
+        C 120 44, 116 39, 107 39
+        C 103 39, 100 42, 98 47
+        L 97 138
+        L 83 138
+        L 83 47
+        C 81 42, 78 39, 74 39
+        C 65 39, 61 44, 61 54
+        L 61 138
+        Z
+      "
+    />
+  </g>
+
+  <!-- WHITE CHAIR FRAME -->
+  <g stroke="#FFFFFF" stroke-linecap="square" stroke-linejoin="miter">
+    <!-- Back Uprights (angled outwards at top) -->
+    <line x1="56" y1="40" x2="65" y2="140" stroke-width="7" />
+    <line x1="144" y1="40" x2="135" y2="140" stroke-width="7" />
+
+    <!-- Left Armrest (horizontal tab) -->
+    <line x1="32" y1="92" x2="55" y2="92" stroke-width="7" />
+
+    <!-- Right Armrest (horizontal tab) -->
+    <line x1="145" y1="92" x2="168" y2="92" stroke-width="7" />
+
+    <!-- Left Arm Vertical Post -->
+    <line x1="49" y1="92" x2="61" y2="140" stroke-width="7" />
+
+    <!-- Right Arm Vertical Post -->
+    <line x1="151" y1="92" x2="139" y2="140" stroke-width="7" />
+
+    <!-- Horizontal Seat Bar -->
+    <line x1="58" y1="140" x2="142" y2="140" stroke-width="7.5" stroke-linecap="butt" />
+
+    <!-- Left Front Leg (slanted outward towards foot) -->
+    <line x1="62" y1="140" x2="50" y2="175" stroke-width="7" />
+
+    <!-- Right Front Leg (slanted outward towards foot) -->
+    <line x1="138" y1="140" x2="150" y2="175" stroke-width="7" />
+  </g>
+</svg>

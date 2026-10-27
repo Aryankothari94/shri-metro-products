@@ -4,7 +4,6 @@ import {
   ShieldCheck, 
   Layers, 
   Award, 
-  CheckCircle2, 
   BookOpen
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
@@ -14,13 +13,13 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
   
   // Dynamic Showcase chair: prioritize featured item, or first active product
   const heroProduct = products.find(p => p.isFeatured && p.isActive !== false) || activeProducts[0] || products[0] || {
-    name: 'Metro Royal Elegance Armchair',
-    modelCode: 'SMP-CHR-901A',
-    dimensions: 'L: 580mm x W: 560mm x H: 880mm',
+    name: 'Alexa Monobloc Armchair',
+    modelCode: 'SMP-001',
+    dimensions: 'H 890 X W 580 X D 450 mm',
     loadCapacityKg: '200 kg',
     stackabilityLimit: 'Up to 8 Units Nested',
-    image: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80',
-    colors: [{ name: 'Standard Red', hex: '#9B111E', image: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80' }]
+    image: '/products/alexa.jpeg',
+    colors: [{ name: 'Teak Wood', hex: '#4A2E18', image: '/products/alexa.jpeg' }]
   };
   
   // Interactive Showcase States
@@ -67,10 +66,22 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
   };
 
   return (
-    <section className="bg-gradient-to-b from-white via-slate-50/50 to-white border-b border-slate-200/80 py-8 sm:py-12 relative overflow-hidden">
+    <section className="relative overflow-hidden border-b border-slate-200/80 py-8 sm:py-12 bg-slate-100/50">
+      {/* Furniture Studio Background - Visible at 0.45 opacity with subtle text contrast veil */}
+      <div className="absolute inset-0 pointer-events-none -z-0 overflow-hidden">
+        <img 
+          src="/hero-furniture-bg.jpg" 
+          alt="Designer furniture collection" 
+          style={{ opacity: 0.45 }}
+          className="w-full h-full object-cover object-[center_35%] filter blur-[0.5px] scale-102 select-none"
+        />
+        {/* Subtle translucent veil: keeps background clearly visible while ensuring text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/65 via-white/25 to-transparent" />
+      </div>
+
       {/* Background Decorative Ambient Radial Gradients */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-red-100/40 rounded-full blur-3xl pointer-events-none -z-0"></div>
-      <div className="absolute -bottom-10 left-10 w-80 h-80 bg-rose-50/50 rounded-full blur-2xl pointer-events-none -z-0"></div>
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-red-100/20 rounded-full blur-3xl pointer-events-none -z-0"></div>
+      <div className="absolute -bottom-10 left-10 w-80 h-80 bg-rose-50/20 rounded-full blur-2xl pointer-events-none -z-0"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -92,7 +103,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
             </div>
 
             {/* Dynamic Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 tracking-tight leading-[1.15]">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-950 tracking-tight leading-[1.18] sm:leading-[1.15]">
               Precision Moulded <br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-700 via-red-600 to-red-500">
                 Plastic Furniture.
@@ -100,16 +111,16 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
             </h1>
 
             {/* Subtitle with High-Value Highlights */}
-            <p className="text-slate-600 text-sm sm:text-base max-w-2xl leading-relaxed">
+            <p className="text-slate-600 text-xs sm:text-base max-w-2xl leading-relaxed">
               Engineered with <strong className="text-slate-900 font-bold">100% Virgin Polypropylene</strong> and verified to <strong className="text-red-600 font-bold">200 kg hydraulic static load capacity</strong>. Direct manufacturer rates for event caterers, banquet halls, restaurants, institutions, and wholesale dealers.
             </p>
 
             {/* Reliable Primary Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-1">
               <button
                 type="button"
                 onClick={onExploreCatalog}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-sm shadow-red-600/25 hover:shadow-md cursor-pointer active:scale-95 group"
+                className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-sm shadow-red-600/25 hover:shadow-md cursor-pointer active:scale-95 group"
               >
                 <span>Browse Product Catalog</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -118,31 +129,11 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
               <button
                 type="button"
                 onClick={onOpenCatalogueBook}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-800 font-bold text-xs sm:text-sm transition-all shadow-2xs cursor-pointer active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-800 font-bold text-xs sm:text-sm transition-all shadow-2xs cursor-pointer active:scale-95"
               >
                 <BookOpen className="w-4 h-4 text-red-600" />
                 <span>Open Digital Catalogue</span>
               </button>
-            </div>
-
-            {/* Direct Reliability & Factory Commitments */}
-            <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-xl text-xs">
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-slate-200/80 shadow-2xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="font-semibold text-slate-800">100% Virgin Polypropylene</span>
-              </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-slate-200/80 shadow-2xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="font-semibold text-slate-800">200 kg Static Load Tested</span>
-              </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-slate-200/80 shadow-2xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="font-semibold text-slate-800">Direct Factory Gate Pricing</span>
-              </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-slate-200/80 shadow-2xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="font-semibold text-slate-800">Immediate Kumbalgodu Dispatch</span>
-              </div>
             </div>
 
           </div>
@@ -160,7 +151,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
                   : 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
                 transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.5s ease-out'
               }}
-              className="relative bg-white rounded-2xl p-5 border border-slate-200 shadow-md hover:shadow-xl transition-shadow transform-style-preserve-3d"
+              className="relative bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-slate-200/90 shadow-lg shadow-slate-900/5 hover:shadow-2xl transition-all transform-style-preserve-3d"
             >
               {/* Dynamic Specular Light Glare Overlay */}
               {isHovered && (
@@ -203,7 +194,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
                 </div>
 
                 <span className="text-[11px] font-bold text-red-600 bg-red-50 border border-red-200/80 px-2 py-0.5 rounded-full">
-                  SMP-CHR-901A
+                  {heroProduct?.modelCode || 'SMP-001'}
                 </span>
               </div>
 
@@ -232,10 +223,13 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
 
                     {/* Main Interactive Chair Image */}
                     <img 
-                      src={currentColor.image} 
+                      src={currentColor.image || heroProduct.image || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'} 
                       alt={heroProduct.name}
                       key={currentColor.name}
                       className="max-h-52 object-contain transition-transform duration-300 drop-shadow-md hover:scale-105"
+                      onError={(e) => {
+                        e.currentTarget.src = heroProduct?.image || '/products/alexa.jpeg';
+                      }}
                     />
                   </div>
 
@@ -313,55 +307,63 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
         </div>
 
         {/* Minimal Dashboard KPI Metrics Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-200/80">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 mt-8 pt-6 border-t border-slate-200/80">
           
           {/* KPI 1 */}
-          <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs hover:border-red-300 hover:shadow-md transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-red-600 transition-colors">Tested Load</p>
-              <ShieldCheck className="w-3.5 h-3.5 text-slate-400 group-hover:text-red-600 transition-colors" />
+          <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200/80 shadow-2xs hover:border-red-300 hover:shadow-md transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-red-600 transition-colors">Tested Load</p>
+                <ShieldCheck className="w-3.5 h-3.5 text-slate-400 group-hover:text-red-600 transition-colors shrink-0" />
+              </div>
+              <p className="text-lg sm:text-2xl font-black text-slate-900 mt-1">200 kg</p>
+              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 line-clamp-1">Hydraulic static tolerance</p>
             </div>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1">200 kg</p>
-            <p className="text-[11px] text-slate-500 mt-0.5">Hydraulic static tolerance</p>
             <div className="w-full bg-slate-100 rounded-full h-1 mt-2.5 overflow-hidden">
               <div className="bg-red-600 h-full w-full"></div>
             </div>
           </div>
 
           {/* KPI 2 */}
-          <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs hover:border-red-300 hover:shadow-md transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-red-600 transition-colors">Material Grade</p>
-              <Award className="w-3.5 h-3.5 text-slate-400 group-hover:text-red-600 transition-colors" />
+          <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200/80 shadow-2xs hover:border-red-300 hover:shadow-md transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-red-600 transition-colors">Material Grade</p>
+                <Award className="w-3.5 h-3.5 text-slate-400 group-hover:text-red-600 transition-colors shrink-0" />
+              </div>
+              <p className="text-lg sm:text-2xl font-black text-slate-900 mt-1">100% Virgin</p>
+              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 line-clamp-1">Polypropylene granules</p>
             </div>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1">100% Virgin</p>
-            <p className="text-[11px] text-slate-500 mt-0.5">Polypropylene granules</p>
             <div className="w-full bg-slate-100 rounded-full h-1 mt-2.5 overflow-hidden">
               <div className="bg-emerald-600 h-full w-full"></div>
             </div>
           </div>
 
           {/* KPI 3 */}
-          <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs hover:border-red-300 hover:shadow-md transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-red-600 transition-colors">Active Dies</p>
-              <Layers className="w-3.5 h-3.5 text-slate-400 group-hover:text-red-600 transition-colors" />
+          <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200/80 shadow-2xs hover:border-red-300 hover:shadow-md transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-red-600 transition-colors">Active Dies</p>
+                <Layers className="w-3.5 h-3.5 text-slate-400 group-hover:text-red-600 transition-colors shrink-0" />
+              </div>
+              <p className="text-lg sm:text-2xl font-black text-slate-900 mt-1">10+ Models</p>
+              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 line-clamp-1">Chairs, tables, stools</p>
             </div>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1">10+ Models</p>
-            <p className="text-[11px] text-slate-500 mt-0.5">Chairs, tables, stools, patlas</p>
             <div className="w-full bg-slate-100 rounded-full h-1 mt-2.5 overflow-hidden">
               <div className="bg-red-500 h-full w-full"></div>
             </div>
           </div>
 
           {/* KPI 4 */}
-          <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs hover:border-red-300 hover:shadow-md transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-red-600 transition-colors">Invoicing</p>
-              <Award className="w-3.5 h-3.5 text-slate-400 group-hover:text-red-600 transition-colors" />
+          <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200/80 shadow-2xs hover:border-red-300 hover:shadow-md transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-red-600 transition-colors">Invoicing</p>
+                <Award className="w-3.5 h-3.5 text-slate-400 group-hover:text-red-600 transition-colors shrink-0" />
+              </div>
+              <p className="text-lg sm:text-2xl font-black text-slate-900 mt-1">B2B GST</p>
+              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 line-clamp-1">Direct ITC Input Credit</p>
             </div>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1">B2B GST</p>
-            <p className="text-[11px] text-slate-500 mt-0.5">Direct Input Tax Credit (ITC)</p>
             <div className="w-full bg-slate-100 rounded-full h-1 mt-2.5 overflow-hidden">
               <div className="bg-slate-800 h-full w-full group-hover:bg-red-600 transition-colors"></div>
             </div>

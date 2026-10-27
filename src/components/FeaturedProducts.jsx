@@ -27,21 +27,23 @@ export default function FeaturedProducts({
 
   const filterTabs = [
     { label: "All Products", value: "All Products" },
-    { label: "Plastic Chairs", value: "Plastic Chairs" },
-    { label: "Center Tables", value: "Center Tables" },
+    { label: "Chairs", value: "Chairs" },
     { label: "Dining Tables", value: "Dining Tables" },
+    { label: "Center Tables", value: "Center Tables" },
     { label: "Stools", value: "Stools" },
-    { label: "Patlas", value: "Patlas" }
+    { label: "Patla", value: "Patla" }
   ];
 
   // Filter products based on category and live search
   const filteredProducts = productsData.filter((product) => {
     let matchesCategory = true;
     if (selectedCategory !== "All Products") {
-      if (selectedCategory === "Plastic Chairs") {
-        matchesCategory = product.category.includes("Plastic Chairs");
+      if (selectedCategory === "Chairs" || selectedCategory === "Plastic Chairs") {
+        matchesCategory = product.category.toLowerCase().includes("chair");
+      } else if (selectedCategory === "Patlas" || selectedCategory === "Patla") {
+        matchesCategory = product.category.toLowerCase().includes("patla");
       } else {
-        matchesCategory = product.category.includes(selectedCategory);
+        matchesCategory = product.category.toLowerCase().includes(selectedCategory.toLowerCase());
       }
     }
 
@@ -151,14 +153,17 @@ export default function FeaturedProducts({
                   className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-subtle hover:shadow-elevated hover:border-slate-300 transition-all duration-300 flex flex-col group relative"
                 >
                   {/* Top Image Box */}
-                  <div className="relative h-56 bg-slate-100 overflow-hidden">
+                  <div className="relative h-56 bg-slate-50 overflow-hidden flex items-center justify-center p-2">
                     <img
-                      src={product.image}
+                      src={product.image || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-2xs"
                       loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80';
+                      }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                     {/* Featured Ribbon */}
                     {product.isFeatured && (

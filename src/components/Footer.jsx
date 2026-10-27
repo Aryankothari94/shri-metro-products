@@ -1,26 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   MapPin, 
   Phone, 
-  Mail, 
   MessageCircle, 
-  Clock, 
   ArrowUp, 
   ExternalLink, 
-  Copy, 
-  Check, 
-  ShieldCheck, 
-  Layers, 
-  Truck, 
-  Award,
-  BookOpen,
-  Lock
+  BookOpen, 
+  Lock 
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
+import Logo from './Logo';
 
 export default function Footer({ onSelectCategory, onOpenCatalogueBook, onNavigateAdmin }) {
   const { company, categories } = useData();
-  const [copiedGstin, setCopiedGstin] = useState(false);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -40,259 +32,142 @@ export default function Footer({ onSelectCategory, onOpenCatalogueBook, onNaviga
     scrollToSection('catalog-section');
   };
 
-  const handleCopyGstin = () => {
-    if (navigator?.clipboard) {
-      navigator.clipboard.writeText(company.gstin);
-      setCopiedGstin(true);
-      setTimeout(() => setCopiedGstin(false), 2000);
-    }
-  };
-
   return (
-    <footer className="bg-white border-t border-slate-200 text-slate-600 text-xs font-sans">
-      
-      {/* 1. Value & Reliability Highlights Bar */}
-      <div className="border-b border-slate-100 bg-slate-50/70">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-red-50 text-red-600 border border-red-100 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="font-bold text-slate-900 text-xs">100% Virgin PP</p>
-                <p className="text-slate-400 text-[11px]">Zero regrind or brittle fillers</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-red-50 text-red-600 border border-red-100 flex items-center justify-center shrink-0">
-                <Award className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="font-bold text-slate-900 text-xs">200 kg Tested</p>
-                <p className="text-slate-400 text-[11px]">Static hydraulic pressure verified</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-red-50 text-red-600 border border-red-100 flex items-center justify-center shrink-0">
-                <Layers className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="font-bold text-slate-900 text-xs">High Stackability</p>
-                <p className="text-slate-400 text-[11px]">Space-efficient storage & transit</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-red-50 text-red-600 border border-red-100 flex items-center justify-center shrink-0">
-                <Truck className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="font-bold text-slate-900 text-xs">Direct Factory Gate</p>
-                <p className="text-slate-400 text-[11px]">Full truckload & wholesale supply</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      {/* 2. Main Footer Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
+    <footer className="bg-slate-950 text-slate-400 text-xs font-sans border-t border-slate-900 relative">
+      {/* Main Footer Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 items-start">
           
-          {/* Column 1: Manufacturing Identity & Credentials (4 cols) */}
-          <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-red-600 flex items-center justify-center text-white font-black text-sm tracking-tight shadow-sm shadow-red-600/20">
-                SM
-              </div>
-              <div>
-                <span className="font-black text-base text-slate-900 tracking-tight block leading-none">
-                  {company.name}
-                </span>
-                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mt-0.5 block">
-                  Plastic Moulded Furniture
-                </span>
-              </div>
-            </div>
-
-            <p className="text-slate-500 text-xs leading-relaxed">
-              Industrial-grade manufacturer of heavy-duty plastic moulded furniture for banquet halls, catering enterprises, institutions, event venues, and wholesale furniture dealers across South India.
+          {/* Brand & Brief Identity (5 cols) */}
+          <div className="lg:col-span-5 space-y-4">
+            <Logo variant="horizontal" theme="dark" iconSize="w-9 h-9" subtitle="Plastic Moulded Furniture" />
+            
+            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
+              Direct manufacturer of industrial-grade plastic moulded furniture. Engineered with 100% virgin polymer for banquet halls, event enterprises, and wholesale dealers across South India.
             </p>
 
-            {/* B2B Legal Box */}
-            <div className="bg-slate-50 rounded-xl p-3 border border-slate-200/80 space-y-2">
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="text-slate-500 font-medium">Proprietor:</span>
-                <span className="font-bold text-slate-800">{company.proprietor}</span>
-              </div>
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="text-slate-500 font-medium">GSTIN (B2B ITC):</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-mono font-bold text-slate-900">{company.gstin}</span>
-                  <button
-                    type="button"
-                    onClick={handleCopyGstin}
-                    className="p-1 rounded hover:bg-slate-200 text-slate-500 transition-colors cursor-pointer"
-                    title="Copy GSTIN"
-                  >
-                    {copiedGstin ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-                  </button>
-                </div>
-              </div>
-              <div className="flex items-center justify-between text-[11px] pt-1 border-t border-slate-200/60">
-                <span className="text-slate-500 font-medium">HSN Code Category:</span>
-                <span className="font-mono text-slate-700">9403 (Moulded Furniture)</span>
-              </div>
+            {/* Minimalist Trust Badges */}
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                100% Virgin PP
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                200 kg Tested
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                Direct Factory Gate
+              </span>
             </div>
           </div>
 
-          {/* Column 2: Product Lines (3 cols) */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider text-[11px]">
-              Manufactured Categories
-            </h4>
-            <ul className="space-y-2 text-xs">
-              {categories.slice(0, 6).map((cat) => (
-                <li key={cat.id || cat.name}>
-                  <button
-                    type="button"
-                    onClick={() => handleCategoryClick(cat.name)}
-                    className="text-slate-500 hover:text-red-600 transition-colors cursor-pointer flex items-center justify-between w-full text-left"
-                  >
-                    <span>{cat.name}</span>
-                    <span className="text-slate-300">→</span>
-                  </button>
-                </li>
-              ))}
-              <li className="pt-2 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (onOpenCatalogueBook) onOpenCatalogueBook();
-                    else scrollToSection('catalog-section');
-                  }}
-                  className="font-bold text-red-600 hover:text-red-700 flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <BookOpen className="w-3.5 h-3.5" />
-                  <span>Interactive 3D Catalogue</span>
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: Wholesale & B2B Solutions (2 cols) */}
+          {/* Quick Links (2 cols) */}
           <div className="lg:col-span-2 space-y-3">
-            <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider text-[11px]">
-              Wholesale Services
-            </h4>
-            <ul className="space-y-2 text-xs text-slate-500">
+            <p className="text-[11px] font-bold text-white uppercase tracking-wider">
+              Quick Links
+            </p>
+            <ul className="space-y-2.5">
               <li>
                 <button 
                   type="button" 
                   onClick={() => scrollToSection('catalog-section')}
-                  className="hover:text-red-600 transition-colors cursor-pointer text-left"
+                  className="hover:text-white transition-colors cursor-pointer text-left"
                 >
-                  Bulk Institutional Supply
+                  Product Catalog
+                </button>
+              </li>
+              <li>
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    if (onOpenCatalogueBook) onOpenCatalogueBook();
+                    else scrollToSection('catalog-section');
+                  }}
+                  className="hover:text-white transition-colors cursor-pointer text-left flex items-center gap-1.5 text-red-400 font-semibold"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Digital Catalogue</span>
                 </button>
               </li>
               <li>
                 <button 
                   type="button" 
                   onClick={() => scrollToSection('why-us')}
-                  className="hover:text-red-600 transition-colors cursor-pointer text-left"
+                  className="hover:text-white transition-colors cursor-pointer text-left"
                 >
-                  Quality Benchmarks
+                  Quality & Testing
                 </button>
               </li>
               <li>
                 <button 
                   type="button" 
                   onClick={() => scrollToSection('contact-section')}
-                  className="hover:text-red-600 transition-colors cursor-pointer text-left"
+                  className="hover:text-white transition-colors cursor-pointer text-left"
                 >
-                  Custom Colour Runs
+                  Contact Factory
                 </button>
-              </li>
-              <li>
-                <span className="text-slate-400">Truckload Logistics</span>
-              </li>
-              <li>
-                <span className="text-slate-400">GST Input Tax Credit</span>
-              </li>
-              <li>
-                <a 
-                  href={company.whatsappLink} 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="text-slate-700 font-semibold hover:text-red-600 transition-colors inline-block"
-                >
-                  Direct Factory Desk
-                </a>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: Factory Works & Dispatch (3 cols) */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider text-[11px]">
-              Factory Works & Dispatch
-            </h4>
-            
-            <div className="space-y-2.5 text-xs text-slate-500">
-              <div className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-medium text-slate-800 leading-snug">
-                    {company.location?.estate}, {company.location?.area}
-                  </p>
-                  <p className="text-slate-400 text-[11px] mt-0.5">
-                    {company.location?.city}, {company.location?.state} — {company.location?.pincode}
-                  </p>
-                  <a
-                    href={company.location?.googleMapsUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-red-600 hover:text-red-700 font-semibold text-[11px] mt-1"
+          {/* Categories (2 cols) */}
+          <div className="lg:col-span-2 space-y-3">
+            <p className="text-[11px] font-bold text-white uppercase tracking-wider">
+              Categories
+            </p>
+            <ul className="space-y-2.5">
+              {categories.slice(0, 5).map((cat) => (
+                <li key={cat.id || cat.name}>
+                  <button
+                    type="button"
+                    onClick={() => handleCategoryClick(cat.name)}
+                    className="hover:text-white transition-colors cursor-pointer text-left truncate max-w-full"
                   >
-                    <span>View on Google Maps</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
-              </div>
+                    {cat.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-              <div className="flex items-center gap-2 pt-1">
-                <Phone className="w-4 h-4 text-red-600 shrink-0" />
-                <a
-                  href={`tel:${company.phoneRaw}`}
-                  className="font-bold text-slate-900 hover:text-red-600 transition-colors"
+          {/* Direct Factory Contact (3 cols) */}
+          <div className="lg:col-span-3 space-y-3">
+            <p className="text-[11px] font-bold text-white uppercase tracking-wider">
+              Factory Works
+            </p>
+            <div className="space-y-2.5 text-slate-400">
+              <p className="leading-snug text-slate-300">
+                {company.location?.estate}, {company.location?.area}, {company.location?.city} - {company.location?.pincode}
+              </p>
+              <div className="flex flex-col gap-2 pt-1">
+                <a 
+                  href={`tel:${company.phoneRaw}`} 
+                  className="inline-flex items-center gap-2 text-white hover:text-red-400 transition-colors font-semibold"
                 >
-                  {company.phone}
+                  <Phone className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                  <span>{company.phone}</span>
                 </a>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <MessageCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                <a
-                  href={company.whatsappLink}
-                  target="_blank"
+                <a 
+                  href={company.whatsappLink} 
+                  target="_blank" 
                   rel="noreferrer"
-                  className="font-bold text-emerald-700 hover:text-emerald-800 transition-colors"
+                  className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors font-semibold"
                 >
-                  WhatsApp: +{company.whatsappNumber}
+                  <MessageCircle className="w-3.5 h-3.5 shrink-0" />
+                  <span>WhatsApp Factory Desk</span>
                 </a>
-              </div>
-
-              <div className="flex items-start gap-2 pt-1 border-t border-slate-100">
-                <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                <div className="text-[11px] text-slate-500">
-                  <p className="font-medium text-slate-700">Mon – Sat: 9:00 AM – 7:30 PM</p>
-                  <p className="text-slate-400">Sunday Closed (Inquiries Monitored)</p>
-                </div>
+                <a 
+                  href={company.location?.googleMapsUrl}
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors text-[11px]"
+                >
+                  <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                  <span>Kumbalgodu Works on Maps</span>
+                  <ExternalLink className="w-3 h-3 ml-0.5 opacity-60" />
+                </a>
               </div>
             </div>
           </div>
@@ -300,43 +175,45 @@ export default function Footer({ onSelectCategory, onOpenCatalogueBook, onNaviga
         </div>
       </div>
 
-      {/* 3. Bottom Legal & Back to Top Strip */}
-      <div className="border-t border-slate-100 bg-slate-50/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
+      {/* Clean Minimalist Bottom Strip */}
+      <div className="border-t border-slate-900 bg-black/40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
             
+            {/* Left: Copyright & GSTIN */}
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1">
               <span>© {new Date().getFullYear()} {company.name}. All rights reserved.</span>
-              <span className="hidden sm:inline">•</span>
-              <span>100% Virgin Polypropylene</span>
-              <span className="hidden sm:inline">•</span>
-              <span>Kumbalgodu Industrial Area</span>
-              <span className="hidden sm:inline">•</span>
-              {/* Discreet Admin Portal Link */}
+              <span className="hidden sm:inline text-slate-700">•</span>
+              <span className="font-mono text-slate-400">GSTIN: {company.gstin}</span>
+              <span className="hidden sm:inline text-slate-700">•</span>
+              <span className="text-slate-400">HSN: 9403</span>
+            </div>
+
+            {/* Right: Admin Link & Smooth Scroll to Top */}
+            <div className="flex items-center gap-4">
               <button
                 type="button"
                 onClick={onNavigateAdmin}
-                className="hover:text-amber-600 transition-colors flex items-center gap-1 font-semibold cursor-pointer text-slate-500"
-                title="Open Administrative Terminal"
+                className="text-slate-500 hover:text-amber-400 transition-colors flex items-center gap-1 cursor-pointer font-medium"
+                title="Open Administrative Console"
               >
-                <Lock className="w-3 h-3 text-amber-500" />
-                <span>Admin Console</span>
+                <Lock className="w-3 h-3 text-amber-500/70" />
+                <span>Admin</span>
+              </button>
+              <span className="text-slate-800">•</span>
+              <button
+                type="button"
+                onClick={scrollToTop}
+                className="text-slate-400 hover:text-white transition-colors flex items-center gap-1 cursor-pointer font-semibold group"
+              >
+                <span>Back to top</span>
+                <ArrowUp className="w-3.5 h-3.5 transition-transform group-hover:-translate-y-0.5" />
               </button>
             </div>
-
-            <button
-              type="button"
-              onClick={scrollToTop}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-bold transition-all cursor-pointer shadow-2xs hover:-translate-y-0.5"
-            >
-              <span>Back to Top</span>
-              <ArrowUp className="w-3.5 h-3.5" />
-            </button>
 
           </div>
         </div>
       </div>
-
     </footer>
   );
 }

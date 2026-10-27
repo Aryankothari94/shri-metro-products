@@ -5,11 +5,11 @@ export default function FloatingInquiryButton({ itemCount, totalUnits, onClick }
   if (itemCount === 0) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 animate-bounce-subtle">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 animate-bounce-subtle">
       <button
         onClick={onClick}
         type="button"
-        className="group relative flex items-center gap-3 pl-3.5 pr-4 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 text-white shadow-xl shadow-red-600/30 border border-red-500/40 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
+        className="group relative flex items-center gap-2.5 sm:gap-3 pl-3 sm:pl-3.5 pr-3.5 sm:pr-4 py-2.5 sm:py-3 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 text-white shadow-xl shadow-red-600/30 border border-red-500/40 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
         title="Open Wholesale Inquiry Cart"
       >
         {/* Glow */}

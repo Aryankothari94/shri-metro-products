@@ -82,7 +82,7 @@ export default function CatalogSidebar({
                 }`}
               >
                 <span>{cat.label}</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
                   isSelected ? 'bg-white/20 text-white' : 'text-slate-400'
                 }`}>
                   {count}

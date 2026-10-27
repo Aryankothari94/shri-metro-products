@@ -11,6 +11,7 @@ import {
   ExternalLink,
   Clock,
   Send
+} from 'lucide-react';
 import { useData } from '../context/DataContext';
 
 export default function OwnerContactCard() {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Lock, User, Eye, EyeOff, ArrowRight, ArrowLeft, KeyRound, AlertCircle } from 'lucide-react';
 import { useData } from '../../context/DataContext';
+import { LogoIcon } from '../Logo';
 
 export default function AdminLogin({ onLoginSuccess, onGoHome }) {
   const { login } = useData();
@@ -34,57 +35,57 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-slate-100 flex flex-col justify-center items-center p-4 relative overflow-hidden font-sans selection:bg-amber-500 selection:text-slate-900">
+    <div className="min-h-screen bg-[#F5F6F8] text-[#111827] flex flex-col justify-center items-center p-4 relative overflow-hidden font-sans selection:bg-[#A30D20] selection:text-white">
       
-      {/* Background industrial lighting gradients */}
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-slate-900/60 rounded-full blur-2xl pointer-events-none -z-0" />
+      {/* Background industrial lighting accents */}
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#A30D20]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-[#111827]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/60 rounded-full blur-2xl pointer-events-none -z-0" />
 
-      {/* Floating back button */}
-      <div className="absolute top-6 left-6 z-20">
+      {/* Back button */}
+      <div className="w-full max-w-md flex justify-start mb-3 sm:mb-0 sm:absolute sm:top-6 sm:left-6 z-20">
         <button
           type="button"
           onClick={onGoHome}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 hover:text-white border border-slate-700/60 backdrop-blur-md text-xs font-bold transition-all cursor-pointer group"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-white hover:bg-[#F5F6F8] text-[#111827] border border-[#E5E7EB] shadow-xs backdrop-blur-md text-xs font-bold transition-all cursor-pointer group"
         >
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-amber-400" />
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-[#A30D20]" />
           <span>Back to Public Website</span>
         </button>
       </div>
 
       <div className="w-full max-w-md relative z-10">
         
-        {/* Brand Monogram & Title */}
+        {/* Brand Logo & Title */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 via-red-700 to-slate-900 text-white font-black text-xl shadow-lg shadow-red-900/40 ring-2 ring-red-500/30 mb-3.5">
-            SM
+          <div className="inline-flex items-center justify-center p-2 rounded-3xl bg-white ring-1 ring-[#E5E7EB] shadow-md mb-3.5">
+            <LogoIcon className="w-16 h-16 drop-shadow-xs" />
           </div>
-          <h1 className="text-2xl font-black tracking-tight text-white">
+          <h1 className="text-2xl font-black tracking-tight text-[#111827]">
             SHRI METRO PRODUCTS
           </h1>
-          <p className="text-xs font-semibold text-amber-400/90 tracking-widest uppercase mt-1 flex items-center justify-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+          <p className="text-xs font-bold text-[#A30D20] tracking-wider uppercase mt-1 flex items-center justify-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#A30D20]" />
             <span>Administrative Command Portal</span>
           </p>
         </div>
 
-        {/* Glassmorphism Card */}
-        <div className="bg-slate-900/85 backdrop-blur-xl border border-slate-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-black/60 relative">
+        {/* Crisp White Card */}
+        <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 relative">
           
-          {/* Gold decorative top border */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-amber-500 to-blue-600 rounded-t-2xl" />
+          {/* Burgundy Red decorative top border */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#A30D20] to-[#880A1A] rounded-t-2xl" />
 
           <div className="mb-6">
-            <h2 className="text-lg font-bold text-white tracking-tight">Owner Authentication</h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <h2 className="text-lg font-extrabold text-[#111827] tracking-tight">Owner Authentication</h2>
+            <p className="text-xs text-[#64748B] mt-0.5">
               Enter your authorized management credentials to access inventory and sales controls.
             </p>
           </div>
 
           {error && (
-            <div className="mb-5 p-3 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs flex items-center gap-2.5 animate-shake">
-              <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+            <div className="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 text-[#A30D20] text-xs flex items-center gap-2.5 animate-shake font-medium">
+              <AlertCircle className="w-4 h-4 text-[#A30D20] shrink-0" />
               <span>{error}</span>
             </div>
           )}
@@ -93,18 +94,18 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             
             {/* Username Input */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-300 block">
+              <label className="text-xs font-bold text-[#111827] block">
                 Administrator Username
               </label>
               <div className="relative">
-                <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <User className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   required
                   placeholder="Username (e.g. admin)"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-800/90 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/20 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs sm:text-sm text-[#111827] placeholder:text-[#64748B] focus:bg-white focus:outline-none focus:border-[#A30D20] focus:ring-1 focus:ring-[#A30D20] transition-all"
                 />
               </div>
             </div>
@@ -112,32 +113,32 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             {/* Password Input */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-300 block">
+                <label className="text-xs font-bold text-[#111827] block">
                   Security Passkey
                 </label>
                 <button
                   type="button"
                   onClick={handleFillDemo}
-                  className="text-[11px] font-semibold text-amber-400 hover:text-amber-300 cursor-pointer flex items-center gap-1"
+                  className="text-[11px] font-bold text-[#A30D20] hover:text-[#880A1A] cursor-pointer flex items-center gap-1"
                 >
                   <KeyRound className="w-3 h-3" />
                   <span>Auto-fill (admin / metro123)</span>
                 </button>
               </div>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Lock className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
                   placeholder="Passkey"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2.5 bg-slate-800/90 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/20 transition-all font-mono"
+                  className="w-full pl-10 pr-10 py-2.5 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs sm:text-sm text-[#111827] placeholder:text-[#64748B] focus:bg-white focus:outline-none focus:border-[#A30D20] focus:ring-1 focus:ring-[#A30D20] transition-all font-mono"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer p-0.5"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-[#111827] cursor-pointer p-0.5"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -147,12 +148,12 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
 
             {/* Remember Me */}
             <div className="flex items-center justify-between pt-1">
-              <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-400 hover:text-slate-300">
+              <label className="flex items-center gap-2 cursor-pointer text-xs text-[#64748B] hover:text-[#111827]">
                 <input
                   type="checkbox"
                   checked={remember}
                   onChange={(e) => setRemember(e.target.checked)}
-                  className="w-4 h-4 rounded bg-slate-800 border-slate-700 text-amber-500 focus:ring-amber-400/20"
+                  className="w-4 h-4 rounded bg-[#F5F6F8] border-[#E5E7EB] text-[#A30D20] focus:ring-[#A30D20]"
                 />
                 <span>Remember this terminal</span>
               </label>
@@ -162,7 +163,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-red-700 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-red-900/30 active:scale-98 disabled:opacity-50 mt-2"
+              className="w-full py-3 px-4 rounded-xl bg-[#A30D20] hover:bg-[#880A1A] text-white font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs hover:shadow-sm active:scale-98 disabled:opacity-50 mt-2"
             >
               <span>{isSubmitting ? 'Authenticating Terminal…' : 'Enter Administrative Console'}</span>
               <ArrowRight className="w-4 h-4" />
@@ -171,16 +172,16 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
           </form>
 
           {/* Quick Demo Helper */}
-          <div className="mt-6 pt-5 border-t border-slate-800/80 text-center">
-            <p className="text-[11px] text-slate-400">
-              Demo Credentials: <code className="text-amber-400 bg-slate-800 px-1.5 py-0.5 rounded font-mono">admin</code> / <code className="text-amber-400 bg-slate-800 px-1.5 py-0.5 rounded font-mono">metro123</code>
+          <div className="mt-6 pt-5 border-t border-[#E5E7EB] text-center">
+            <p className="text-[11px] text-[#64748B]">
+              Demo Credentials: <code className="text-[#111827] bg-[#F5F6F8] border border-[#E5E7EB] px-1.5 py-0.5 rounded font-mono font-bold">admin</code> / <code className="text-[#111827] bg-[#F5F6F8] border border-[#E5E7EB] px-1.5 py-0.5 rounded font-mono font-bold">metro123</code>
             </p>
           </div>
 
         </div>
 
         {/* Footer info */}
-        <p className="text-center text-[11px] text-slate-500 mt-6">
+        <p className="text-center text-[11px] text-[#64748B] mt-6 font-medium">
           Shri Metro Products © {new Date().getFullYear()} • Kumbalgodu Unit Console
         </p>
 

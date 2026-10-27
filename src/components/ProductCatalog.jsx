@@ -77,10 +77,12 @@ export default function ProductCatalog({
   const filteredProducts = useMemo(() => {
     return activeProducts.filter(product => {
       if (selectedCategory !== "All Products") {
-        if (selectedCategory === "Plastic Chairs") {
-          if (!product.category.includes("Plastic Chairs")) return false;
+        if (selectedCategory === "Chairs" || selectedCategory === "Plastic Chairs") {
+          if (!product.category.toLowerCase().includes("chair")) return false;
+        } else if (selectedCategory === "Patlas" || selectedCategory === "Patla") {
+          if (!product.category.toLowerCase().includes("patla")) return false;
         } else {
-          if (!product.category.includes(selectedCategory)) return false;
+          if (product.category !== selectedCategory && !product.category.toLowerCase().includes(selectedCategory.toLowerCase())) return false;
         }
       }
 

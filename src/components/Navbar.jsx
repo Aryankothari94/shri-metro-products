@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
 
+import Logo from './Logo';
+
 export default function Navbar({ 
   quoteListCount = 0,
   onOpenQuoteDrawer,
@@ -45,26 +47,16 @@ export default function Navbar({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
-          {/* Left: Clean Minimal Brand Monogram & Name */}
+          {/* Left: Clean Brand Logo & Name */}
           <a 
             href="#"
             onClick={(e) => {
               e.preventDefault();
               if (onLogoClick) onLogoClick();
             }}
-            className="flex items-center gap-2.5 group cursor-pointer"
+            className="flex items-center group cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-xl bg-red-600 flex items-center justify-center text-white font-black text-sm tracking-tight shadow-sm shadow-red-600/20 group-hover:scale-105 transition-all">
-              SM
-            </div>
-            <div className="flex flex-col">
-              <span className="font-extrabold text-base tracking-tight text-slate-900 group-hover:text-red-600 transition-colors leading-none">
-                SHRI METRO
-              </span>
-              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mt-0.5">
-                Plastic Moulded Furniture
-              </span>
-            </div>
+            <Logo variant="horizontal" iconSize="w-9 h-9" />
           </a>
 
           {/* Center: Minimalist, Airy Navigation Links */}
@@ -92,7 +84,7 @@ export default function Navbar({
               <ShoppingBag className="w-3.5 h-3.5 text-red-400" />
               <span>Quote Cart</span>
               {quoteListCount > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-bold shadow-xs">
+                <span className="px-1.5 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-bold shadow-xs">
                   {quoteListCount}
                 </span>
               )}

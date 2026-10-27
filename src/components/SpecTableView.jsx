@@ -28,7 +28,7 @@ export default function SpecTableView({ products, onQuickView, onViewDetails }) 
 
       {/* Desktop & Tablet Table Element */}
       <div className="hidden sm:block overflow-x-auto">
-        <table className="w-full text-left border-collapse text-xs">
+        <table className="w-full min-w-[760px] text-left border-collapse text-xs">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
               <th className="py-2.5 px-4">Model Code & Item</th>
@@ -162,7 +162,7 @@ export default function SpecTableView({ products, onQuickView, onViewDetails }) 
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-1">
-                    <span className="font-mono text-[10px] font-bold text-red-600 bg-red-50 border border-red-200/80 px-1.5 py-0.2 rounded">
+                    <span className="font-mono text-[10px] font-bold text-red-600 bg-red-50 border border-red-200/80 px-1.5 py-0.5 rounded">
                       {product.modelCode}
                     </span>
                     <span className="text-[10px] font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded-full">

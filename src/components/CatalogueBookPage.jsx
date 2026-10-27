@@ -224,11 +224,14 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
         {/* Product photography */}
         <div className="relative flex-1 min-h-[260px] md:min-h-0 my-4">
           <img 
-            src={color.image || product.image} 
+            src={color.image || product.image || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'} 
             alt={product.name}
             key={color.image || product.image}
             draggable="false"
             className="absolute inset-0 w-full h-full object-contain p-3 drop-shadow-md"
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80';
+            }}
           />
           <div className="absolute top-2 left-2 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-2xs text-[10px] font-bold text-slate-800">
             <ShieldCheck className="w-3 h-3 text-red-600" />
@@ -424,11 +427,14 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
         {/* Product photo with floating pills */}
         <div className="relative flex-1 min-h-[130px] my-1 flex items-center justify-center">
           <img
-            src={color.image || product.image}
+            src={color.image || product.image || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'}
             alt={product.name}
             key={color.image || product.image}
             draggable="false"
             className="max-h-[140px] w-auto object-contain p-1 drop-shadow-md"
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80';
+            }}
           />
           <div className="absolute top-1 left-1 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 shadow-2xs text-[9px] font-bold text-slate-800">
             <ShieldCheck className="w-3 h-3 text-red-600" />
@@ -496,7 +502,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
               <span className="text-[10px] font-bold uppercase tracking-wider text-red-600">
                 {product.modelCode}
               </span>
-              <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+              <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
                 ISO VIRGIN PP
               </span>
             </div>
@@ -844,7 +850,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
                 type="button"
                 onClick={handlePrevPage}
                 disabled={!canPrev || !!flip}
-                className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-7 w-11 h-11 rounded-full bg-white border border-slate-200 shadow-md flex items-center justify-center text-slate-700 transition-all z-40 ${
+                className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-7 w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-white border border-slate-200 shadow-md flex items-center justify-center text-slate-700 transition-all z-40 ${
                   !canPrev ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-red-600 hover:text-white hover:border-red-600 hover:scale-110 active:scale-95'
                 }`}
                 aria-label="Previous model"
@@ -855,7 +861,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
                 type="button"
                 onClick={handleNextPage}
                 disabled={!canNext || !!flip}
-                className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-7 w-11 h-11 rounded-full bg-white border border-slate-200 shadow-md flex items-center justify-center text-slate-700 transition-all z-40 ${
+                className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-7 w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-white border border-slate-200 shadow-md flex items-center justify-center text-slate-700 transition-all z-40 ${
                   !canNext ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-red-600 hover:text-white hover:border-red-600 hover:scale-110 active:scale-95'
                 }`}
                 aria-label="Next model"
@@ -868,7 +874,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
             <div className="md:hidden w-full max-w-md mx-auto">
               {/* Vertical book stage */}
               <div 
-                className={`book-stage-vertical relative h-[590px] ${flip ? 'pointer-events-none' : ''}`}
+                className={`book-stage-vertical relative h-[530px] sm:h-[590px] ${flip ? 'pointer-events-none' : ''}`}
                 style={{ '--flip-ms': `${FLIP_MS}ms` }}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}

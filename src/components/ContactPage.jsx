@@ -15,6 +15,7 @@ import {
   FileCheck2
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
+import { LogoIcon } from './Logo';
 
 export default function ContactPage({ prefilledMessage = '' }) {
   const { company: companyDetails, addInquiry } = useData();
@@ -111,9 +112,7 @@ export default function ContactPage({ prefilledMessage = '' }) {
               {/* Header Identity */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-red-600 flex items-center justify-center text-white font-black text-sm shadow-xs">
-                    SM
-                  </div>
+                  <LogoIcon className="w-10 h-10 shadow-xs" />
                   <div>
                     <h3 className="font-extrabold text-slate-900 text-sm tracking-tight leading-tight">
                       {companyDetails.name}
@@ -359,15 +358,15 @@ export default function ContactPage({ prefilledMessage = '' }) {
             </div>
 
             {/* Micro Trust Indicators */}
-            <div className="pt-3 mt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-[11px] text-slate-400">
+            <div className="pt-3 mt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-2">
               <span className="flex items-center gap-1">
-                <Check className="w-3 h-3 text-emerald-600" /> Direct Manufacturer Rates
+                <Check className="w-3 h-3 text-emerald-600 shrink-0" /> Direct Manufacturer Rates
               </span>
               <span className="flex items-center gap-1">
-                <Check className="w-3 h-3 text-emerald-600" /> B2B GST Invoicing
+                <Check className="w-3 h-3 text-emerald-600 shrink-0" /> B2B GST Invoicing
               </span>
               <span className="flex items-center gap-1">
-                <Check className="w-3 h-3 text-emerald-600" /> Karnataka Freight Dispatch
+                <Check className="w-3 h-3 text-emerald-600 shrink-0" /> Karnataka Freight Dispatch
               </span>
             </div>
 

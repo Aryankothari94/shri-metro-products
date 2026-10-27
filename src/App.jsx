@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductCatalog from './components/ProductCatalog';
@@ -232,6 +233,9 @@ export default function App() {
         onClearAll={handleClearQuoteList}
         onNavigateToContactForm={handleTransferToContactForm}
       />
+
+      {/* Vercel Speed Insights */}
+      <SpeedInsights />
     </div>
   );
 }

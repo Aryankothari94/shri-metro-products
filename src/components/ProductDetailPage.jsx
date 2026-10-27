@@ -19,6 +19,8 @@ import {
   FileText
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
+import useSwipeGesture from '../hooks/useSwipeGesture';
+import GestureBackIndicator from './common/GestureBackIndicator';
 
 export default function ProductDetailPage({ 
   product, 
@@ -27,6 +29,14 @@ export default function ProductDetailPage({
 }) {
   const { company: companyDetails } = useData();
   if (!product) return null;
+
+  // Swipe gesture to go back to catalog
+  const { gestureState, touchHandlers } = useSwipeGesture({
+    onSwipeRight: onBack,
+    edgeOnly: true,
+    edgeWidth: 80,
+    threshold: 50,
+  });
 
   // 1. Color Switcher State
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || { name: 'Standard', hex: '#9B111E' });
@@ -83,7 +93,10 @@ export default function ProductDetailPage({
   const presetQuantities = [25, 50, 100, 250, 500];
 
   return (
-    <div className="bg-brand-bg py-8 sm:py-12 min-h-screen">
+    <div className="bg-brand-bg py-8 sm:py-12 min-h-screen relative" {...touchHandlers}>
+      {/* Visual Feedback on Swipe Gesture */}
+      <GestureBackIndicator gestureState={gestureState} label="Back to Catalog" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Navigation Breadcrumb & Back Button */}
@@ -95,7 +108,11 @@ export default function ProductDetailPage({
             <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center group-hover:border-red-300 group-hover:bg-red-50 transition-colors shadow-xs">
               <ArrowLeft className="w-4 h-4 text-slate-700 group-hover:text-red-600" />
             </div>
-            <span>Back to All Products</span>
+            <span className="hidden sm:inline">Back to All Products</span>
+            <span className="sm:hidden flex items-center gap-1.5">
+              <span>Back</span>
+              <span className="text-[10px] text-slate-400 font-normal px-1.5 py-0.5 rounded bg-slate-100">Swipe →</span>
+            </span>
           </button>
 
           {/* Breadcrumbs */}

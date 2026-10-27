@@ -12,6 +12,7 @@ import {
   FileText
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
+import useSwipeGesture from '../hooks/useSwipeGesture';
 
 export default function BulkQuoteDrawer({ 
   isOpen, 
@@ -23,6 +24,13 @@ export default function BulkQuoteDrawer({
   onNavigateToContactForm 
 }) {
   const { company: companyDetails, addInquiry } = useData();
+
+  // Swipe right to dismiss drawer gesture
+  const { gestureState, touchHandlers } = useSwipeGesture({
+    onSwipeRight: onClose,
+    threshold: 45,
+    disabled: !isOpen,
+  });
 
   if (!isOpen) return null;
 
@@ -72,10 +80,20 @@ export default function BulkQuoteDrawer({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950/75 backdrop-blur-sm flex justify-end animate-fadeIn">
+    <div 
+      className="fixed inset-0 z-50 overflow-hidden bg-slate-950/75 backdrop-blur-sm flex justify-end animate-fadeIn"
+      onClick={onClose}
+    >
       <div 
-        className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col justify-between border-l border-slate-200"
+        className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col justify-between border-l border-slate-200 transition-transform duration-75 select-none"
+        style={{
+          transform: gestureState.isSwiping && gestureState.direction === 'right'
+            ? `translateX(${gestureState.distanceX}px)`
+            : 'translateX(0)',
+          touchAction: 'pan-y'
+        }}
         onClick={(e) => e.stopPropagation()}
+        {...touchHandlers}
       >
         {/* Drawer Header */}
         <div className="p-4 sm:p-6 bg-gradient-to-r from-red-600 to-red-700 text-white flex items-center justify-between shadow-xs">

@@ -14,6 +14,7 @@ import {
   SlidersHorizontal
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
+import GestureBackIndicator from './common/GestureBackIndicator';
 
 // Duration of one full page turn (keep in sync with --flip-ms on the stage)
 const FLIP_MS = 900;
@@ -109,19 +110,49 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
   const handleNextPage = () => turnTo(currentIndex + 1);
   const handlePrevPage = () => turnTo(currentIndex - 1);
 
-  // Touch Swipe handlers for mobile vertical folding
+  const [edgeSwipe, setEdgeSwipe] = useState({ isSwiping: false, direction: 'right', distanceX: 0, isTriggered: false });
+
+  // Touch Swipe handlers for page turning and edge swipe-back
   const handleTouchStart = (e) => {
     if (!e.touches || e.touches.length === 0) return;
     touchStartY.current = e.touches[0].clientY;
     touchStartX.current = e.touches[0].clientX;
   };
 
+  const handleTouchMove = (e) => {
+    if (touchStartX.current === null || !e.touches || e.touches.length === 0) return;
+    const currentX = e.touches[0].clientX;
+    const deltaX = currentX - touchStartX.current;
+    if (touchStartX.current < 70 && deltaX > 10) {
+      setEdgeSwipe({
+        isSwiping: true,
+        direction: 'right',
+        distanceX: deltaX,
+        isTriggered: deltaX >= 55,
+      });
+    }
+  };
+
   const handleTouchEnd = (e) => {
-    if (touchStartY.current === null) return;
+    if (touchStartY.current === null || touchStartX.current === null) return;
     const endY = e.changedTouches[0].clientY;
     const endX = e.changedTouches[0].clientX;
     const deltaY = endY - touchStartY.current;
     const deltaX = endX - touchStartX.current;
+
+    // 1. Edge swipe right from screen left -> Go back to dashboard!
+    if (touchStartX.current < 70 && deltaX >= 55 && Math.abs(deltaX) > Math.abs(deltaY) * 0.8) {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try { navigator.vibrate(12); } catch (_) {}
+      }
+      setEdgeSwipe({ isSwiping: false, direction: null, distanceX: 0, isTriggered: false });
+      touchStartY.current = null;
+      touchStartX.current = null;
+      onBackToDashboard();
+      return;
+    }
+
+    setEdgeSwipe({ isSwiping: false, direction: null, distanceX: 0, isTriggered: false });
 
     // Vertical swipe: swipe up -> next page (fold vertically up to back), swipe down -> prev page
     if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 35) {
@@ -134,7 +165,12 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
       if (deltaX < 0) {
         handleNextPage();
       } else {
-        handlePrevPage();
+        if (currentIndex === 0) {
+          // If on the first model and swiping right, return to dashboard
+          onBackToDashboard();
+        } else {
+          handlePrevPage();
+        }
       }
     }
 
@@ -650,7 +686,14 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
   const canNext = currentIndex < filteredProducts.length - 1;
 
   return (
-    <div className="min-h-screen bg-slate-100/90 text-slate-900 flex flex-col font-sans">
+    <div 
+      className="min-h-screen bg-slate-100/90 text-slate-900 flex flex-col font-sans relative"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Visual Gesture Feedback for Edge Swipe Back */}
+      <GestureBackIndicator gestureState={edgeSwipe} label="Back to Dashboard" />
       
       {/* 1. Catalogue navigation bar */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-4 sm:px-6 lg:px-8 py-3 shadow-xs">
@@ -662,7 +705,11 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer group"
             >
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-              <span>Back to Dashboard</span>
+              <span className="hidden sm:inline">Back to Dashboard</span>
+              <span className="sm:hidden flex items-center gap-1.5">
+                <span>Back</span>
+                <span className="text-[10px] text-slate-400 font-normal px-1.5 py-0.5 rounded bg-white">Swipe →</span>
+              </span>
             </button>
             <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400">
               <span>/</span>

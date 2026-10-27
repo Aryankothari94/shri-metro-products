@@ -19,9 +19,10 @@ import AdminOverview from './AdminOverview';
 import AdminProducts from './AdminProducts';
 import AdminCategories from './AdminCategories';
 import AdminInquiries from './AdminInquiries';
-import AdminSettings from './AdminSettings';
 import ProductModalForm from './ProductModalForm';
 import Logo, { LogoIcon } from '../Logo';
+import useSwipeGesture from '../../hooks/useSwipeGesture';
+import GestureBackIndicator from '../common/GestureBackIndicator';
 
 export default function AdminLayout({ onGoHome }) {
   const { products, categories, inquiries, company, logout, addProduct } = useData();
@@ -30,6 +31,32 @@ export default function AdminLayout({ onGoHome }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [quickProductModalOpen, setQuickProductModalOpen] = useState(false);
+
+  // Edge swipe to go back (from modals -> subtabs -> overview -> public website)
+  const handleEdgeBack = () => {
+    if (quickProductModalOpen) {
+      setQuickProductModalOpen(false);
+      return;
+    }
+    if (mobileMenuOpen) {
+      setMobileMenuOpen(false);
+      return;
+    }
+    if (activeTab !== 'overview') {
+      setActiveTab('overview');
+      return;
+    }
+    if (onGoHome) {
+      onGoHome();
+    }
+  };
+
+  const { gestureState, touchHandlers } = useSwipeGesture({
+    onSwipeRight: handleEdgeBack,
+    edgeOnly: true,
+    edgeWidth: 65,
+    threshold: 50,
+  });
 
   const pendingInquiriesCount = inquiries.filter(i => i.status === 'New').length;
 
@@ -58,7 +85,15 @@ export default function AdminLayout({ onGoHome }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F6F8] text-[#111827] flex font-sans selection:bg-[#A30D20] selection:text-white">
+    <div 
+      className="min-h-screen bg-[#F5F6F8] text-[#111827] flex font-sans selection:bg-[#A30D20] selection:text-white relative"
+      {...touchHandlers}
+    >
+      {/* Edge Swipe Back Feedback */}
+      <GestureBackIndicator 
+        gestureState={gestureState} 
+        label={activeTab !== 'overview' ? 'Overview' : 'Website'} 
+      />
       
       {/* 1. Desktop Collapsible Sidebar (Deep Navy #111827 with Burgundy Red #A30D20 Active Items) */}
       <aside className={`hidden md:flex flex-col bg-[#111827] border-r border-[#1F2937] transition-all duration-300 relative z-30 shadow-md ${

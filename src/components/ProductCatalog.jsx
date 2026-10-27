@@ -12,6 +12,7 @@ import ProductCard from './ProductCard';
 import SpecTableView from './SpecTableView';
 import CatalogSidebar from './CatalogSidebar';
 import ProductModal from './ProductModal';
+import useSwipeGesture from '../hooks/useSwipeGesture';
 
 export default function ProductCatalog({
   selectedCategory,
@@ -29,6 +30,13 @@ export default function ProductCatalog({
   const [sortBy, setSortBy] = useState('featured');
   const [activeModalProduct, setActiveModalProduct] = useState(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  // Swipe right to dismiss mobile filter drawer
+  const { gestureState: filterGesture, touchHandlers: filterTouchHandlers } = useSwipeGesture({
+    onSwipeRight: () => setMobileFilterOpen(false),
+    threshold: 40,
+    disabled: !mobileFilterOpen,
+  });
 
   // Sync externalViewMode if provided
   React.useEffect(() => {
@@ -331,11 +339,27 @@ export default function ProductCatalog({
 
       {/* Mobile Drawer */}
       {mobileFilterOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden overflow-hidden bg-slate-950/60 backdrop-blur-xs flex justify-end">
-          <div className="w-full max-w-xs bg-white h-full overflow-y-auto p-5 shadow-2xl flex flex-col justify-between">
+        <div 
+          className="fixed inset-0 z-50 lg:hidden overflow-hidden bg-slate-950/60 backdrop-blur-xs flex justify-end animate-fadeIn"
+          onClick={() => setMobileFilterOpen(false)}
+        >
+          <div 
+            className="w-full max-w-xs bg-white h-full overflow-y-auto p-5 shadow-2xl flex flex-col justify-between transition-transform duration-75 select-none"
+            style={{
+              transform: filterGesture.isSwiping && filterGesture.direction === 'right'
+                ? `translateX(${filterGesture.distanceX}px)`
+                : 'translateX(0)',
+              touchAction: 'pan-y'
+            }}
+            onClick={(e) => e.stopPropagation()}
+            {...filterTouchHandlers}
+          >
             <div>
               <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
-                <span className="font-bold text-slate-900 text-xs uppercase tracking-wider">Filters</span>
+                <span className="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                  <span>Filters</span>
+                  <span className="text-[10px] text-slate-400 font-normal">Swipe →</span>
+                </span>
                 <button onClick={() => setMobileFilterOpen(false)} className="p-1 text-slate-400 hover:text-slate-700">
                   <X className="w-4 h-4" />
                 </button>

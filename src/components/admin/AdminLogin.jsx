@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
 import { ShieldCheck, Lock, User, Eye, EyeOff, ArrowRight, ArrowLeft, KeyRound, AlertCircle } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import { LogoIcon } from '../Logo';
+import useSwipeGesture from '../../hooks/useSwipeGesture';
+import GestureBackIndicator from '../common/GestureBackIndicator';
 
 export default function AdminLogin({ onLoginSuccess, onGoHome }) {
   const { login } = useData();
+
+  // Edge swipe to go back to public website
+  const { gestureState, touchHandlers } = useSwipeGesture({
+    onSwipeRight: onGoHome,
+    edgeOnly: true,
+    edgeWidth: 70,
+    threshold: 50,
+  });
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
@@ -35,7 +45,12 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F6F8] text-[#111827] flex flex-col justify-center items-center p-4 relative overflow-hidden font-sans selection:bg-[#A30D20] selection:text-white">
+    <div 
+      className="min-h-screen bg-[#F5F6F8] text-[#111827] flex flex-col justify-center items-center p-4 relative overflow-hidden font-sans selection:bg-[#A30D20] selection:text-white"
+      {...touchHandlers}
+    >
+      {/* Visual Gesture Feedback */}
+      <GestureBackIndicator gestureState={gestureState} label="Back to Website" />
       
       {/* Background industrial lighting accents */}
       <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#A30D20]/5 rounded-full blur-3xl pointer-events-none" />
@@ -50,7 +65,11 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
           className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-white hover:bg-[#F5F6F8] text-[#111827] border border-[#E5E7EB] shadow-xs backdrop-blur-md text-xs font-bold transition-all cursor-pointer group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-[#A30D20]" />
-          <span>Back to Public Website</span>
+          <span className="hidden sm:inline">Back to Public Website</span>
+          <span className="sm:hidden flex items-center gap-1.5">
+            <span>Website</span>
+            <span className="text-[10px] text-slate-400 font-normal px-1.5 py-0.5 rounded bg-slate-100">Swipe →</span>
+          </span>
         </button>
       </div>
 

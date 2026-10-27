@@ -17,9 +17,18 @@ import {
 import { useData } from '../../context/DataContext';
 import ImageUploadPicker from '../common/ImageUploadPicker';
 import { compressImageFile } from '../../utils/imageUtils';
+import useSwipeGesture from '../../hooks/useSwipeGesture';
 
 export default function ProductModalForm({ isOpen, onClose, productToEdit, onSave }) {
   const { categories } = useData();
+
+  // Swipe right or down to dismiss form
+  const { gestureState, touchHandlers } = useSwipeGesture({
+    onSwipeRight: onClose,
+    onSwipeDown: onClose,
+    threshold: 50,
+    disabled: !isOpen,
+  });
 
   const [activeTab, setActiveTab] = useState('basic'); // 'basic' | 'specs' | 'colors' | 'media' | 'visibility'
   const galleryFileRef = useRef(null);
@@ -244,8 +253,26 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#111827]/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
-      <div className="bg-white border border-[#E5E7EB] rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl text-[#111827] overflow-hidden my-auto animate-fadeIn">
+    <div 
+      className="fixed inset-0 z-50 bg-[#111827]/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white border border-[#E5E7EB] rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl text-[#111827] overflow-hidden my-auto transition-transform duration-75 select-none"
+        style={{
+          transform: gestureState.isSwiping
+            ? gestureState.direction === 'right'
+              ? `translateX(${gestureState.distanceX}px)`
+              : gestureState.direction === 'down'
+              ? `translateY(${gestureState.distanceY}px)`
+              : 'none'
+            : 'none',
+        }}
+        onClick={(e) => e.stopPropagation()}
+        {...touchHandlers}
+      >
+        {/* Mobile Swipe Handle */}
+        <div className="sm:hidden w-12 h-1 bg-slate-300 rounded-full mx-auto mt-2.5 mb-0.5" />
         
         {/* Top Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-[#E5E7EB] bg-[#F5F6F8]">

@@ -13,20 +13,46 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
+import useSwipeGesture from '../hooks/useSwipeGesture';
 
 export default function ProductModal({ product, onClose, onOpenPDP }) {
   const { company: companyDetails } = useData();
+
+  // Swipe right or swipe down to dismiss modal
+  const { gestureState, touchHandlers } = useSwipeGesture({
+    onSwipeRight: onClose,
+    onSwipeDown: onClose,
+    threshold: 45,
+    disabled: !product,
+  });
+
   if (!product) return null;
 
   const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20bulk%20quotation%20for%20${encodeURIComponent(product.name)}%20(Model%20Code%3A%20${product.modelCode}).`;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn">
+    <div 
+      className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
+      onClick={onClose}
+    >
       {/* Modal Card */}
       <div 
-        className="relative bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200 transform transition-all"
+        className="relative bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200 transform transition-all duration-75 select-none"
+        style={{
+          transform: gestureState.isSwiping
+            ? gestureState.direction === 'right'
+              ? `translateX(${gestureState.distanceX}px)`
+              : gestureState.direction === 'down'
+              ? `translateY(${gestureState.distanceY}px)`
+              : 'none'
+            : 'none',
+        }}
         onClick={(e) => e.stopPropagation()}
+        {...touchHandlers}
       >
+        {/* Mobile Swipe Hint Bar */}
+        <div className="sm:hidden w-12 h-1 bg-slate-300 rounded-full mx-auto mt-2.5 mb-1" />
+
         {/* Close Button */}
         <button
           onClick={onClose}

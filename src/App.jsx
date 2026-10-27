@@ -58,12 +58,18 @@ export default function App() {
   const handleOpenCatalogueBook = () => {
     setSelectedProductForPDP(null);
     setIsCatalogueBookOpen(true);
+    try {
+      window.history.pushState({ view: 'catalogue' }, '', '#catalogue');
+    } catch (_) {}
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackToDashboard = () => {
     setIsCatalogueBookOpen(false);
     setSelectedProductForPDP(null);
+    if (window.location.hash === '#catalogue') {
+      window.history.back();
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -92,11 +98,17 @@ export default function App() {
 
   const handleOpenPDP = (product) => {
     setSelectedProductForPDP(product);
+    try {
+      window.history.pushState({ view: 'pdp', productId: product.id }, '', `#product-${product.modelCode || product.id}`);
+    } catch (_) {}
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackFromPDP = () => {
     setSelectedProductForPDP(null);
+    if (window.location.hash.startsWith('#product-')) {
+      window.history.back();
+    }
     setTimeout(() => {
       const catalogElement = document.getElementById('catalog-section');
       if (catalogElement) {
@@ -104,6 +116,27 @@ export default function App() {
       }
     }, 50);
   };
+
+  // Synchronize browser/hardware back button with in-app views
+  React.useEffect(() => {
+    const handlePopState = () => {
+      if (isQuoteDrawerOpen) {
+        setIsQuoteDrawerOpen(false);
+        return;
+      }
+      if (selectedProductForPDP) {
+        setSelectedProductForPDP(null);
+        return;
+      }
+      if (isCatalogueBookOpen) {
+        setIsCatalogueBookOpen(false);
+        return;
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [isQuoteDrawerOpen, selectedProductForPDP, isCatalogueBookOpen]);
 
   const handleNavigateContact = () => {
     setSelectedProductForPDP(null);

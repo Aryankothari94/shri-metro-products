@@ -87,7 +87,7 @@ export default function AdminLayout({ onGoHome }) {
 
   return (
     <div 
-      className="min-h-screen bg-[#F5F6F8] text-[#111827] flex font-sans selection:bg-[#A30D20] selection:text-white relative"
+      className="h-screen w-full bg-[#F5F6F8] text-[#111827] flex font-sans selection:bg-[#A30D20] selection:text-white overflow-hidden relative"
       {...touchHandlers}
     >
       {/* Edge Swipe Back Feedback */}
@@ -96,13 +96,13 @@ export default function AdminLayout({ onGoHome }) {
         label={activeTab !== 'overview' ? 'Overview' : 'Website'} 
       />
       
-      {/* 1. Desktop Collapsible Sidebar (Deep Navy #111827 with Burgundy Red #A30D20 Active Items) */}
-      <aside className={`hidden md:flex flex-col bg-[#111827] border-r border-[#1F2937] transition-all duration-300 relative z-30 shadow-md ${
+      {/* 1. Desktop Sticky Fixed-Height Sidebar */}
+      <aside className={`hidden md:flex flex-col h-screen sticky top-0 bg-[#111827] border-r border-[#1F2937] transition-all duration-300 z-30 shadow-md shrink-0 select-none ${
         sidebarCollapsed ? 'w-20' : 'w-64'
       }`}>
         
         {/* Sidebar Brand Header */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-[#1F2937]">
+        <div className="h-16 shrink-0 flex items-center justify-between px-4 border-b border-[#1F2937]">
           <div className="flex items-center gap-3 overflow-hidden">
             <LogoIcon className="w-9 h-9 shrink-0 shadow-xs" />
             {!sidebarCollapsed && (
@@ -160,8 +160,8 @@ export default function AdminLayout({ onGoHome }) {
           })}
         </div>
 
-        {/* Sidebar Footer: Public site & Logout */}
-        <div className="p-3 border-t border-[#1F2937] space-y-2">
+        {/* Sidebar Footer: Public site & Logout (Pinned at bottom of screen) */}
+        <div className="shrink-0 p-3 border-t border-[#1F2937] space-y-2 bg-[#111827]">
           <button
             type="button"
             onClick={onGoHome}
@@ -192,11 +192,11 @@ export default function AdminLayout({ onGoHome }) {
 
       </aside>
 
-      {/* 2. Main Terminal Content Area (Cool Light Gray #F5F6F8) */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#F5F6F8]">
+      {/* 2. Main Terminal Content Area (Fixed Screen Height, Independent Scroll) */}
+      <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden bg-[#F5F6F8]">
         
-        {/* Top Header Bar (Pure White with Soft Gray #E5E7EB border) */}
-        <header className="h-16 bg-white border-b border-[#E5E7EB] px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 sticky top-0 z-20 shadow-2xs">
+        {/* Top Header Bar */}
+        <header className="h-16 shrink-0 bg-white border-b border-[#E5E7EB] px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 z-20 shadow-2xs">
           
           {/* Left: Mobile hamburger & breadcrumb */}
           <div className="flex items-center gap-3">

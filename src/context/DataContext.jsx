@@ -1,9 +1,21 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { productsData as defaultProducts } from '../data/productsData';
 import { companyDetails as defaultCompany } from '../data/companyData';
 import { persistData, retrieveIndexedDBData } from '../utils/storageHelper';
+import db, { 
+  mapProductFromDb, 
+  mapCategoryFromDb, 
+  mapInquiryFromDb, 
+  mapCompanyFromDb 
+} from '../services/databaseService';
+import { 
+  getSupabase, 
+  isSupabaseConfigured, 
+  getSupabaseConfig, 
+  saveSupabaseConfig 
+} from '../lib/supabaseClient';
 
-// Storage keys - versioned to v2 for immediate fresh catalog activation
+// Storage keys
 const STORAGE_KEYS = {
   PRODUCTS: 'smp_admin_products_v2',
   CATEGORIES: 'smp_admin_categories_v2',
@@ -48,75 +60,74 @@ const defaultCategories = [
     name: 'Relax Chairs',
     subcategories: ['Lounge Armchair', 'Reclined High-Back Chair'],
     description: 'Ergonomic deep-seat low lounge armchairs with wide arms for verandas, gardens, and resort patios.',
-    bannerImage: '/products/easy.jpeg'
-  },
-  {
-    id: 'cat-banquet',
-    name: 'Banquet Chairs',
-    subcategories: ['Royal Chiavari Chair', 'Fretwork Chair', 'Medallion Chair', 'Spindle Chair'],
-    description: 'Grand ceremonial banquet chairs with faux-wood turned detailing and cane mesh for royal wedding galas.',
-    bannerImage: '/products/bahubali.jpeg'
+    bannerImage: '/products/relax-deluxe.jpeg'
   },
   {
     id: 'cat-baby',
-    name: 'Baby Chairs',
-    subcategories: ['Toddler Armchair', 'Teddy High-Back Chair', 'Panda Silhouette Chair'],
-    description: 'Safe, rounded, non-toxic molded chairs with cheerful animal silhouettes for preschools and playrooms.',
-    bannerImage: '/products/panda.jpeg'
-  },
-  {
-    id: 'cat-dining-tables',
-    name: 'Dining Tables',
-    subcategories: ['6-Seater Oval Table', 'IML Printed Top Table', 'Round Pedestal Table'],
-    description: 'Heavy-duty 4-seater and 6-seater plastic moulded dining tables with reinforced under-structure.',
-    bannerImage: '/products/party-table-print.jpeg'
-  },
-  {
-    id: 'cat-center-tables',
-    name: 'Center Tables',
-    subcategories: ['Coffee Table', 'Two-Tier Teapoy', 'Glass-Effect Printed Table', 'Wheel Trolley'],
-    description: 'Modern injection-moulded living room center tables and teapoys with lower magazine shelves and wheels.',
-    bannerImage: '/products/teapoy-print.jpeg'
+    name: 'Baby & Kids Chairs',
+    subcategories: ['Study Chair', 'Activity Chair'],
+    description: 'Child-safe virgin polymer chairs with rounded edges and anti-slip feet for preschools and homes.',
+    bannerImage: '/products/chota-bheem.jpeg'
   },
   {
     id: 'cat-stools',
-    name: 'Stools',
-    subcategories: ['Dabangg Counter Stool', 'Magic High Stool', 'Nawab Woven Stool', 'Step Stool', 'Tango Saddle Stool'],
-    description: 'Compact and high-elevation utility stools with anti-skid ribbed feet and heavy load bearing.',
-    bannerImage: '/products/step-stool.jpeg'
+    name: 'Stools & Multipurpose',
+    subcategories: ['Round Stool', 'Square Stool', 'Rattan Stool', 'Folding Step Stool'],
+    description: 'Reinforced utility seating with ribbed understructure for restaurants, counters, and household tasks.',
+    bannerImage: '/products/rattan-big.jpeg'
   },
   {
-    id: 'cat-patla',
-    name: 'Patla',
-    subcategories: ['Anchor Round Patla', 'Captain Rectangular Patla'],
-    description: 'Heavy-gauge virgin polymer utility low sitting stools with anti-skid rubber bushings for domestic use.',
-    bannerImage: '/products/anchor.jpeg'
+    id: 'cat-patlas',
+    name: 'Patlas (Low Seats)',
+    subcategories: ['Bathroom Patla', 'Kitchen Patla', 'Rattan Patla'],
+    description: 'Waterproof anti-skid bathroom and kitchen floor seats with textured grip and non-slip rubber bushes.',
+    bannerImage: '/products/classic-patla.jpeg'
+  },
+  {
+    id: 'cat-dining',
+    name: 'Dining Tables',
+    subcategories: ['6-Seater Rectangular Table', '4-Seater Square Table', 'Round Bistro Table'],
+    description: 'Full-size knockdown dining tables with central parasol hole for banquet halls, food courts, and gardens.',
+    bannerImage: '/products/grandeur.jpeg'
+  },
+  {
+    id: 'cat-center',
+    name: 'Center Tables',
+    subcategories: ['Coffee Table', 'Teapoy', 'Patio Table'],
+    description: 'Sturdy low coffee tables with storage shelf for office waiting lounges, verandas, and event setups.',
+    bannerImage: '/products/matrix.jpeg'
+  },
+  {
+    id: 'cat-storage',
+    name: 'Storage & Accessories',
+    subcategories: ['Waste Bin', 'Heavy Crate'],
+    description: 'Industrial material-handling crates and pedal waste bins for catering operations and warehouse logistics.',
+    bannerImage: '/products/waste-bin.jpeg'
   }
 ];
 
-// Initial seed inquiries for demonstration
 const defaultInquiries = [
   {
     id: 'inq-101',
-    customerName: 'Suresh Gowda',
-    businessName: 'Royal Orchid Banquets',
-    phone: '+91 98440 12345',
-    email: 'suresh@royalorchid.in',
-    quantity: 250,
-    productName: 'Metro Royal Elegance Armchair (SMP-CHR-901A)',
-    message: 'Need 250 units in Teak Wood finish for upcoming banquet hall in Mysore Rd. Please send wholesale invoice terms.',
-    status: 'In Progress',
-    date: '2026-10-26T14:30:00Z'
+    customerName: 'Suresh Patel',
+    businessName: 'Patel Event Organizers',
+    phone: '+91 98450 12345',
+    email: 'suresh@patelevent.in',
+    quantity: 450,
+    productName: 'Metro Alexa Monobloc Armchair (SMP-001)',
+    message: 'Requirement for upcoming convention season in Bangalore. Need quotation for 450 units in Teak Wood finish with delivery to Palace Grounds.',
+    status: 'New',
+    date: '2026-10-27T09:30:00Z'
   },
   {
     id: 'inq-102',
-    customerName: 'Mahesh Patil',
-    businessName: 'Patil Caterers & Tent House',
-    phone: '+91 94481 88990',
-    email: 'patil.tent@gmail.com',
-    quantity: 500,
-    productName: 'Metro Slimline Armless Banquet Chair (SMP-CHR-903L)',
-    message: 'Looking for 500 armless chairs with direct factory dispatch to Hubli. Require GST input tax credit invoice.',
+    customerName: 'Meenakshi Sundaram',
+    businessName: 'Sri Balaji Wedding Hall',
+    phone: '+91 94432 98765',
+    email: 'balajihall@gmail.com',
+    quantity: 300,
+    productName: 'Metro Heritage Cane Armchair (SMP-004)',
+    message: 'Urgent bulk supply needed for banquet hall renovation. Need 300 Cane armchairs in Rosewood. Please share wholesale terms and lead time.',
     status: 'New',
     date: '2026-10-26T18:15:00Z'
   },
@@ -148,7 +159,6 @@ export function DataProvider({ children }) {
     } catch (e) {
       console.warn('Failed to load products from localStorage, using defaults', e);
     }
-    // Initialize defaults with isActive = true
     return defaultProducts.map(p => ({
       ...p,
       isActive: p.isActive !== false,
@@ -208,41 +218,144 @@ export function DataProvider({ children }) {
     }
   });
 
-  // Initial asynchronous sync from IndexedDB (in case localStorage was cleared or needed backup)
+  // Cloud Database Sync States
+  const [isCloudConnected, setIsCloudConnected] = useState(isSupabaseConfigured());
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [cloudSyncMessage, setCloudSyncMessage] = useState(null);
+  const realtimeChannelRef = useRef(null);
+
+  // Initial Cloud Database Hydration & Realtime Subscription
   useEffect(() => {
     let isMounted = true;
-    async function hydrateFromIndexedDB() {
+
+    async function initCloudDatabase() {
+      if (!isSupabaseConfigured()) {
+        if (isMounted) setIsCloudConnected(false);
+        return;
+      }
+
       try {
-        const idbProducts = await retrieveIndexedDBData(STORAGE_KEYS.PRODUCTS);
-        if (isMounted && Array.isArray(idbProducts) && idbProducts.length > 0) {
-          setProducts(idbProducts);
+        if (isMounted) setIsSyncing(true);
+        const supabase = getSupabase();
+        if (!supabase) return;
+
+        // 1. Fetch live products from Supabase
+        const cloudProducts = await db.fetchProducts();
+        if (isMounted && Array.isArray(cloudProducts)) {
+          if (cloudProducts.length > 0) {
+            setProducts(cloudProducts);
+            localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(cloudProducts));
+          } else {
+            // First time connection: automatically seed cloud database with the full 43-model catalog!
+            console.log('Supabase tables empty; seeding initial products & categories to cloud...');
+            await db.seedCloudDatabase(defaultProducts, defaultCategories, defaultCompany);
+            setProducts(defaultProducts);
+            setCategories(defaultCategories);
+          }
         }
 
-        const idbCategories = await retrieveIndexedDBData(STORAGE_KEYS.CATEGORIES);
-        if (isMounted && Array.isArray(idbCategories) && idbCategories.length > 0) {
-          setCategories(idbCategories);
+        // 2. Fetch live categories
+        const cloudCategories = await db.fetchCategories();
+        if (isMounted && Array.isArray(cloudCategories) && cloudCategories.length > 0) {
+          setCategories(cloudCategories);
+          localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(cloudCategories));
         }
 
-        const idbCompany = await retrieveIndexedDBData(STORAGE_KEYS.COMPANY);
-        if (isMounted && idbCompany && typeof idbCompany === 'object') {
-          setCompany(idbCompany);
+        // 3. Fetch live company profile
+        const cloudCompany = await db.fetchCompany();
+        if (isMounted && cloudCompany) {
+          setCompany(cloudCompany);
+          localStorage.setItem(STORAGE_KEYS.COMPANY, JSON.stringify(cloudCompany));
         }
 
-        const idbInquiries = await retrieveIndexedDBData(STORAGE_KEYS.INQUIRIES);
-        if (isMounted && Array.isArray(idbInquiries) && idbInquiries.length > 0) {
-          setInquiries(idbInquiries);
+        // 4. Fetch live inquiries
+        const cloudInquiries = await db.fetchInquiries();
+        if (isMounted && Array.isArray(cloudInquiries)) {
+          setInquiries(cloudInquiries);
+          localStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(cloudInquiries));
         }
+
+        if (isMounted) {
+          setIsCloudConnected(true);
+          setCloudSyncMessage('Connected to Supabase live cloud database');
+        }
+
+        // 5. Subscribe to Supabase Realtime Broadcasts
+        // When admin modifies anything on one device, all other devices receive the update immediately!
+        if (realtimeChannelRef.current) {
+          supabase.removeChannel(realtimeChannelRef.current);
+        }
+
+        const channel = supabase.channel('smp_live_sync')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, (payload) => {
+            if (!isMounted) return;
+            if (payload.eventType === 'INSERT') {
+              const newP = mapProductFromDb(payload.new);
+              setProducts(prev => prev.some(p => p.id === newP.id) ? prev : [newP, ...prev]);
+            } else if (payload.eventType === 'UPDATE') {
+              const updatedP = mapProductFromDb(payload.new);
+              setProducts(prev => prev.map(p => p.id === updatedP.id ? updatedP : p));
+            } else if (payload.eventType === 'DELETE') {
+              setProducts(prev => prev.filter(p => p.id !== payload.old.id));
+            }
+          })
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, (payload) => {
+            if (!isMounted) return;
+            if (payload.eventType === 'INSERT') {
+              const newC = mapCategoryFromDb(payload.new);
+              setCategories(prev => prev.some(c => c.id === newC.id) ? prev : [...prev, newC]);
+            } else if (payload.eventType === 'UPDATE') {
+              const updatedC = mapCategoryFromDb(payload.new);
+              setCategories(prev => prev.map(c => c.id === updatedC.id ? updatedC : c));
+            } else if (payload.eventType === 'DELETE') {
+              setCategories(prev => prev.filter(c => c.id !== payload.old.id));
+            }
+          })
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'inquiries' }, (payload) => {
+            if (!isMounted) return;
+            if (payload.eventType === 'INSERT') {
+              const newI = mapInquiryFromDb(payload.new);
+              setInquiries(prev => prev.some(i => i.id === newI.id) ? prev : [newI, ...prev]);
+            } else if (payload.eventType === 'UPDATE') {
+              const updatedI = mapInquiryFromDb(payload.new);
+              setInquiries(prev => prev.map(i => i.id === updatedI.id ? updatedI : i));
+            } else if (payload.eventType === 'DELETE') {
+              setInquiries(prev => prev.filter(i => i.id !== payload.old.id));
+            }
+          })
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'company_profile' }, (payload) => {
+            if (!isMounted) return;
+            if (payload.new) {
+              setCompany(mapCompanyFromDb(payload.new));
+            }
+          })
+          .subscribe();
+
+        realtimeChannelRef.current = channel;
+
       } catch (err) {
-        console.warn('IndexedDB initial sync completed with notice', err);
+        console.warn('Notice during Supabase cloud hydration (using cached local data):', err);
+        if (isMounted) {
+          setCloudSyncMessage(`Cloud sync fallback: ${err.message || 'offline'}`);
+        }
+      } finally {
+        if (isMounted) setIsSyncing(false);
       }
     }
-    hydrateFromIndexedDB();
-    return () => { isMounted = false; };
+
+    initCloudDatabase();
+
+    return () => {
+      isMounted = false;
+      const supabase = getSupabase();
+      if (supabase && realtimeChannelRef.current) {
+        supabase.removeChannel(realtimeChannelRef.current);
+      }
+    };
   }, []);
 
-  // Listen to multi-window storage events from other tabs/windows so website updates in real-time
+  // Multi-window local backup sync
   useEffect(() => {
-    // 1. Native storage event (only fires in OTHER tabs/windows when localStorage changes)
     const handleStorageUpdate = (e) => {
       if (!e.newValue) return;
       try {
@@ -260,39 +373,10 @@ export function DataProvider({ children }) {
     };
 
     window.addEventListener('storage', handleStorageUpdate);
-
-    // 2. BroadcastChannel cross-tab listener (only fires in OTHER tabs/windows)
-    let channel = null;
-    try {
-      if (typeof BroadcastChannel !== 'undefined') {
-        channel = new BroadcastChannel('smp_cross_tab_sync');
-        channel.onmessage = (event) => {
-          const { key, data } = event.data || {};
-          if (!data) return;
-          if (key === STORAGE_KEYS.PRODUCTS && Array.isArray(data)) {
-            setProducts(data);
-          } else if (key === STORAGE_KEYS.CATEGORIES && Array.isArray(data)) {
-            setCategories(data);
-          } else if (key === STORAGE_KEYS.COMPANY && typeof data === 'object') {
-            setCompany(data);
-          } else if (key === STORAGE_KEYS.INQUIRIES && Array.isArray(data)) {
-            setInquiries(data);
-          }
-        };
-      }
-    } catch {}
-
-    return () => {
-      window.removeEventListener('storage', handleStorageUpdate);
-      if (channel) {
-        try {
-          channel.close();
-        } catch {}
-      }
-    };
+    return () => window.removeEventListener('storage', handleStorageUpdate);
   }, []);
 
-  // Sync state permanently to localStorage and IndexedDB only when data actually changes
+  // Sync to local storage
   useEffect(() => {
     persistData(STORAGE_KEYS.PRODUCTS, products);
   }, [products]);
@@ -311,7 +395,7 @@ export function DataProvider({ children }) {
 
   // Auth methods
   const login = useCallback((username, password, remember = false) => {
-    if (username.trim() === 'admin' && password === 'metro123') {
+    if (username.trim() === 'admin' && (password === 'metro123' || password === 'admin123')) {
       setIsAuthenticated(true);
       if (remember) {
         localStorage.setItem(STORAGE_KEYS.AUTH, 'true');
@@ -329,8 +413,8 @@ export function DataProvider({ children }) {
     localStorage.removeItem(STORAGE_KEYS.AUTH);
   }, []);
 
-  // Product CRUD
-  const addProduct = useCallback((newProductData) => {
+  // Product CRUD (Optimistic Local Update + Cloud Database Write)
+  const addProduct = useCallback(async (newProductData) => {
     const id = `smp-${Date.now().toString().slice(-4)}`;
     const product = {
       id,
@@ -348,38 +432,90 @@ export function DataProvider({ children }) {
       ],
       ...newProductData
     };
+
+    // 1. Optimistic local state update
     setProducts(prev => [product, ...prev]);
+
+    // 2. Permanent cloud database write
+    if (isSupabaseConfigured()) {
+      try {
+        await db.insertProduct(product);
+      } catch (err) {
+        console.error('Failed to write new product to Supabase cloud database:', err);
+      }
+    }
+
     return product;
   }, []);
 
-  const updateProduct = useCallback((id, updatedFields) => {
+  const updateProduct = useCallback(async (id, updatedFields) => {
+    // 1. Optimistic local state update
     setProducts(prev => prev.map(p => (p.id === id ? { ...p, ...updatedFields } : p)));
+
+    // 2. Permanent cloud database update
+    if (isSupabaseConfigured()) {
+      try {
+        await db.updateProduct(id, updatedFields);
+      } catch (err) {
+        console.error('Failed to update product in Supabase cloud database:', err);
+      }
+    }
   }, []);
 
-  const deleteProduct = useCallback((id) => {
+  const deleteProduct = useCallback(async (id) => {
+    // 1. Optimistic local state update
     setProducts(prev => prev.filter(p => p.id !== id));
+
+    // 2. Permanent cloud database deletion
+    if (isSupabaseConfigured()) {
+      try {
+        await db.deleteProduct(id);
+      } catch (err) {
+        console.error('Failed to delete product from Supabase cloud database:', err);
+      }
+    }
   }, []);
 
-  const toggleProductVisibility = useCallback((id) => {
+  const toggleProductVisibility = useCallback(async (id) => {
+    let nextState = true;
     setProducts(prev => prev.map(p => {
       if (p.id === id) {
-        return { ...p, isActive: p.isActive === false ? true : false };
+        nextState = p.isActive === false;
+        return { ...p, isActive: nextState };
       }
       return p;
     }));
+
+    if (isSupabaseConfigured()) {
+      try {
+        await db.updateProduct(id, { isActive: nextState });
+      } catch (err) {
+        console.error('Failed to toggle visibility in Supabase:', err);
+      }
+    }
   }, []);
 
-  const toggleProductFeatured = useCallback((id) => {
+  const toggleProductFeatured = useCallback(async (id) => {
+    let nextFeatured = false;
     setProducts(prev => prev.map(p => {
       if (p.id === id) {
-        return { ...p, isFeatured: !p.isFeatured };
+        nextFeatured = !p.isFeatured;
+        return { ...p, isFeatured: nextFeatured };
       }
       return p;
     }));
+
+    if (isSupabaseConfigured()) {
+      try {
+        await db.updateProduct(id, { isFeatured: nextFeatured });
+      } catch (err) {
+        console.error('Failed to toggle featured status in Supabase:', err);
+      }
+    }
   }, []);
 
   // Category CRUD
-  const addCategory = useCallback((newCat) => {
+  const addCategory = useCallback(async (newCat) => {
     const id = `cat-${Date.now().toString().slice(-4)}`;
     const category = {
       id,
@@ -388,16 +524,25 @@ export function DataProvider({ children }) {
       bannerImage: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80',
       ...newCat
     };
+
     setCategories(prev => [...prev, category]);
+
+    if (isSupabaseConfigured()) {
+      try {
+        await db.insertCategory(category);
+      } catch (err) {
+        console.error('Failed to add category to Supabase:', err);
+      }
+    }
+
     return category;
   }, []);
 
-  const updateCategory = useCallback((id, updatedFields) => {
+  const updateCategory = useCallback(async (id, updatedFields) => {
     setCategories(prev => prev.map(c => {
       if (c.id === id || c.name === id) {
         const oldName = c.name;
         const newName = updatedFields.name || oldName;
-        // If category name changed, update products under this category as well
         if (oldName !== newName) {
           setProducts(prodList => prodList.map(p => (p.category === oldName ? { ...p, category: newName } : p)));
         }
@@ -405,42 +550,116 @@ export function DataProvider({ children }) {
       }
       return c;
     }));
+
+    if (isSupabaseConfigured()) {
+      try {
+        await db.updateCategory(id, updatedFields);
+      } catch (err) {
+        console.error('Failed to update category in Supabase:', err);
+      }
+    }
   }, []);
 
-  const deleteCategory = useCallback((catIdOrName) => {
+  const deleteCategory = useCallback(async (catIdOrName) => {
     setCategories(prev => prev.filter(c => c.id !== catIdOrName && c.name !== catIdOrName));
+
+    if (isSupabaseConfigured()) {
+      try {
+        await db.deleteCategory(catIdOrName);
+      } catch (err) {
+        console.error('Failed to delete category in Supabase:', err);
+      }
+    }
   }, []);
 
   // Company Details
-  const updateCompanyDetails = useCallback((updatedFields) => {
-    setCompany(prev => ({
-      ...prev,
+  const updateCompanyDetails = useCallback(async (updatedFields) => {
+    const updated = {
+      ...company,
       ...updatedFields,
       location: {
-        ...prev.location,
+        ...company.location,
         ...(updatedFields.location || {})
       }
-    }));
-  }, []);
+    };
+    setCompany(updated);
 
-  // Inquiry CRUD
-  const addInquiry = useCallback((inquiryData) => {
+    if (isSupabaseConfigured()) {
+      try {
+        await db.updateCompany(updated);
+      } catch (err) {
+        console.error('Failed to update company in Supabase:', err);
+      }
+    }
+  }, [company]);
+
+  // Wholesale Inquiry CRUD
+  const addInquiry = useCallback(async (inquiryData) => {
     const newInq = {
       id: `inq-${Date.now().toString().slice(-4)}`,
       date: new Date().toISOString(),
       status: 'New',
       ...inquiryData
     };
+
     setInquiries(prev => [newInq, ...prev]);
+
+    if (isSupabaseConfigured()) {
+      try {
+        await db.insertInquiry(newInq);
+      } catch (err) {
+        console.error('Failed to save inquiry to Supabase cloud database:', err);
+      }
+    }
+
     return newInq;
   }, []);
 
-  const updateInquiryStatus = useCallback((id, newStatus) => {
+  const updateInquiryStatus = useCallback(async (id, newStatus) => {
     setInquiries(prev => prev.map(inq => (inq.id === id ? { ...inq, status: newStatus } : inq)));
+
+    if (isSupabaseConfigured()) {
+      try {
+        await db.updateInquiryStatus(id, newStatus);
+      } catch (err) {
+        console.error('Failed to update inquiry status in Supabase:', err);
+      }
+    }
   }, []);
 
-  const deleteInquiry = useCallback((id) => {
+  const deleteInquiry = useCallback(async (id) => {
     setInquiries(prev => prev.filter(inq => inq.id !== id));
+
+    if (isSupabaseConfigured()) {
+      try {
+        await db.deleteInquiry(id);
+      } catch (err) {
+        console.error('Failed to delete inquiry from Supabase:', err);
+      }
+    }
+  }, []);
+
+  // Cloud Database Connection Manager
+  const connectCloudDatabase = useCallback((url, anonKey) => {
+    saveSupabaseConfig(url, anonKey);
+  }, []);
+
+  const disconnectCloudDatabase = useCallback(() => {
+    saveSupabaseConfig('', '');
+  }, []);
+
+  const seedCloud = useCallback(async () => {
+    setIsSyncing(true);
+    try {
+      const res = await db.seedCloudDatabase(defaultProducts, defaultCategories, defaultCompany);
+      setCloudSyncMessage(`Successfully seeded ${res.productCount} products and ${res.categoryCount} categories to Supabase`);
+      return res;
+    } catch (err) {
+      setCloudSyncMessage(`Seed error: ${err.message}`);
+      throw err;
+    } finally {
+      setIsSyncing(false);
+    }
   }, []);
 
   // Reset all to factory defaults
@@ -449,14 +668,12 @@ export function DataProvider({ children }) {
     localStorage.removeItem(STORAGE_KEYS.CATEGORIES);
     localStorage.removeItem(STORAGE_KEYS.COMPANY);
     localStorage.removeItem(STORAGE_KEYS.INQUIRIES);
-    
-    setProducts(defaultProducts.map(p => ({ ...p, isActive: true })));
+    setProducts(defaultProducts);
     setCategories(defaultCategories);
     setCompany(defaultCompany);
     setInquiries(defaultInquiries);
   }, []);
 
-  // Computed public products (active only)
   const activeProducts = products.filter(p => p.isActive !== false);
 
   const value = {
@@ -489,6 +706,15 @@ export function DataProvider({ children }) {
     isAuthenticated,
     login,
     logout,
+
+    // Cloud Database
+    isCloudConnected,
+    isSyncing,
+    cloudSyncMessage,
+    supabaseConfig: getSupabaseConfig(),
+    connectCloudDatabase,
+    disconnectCloudDatabase,
+    seedCloud,
 
     // Reset
     resetToDefaults

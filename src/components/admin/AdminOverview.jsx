@@ -12,7 +12,7 @@ import {
 import { useData } from '../../context/DataContext';
 
 export default function AdminOverview({ onNavigateTab, onOpenAddProduct, onOpenAddCategory, onGoHome }) {
-  const { products, categories, inquiries, company } = useData();
+  const { products, categories, inquiries, company, isCloudConnected } = useData();
 
   const activeProducts = products.filter(p => p.isActive !== false);
   const hiddenProducts = products.filter(p => p.isActive === false);
@@ -29,9 +29,24 @@ export default function AdminOverview({ onNavigateTab, onOpenAddProduct, onOpenA
 
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-[#A30D20] text-xs font-bold">
-              <span className="w-2 h-2 rounded-full bg-[#A30D20] animate-pulse" />
-              <span>Plant Operational • Kumbalgodu Unit Console</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-[#A30D20] text-xs font-bold">
+                <span className="w-2 h-2 rounded-full bg-[#A30D20] animate-pulse" />
+                <span>Plant Operational • Kumbalgodu Unit Console</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => onNavigateTab('settings')}
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                  isCloudConnected 
+                    ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' 
+                    : 'bg-amber-50 border border-amber-200 text-amber-800 hover:bg-amber-100 cursor-pointer'
+                }`}
+                title="Click to configure cloud database in Settings"
+              >
+                <span className={`w-2 h-2 rounded-full ${isCloudConnected ? 'bg-emerald-600 animate-pulse' : 'bg-amber-500'}`} />
+                <span>{isCloudConnected ? 'Supabase Live Sync' : 'Local Mode • Connect Cloud DB'}</span>
+              </button>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-[#111827] tracking-tight">
               Welcome, {company.proprietor}

@@ -34,6 +34,27 @@ export default function App() {
     }
   }, [isLogin, isAuthenticated, navigate]);
 
+  // Synchronize browser/hardware back button with in-app views
+  React.useEffect(() => {
+    const handlePopState = () => {
+      if (isQuoteDrawerOpen) {
+        setIsQuoteDrawerOpen(false);
+        return;
+      }
+      if (selectedProductForPDP) {
+        setSelectedProductForPDP(null);
+        return;
+      }
+      if (isCatalogueBookOpen) {
+        setIsCatalogueBookOpen(false);
+        return;
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [isQuoteDrawerOpen, selectedProductForPDP, isCatalogueBookOpen]);
+
   // ADMIN PORTAL & AUTHENTICATION ROUTES
   if (isAdmin || isLogin) {
     if (!isAuthenticated) {
@@ -113,27 +134,6 @@ export default function App() {
       }
     }, 50);
   };
-
-  // Synchronize browser/hardware back button with in-app views
-  React.useEffect(() => {
-    const handlePopState = () => {
-      if (isQuoteDrawerOpen) {
-        setIsQuoteDrawerOpen(false);
-        return;
-      }
-      if (selectedProductForPDP) {
-        setSelectedProductForPDP(null);
-        return;
-      }
-      if (isCatalogueBookOpen) {
-        setIsCatalogueBookOpen(false);
-        return;
-      }
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [isQuoteDrawerOpen, selectedProductForPDP, isCatalogueBookOpen]);
 
   const handleNavigateContact = () => {
     setSelectedProductForPDP(null);

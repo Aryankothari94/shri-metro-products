@@ -28,7 +28,6 @@ export default function ProductDetailPage({
   onAddToQuoteList 
 }) {
   const { company: companyDetails } = useData();
-  if (!product) return null;
 
   // Swipe gesture to go back to catalog
   const { gestureState, touchHandlers } = useSwipeGesture({
@@ -39,8 +38,8 @@ export default function ProductDetailPage({
   });
 
   // 1. Color Switcher State
-  const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || { name: 'Standard', hex: '#9B111E' });
-  const [activeImage, setActiveImage] = useState(product.colors?.[0]?.image || product.image);
+  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0] || { name: 'Standard', hex: '#9B111E' });
+  const [activeImage, setActiveImage] = useState(product?.colors?.[0]?.image || product?.image || '');
 
   // 2. Bulk Quantity Estimator State
   const [quantity, setQuantity] = useState(50);
@@ -50,18 +49,19 @@ export default function ProductDetailPage({
   // Handle Color Switch
   const handleColorSelect = (colorObj) => {
     setSelectedColor(colorObj);
-    if (colorObj.image) {
+    if (colorObj?.image) {
       setActiveImage(colorObj.image);
     }
   };
 
   // 3. Pre-formatted WhatsApp link generator
-  // Exact text required:
-  // "Hello SHRI METRO PRODUCTS, I am interested in [Product Name] ([Model Code]), Quantity: [Selected Quantity]. Please share bulk wholesale pricing."
   const formattedWhatsAppUrl = useMemo(() => {
+    if (!product) return '';
     const message = `Hello SHRI METRO PRODUCTS, I am interested in ${product.name} (${product.modelCode}), Quantity: ${quantity} units (Color: ${selectedColor?.name || 'Standard'}). Please share bulk wholesale pricing.`;
-    return `https://wa.me/${companyDetails.whatsappNumber}?text=${encodeURIComponent(message)}`;
-  }, [product, quantity, selectedColor]);
+    return `https://wa.me/${companyDetails?.whatsappNumber || ''}?text=${encodeURIComponent(message)}`;
+  }, [product, quantity, selectedColor, companyDetails]);
+
+  if (!product) return null;
 
   // Handle Add to Bulk Quote List
   const handleAddToList = () => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   X, 
   Plus, 
@@ -17,21 +18,29 @@ import {
 import { useData } from '../../context/DataContext';
 import ImageUploadPicker from '../common/ImageUploadPicker';
 import { compressImageFile } from '../../utils/imageUtils';
-import useSwipeGesture from '../../hooks/useSwipeGesture';
 
 export default function ProductModalForm({ isOpen, onClose, productToEdit, onSave }) {
   const { categories } = useData();
 
-  // Swipe right or down to dismiss form
-  const { gestureState, touchHandlers } = useSwipeGesture({
-    onSwipeRight: onClose,
-    onSwipeDown: onClose,
-    threshold: 50,
-    disabled: !isOpen,
-  });
-
   const [activeTab, setActiveTab] = useState('basic'); // 'basic' | 'specs' | 'colors' | 'media' | 'visibility'
   const galleryFileRef = useRef(null);
+
+  // Lock background body scroll and dismiss on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -252,32 +261,30 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
     onClose();
   };
 
-  return (
+  if (!isOpen) return null;
+
+  return createPortal(
     <div 
-      className="fixed inset-0 z-50 bg-[#111827]/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn"
-      onClick={onClose}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-5 overflow-hidden animate-fadeIn"
+      role="dialog"
+      aria-modal="true"
     >
+      {/* 1. Backdrop Overlay */}
       <div 
-        className="bg-white border border-[#E5E7EB] rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl text-[#111827] overflow-hidden my-auto transition-transform duration-75 select-none"
-        style={{
-          transform: gestureState.isSwiping
-            ? gestureState.direction === 'right'
-              ? `translateX(${gestureState.distanceX}px)`
-              : gestureState.direction === 'down'
-              ? `translateY(${gestureState.distanceY}px)`
-              : 'none'
-            : 'none',
-        }}
+        className="fixed inset-0 bg-[#0F172A]/70 backdrop-blur-xs transition-opacity cursor-pointer"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      {/* 2. Dialog Modal Card: centered, fixed max height, internal scroll */}
+      <div 
+        className="relative z-10 bg-white border border-[#E5E7EB] rounded-2xl sm:rounded-3xl w-full max-w-3xl h-[88vh] max-h-[740px] flex flex-col shadow-2xl text-[#111827] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
-        {...touchHandlers}
       >
-        {/* Mobile Swipe Handle */}
-        <div className="sm:hidden w-12 h-1 bg-slate-300 rounded-full mx-auto mt-2.5 mb-0.5" />
-        
         {/* Top Header */}
-        <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-[#E5E7EB] bg-[#F5F6F8]">
+        <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 sm:py-4 border-b border-[#E5E7EB] bg-[#F8FAFC] shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-red-50 border border-red-200 text-[#A30D20] flex items-center justify-center font-bold text-sm shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-red-50 border border-red-200 text-[#A30D20] flex items-center justify-center font-bold text-sm shrink-0">
               {productToEdit ? '✎' : '+'}
             </div>
             <div className="min-w-0">
@@ -292,14 +299,15 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#64748B] hover:text-[#111827] hover:bg-white transition-colors cursor-pointer shrink-0 ml-2"
+            className="p-1.5 rounded-xl text-[#64748B] hover:text-[#111827] hover:bg-slate-200 transition-colors cursor-pointer shrink-0 ml-2"
+            aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Navigation Strip */}
-        <div className="flex items-center gap-1.5 px-4 sm:px-6 py-2 sm:py-2.5 bg-white border-b border-[#E5E7EB] overflow-x-auto text-xs font-semibold">
+        <div className="flex items-center gap-1.5 px-5 sm:px-6 py-2.5 bg-white border-b border-[#E5E7EB] overflow-x-auto text-xs font-semibold shrink-0">
           {[
             { id: 'basic', label: '1. Basic Info' },
             { id: 'specs', label: '2. Technical Specs' },
@@ -311,7 +319,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`px-3 sm:px-3.5 py-1.5 rounded-lg whitespace-nowrap transition-all cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all cursor-pointer ${
                 activeTab === tab.id
                   ? 'bg-red-50 text-[#A30D20] border border-red-200/80 font-bold'
                   : 'text-[#64748B] hover:text-[#111827] hover:bg-[#F5F6F8] border border-transparent'
@@ -322,8 +330,10 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
           ))}
         </div>
 
-        {/* Form Content Area */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 sm:space-y-6">
+        {/* Form Container (wraps scrollable tabs and sticky footer) */}
+        <form onSubmit={handleSubmit} className="flex-1 flex flex-col min-h-0 overflow-hidden">
+          {/* Scrollable Form Body */}
+          <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
           
           {/* TAB 1: BASIC INFO */}
           {activeTab === 'basic' && (
@@ -831,12 +841,14 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
             </div>
           )}
 
-          {/* Footer Save & Cancel Buttons */}
-          <div className="pt-4 border-t border-[#E5E7EB] flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-2.5 sm:gap-3">
+          </div>
+
+          {/* Sticky Modal Footer: Always pinned and visible */}
+          <div className="shrink-0 px-5 sm:px-6 py-4 bg-[#F8FAFC] border-t border-[#E5E7EB] flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#F5F6F8] hover:bg-slate-200 text-[#111827] text-xs font-bold cursor-pointer transition-colors border border-[#E5E7EB] text-center"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-[#64748B] hover:text-[#111827] text-xs font-bold cursor-pointer transition-colors border border-[#E5E7EB] text-center"
             >
               Cancel
             </button>
@@ -854,6 +866,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
         </form>
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

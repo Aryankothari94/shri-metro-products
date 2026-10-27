@@ -19,6 +19,7 @@ import AdminOverview from './AdminOverview';
 import AdminProducts from './AdminProducts';
 import AdminCategories from './AdminCategories';
 import AdminInquiries from './AdminInquiries';
+import AdminSettings from './AdminSettings';
 import ProductModalForm from './ProductModalForm';
 import Logo, { LogoIcon } from '../Logo';
 import useSwipeGesture from '../../hooks/useSwipeGesture';

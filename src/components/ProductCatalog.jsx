@@ -5,6 +5,8 @@ import {
   SlidersHorizontal, 
   X, 
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Filter
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
@@ -132,6 +134,48 @@ export default function ProductCatalog({
       return 0;
     });
   }, [activeProducts, selectedCategory, stackableOnly, selectedColor, searchQuery, sortBy]);
+
+  // 6 Items Per Page Pagination State & Calculations
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 6;
+
+  // Automatically reset to page 1 whenever any filter or search criteria changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, stackableOnly, selectedColor, searchQuery, sortBy]);
+
+  const totalItems = filteredProducts.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
+  const safeCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+
+  const startIndex = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+
+  const paginatedProducts = useMemo(() => {
+    return filteredProducts.slice(startIndex, endIndex);
+  }, [filteredProducts, startIndex, endIndex]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    setCurrentPage(newPage);
+    const catalogElement = document.getElementById('catalog-section');
+    if (catalogElement) {
+      catalogElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const getPageNumbers = () => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    if (safeCurrentPage <= 4) {
+      return [1, 2, 3, 4, 5, '...', totalPages];
+    }
+    if (safeCurrentPage >= totalPages - 3) {
+      return [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    }
+    return [1, '...', safeCurrentPage - 1, safeCurrentPage, safeCurrentPage + 1, '...', totalPages];
+  };
 
   const activeFilterCount = useMemo(() => {
     let count = 0;
@@ -314,7 +358,7 @@ export default function ProductCatalog({
               </div>
             ) : viewMode === 'grid' ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                {filteredProducts.map(product => (
+                {paginatedProducts.map(product => (
                   <ProductCard
                     key={product.id}
                     product={product}
@@ -325,10 +369,82 @@ export default function ProductCatalog({
               </div>
             ) : (
               <SpecTableView
-                products={filteredProducts}
+                products={paginatedProducts}
                 onQuickView={(p) => setActiveModalProduct(p)}
                 onViewDetails={onSelectProductForPDP}
               />
+            )}
+
+            {/* Pagination Controls Bar */}
+            {totalItems > 0 && (
+              <div className="bg-white rounded-xl border border-slate-200/90 p-3 sm:p-4 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3 mt-6">
+                {/* Left: Range and inventory count */}
+                <div className="text-xs text-slate-500 font-medium text-center sm:text-left">
+                  Showing <span className="font-bold text-slate-900">{totalItems === 0 ? 0 : startIndex + 1}</span>–
+                  <span className="font-bold text-slate-900">{endIndex}</span> of{' '}
+                  <span className="font-bold text-red-600">{totalItems}</span> models
+                  {totalPages > 1 && (
+                    <span className="text-slate-400 ml-1.5">(Page {safeCurrentPage} of {totalPages})</span>
+                  )}
+                </div>
+
+                {/* Right: Pagination buttons (only needed if total items exceed 1 page) */}
+                {totalPages > 1 && (
+                  <div className="flex items-center gap-1.5">
+                    {/* Previous Button */}
+                    <button
+                      type="button"
+                      onClick={() => handlePageChange(safeCurrentPage - 1)}
+                      disabled={safeCurrentPage === 1}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-2xs"
+                      aria-label="Previous page"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Prev</span>
+                    </button>
+
+                    {/* Page Numbers */}
+                    <div className="flex items-center gap-1">
+                      {getPageNumbers().map((page, idx) => {
+                        if (page === '...') {
+                          return (
+                            <span key={`ellipsis-${idx}`} className="px-2 text-xs text-slate-400 select-none">
+                              …
+                            </span>
+                          );
+                        }
+                        const isActive = page === safeCurrentPage;
+                        return (
+                          <button
+                            key={page}
+                            type="button"
+                            onClick={() => handlePageChange(page)}
+                            className={`w-8 h-8 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center justify-center ${
+                              isActive
+                                ? 'bg-red-600 text-white shadow-xs'
+                                : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80'
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Next Button */}
+                    <button
+                      type="button"
+                      onClick={() => handlePageChange(safeCurrentPage + 1)}
+                      disabled={safeCurrentPage === totalPages}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-2xs"
+                      aria-label="Next page"
+                    >
+                      <span className="hidden sm:inline">Next</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
 
           </main>

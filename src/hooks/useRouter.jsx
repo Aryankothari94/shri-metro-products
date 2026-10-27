@@ -4,18 +4,32 @@ export function useRouter() {
   const getRoute = () => {
     if (typeof window === 'undefined') return { path: '/', isAdmin: false, isLogin: false };
     
-    // Check both pathname and hash (e.g., #/admin)
-    const path = window.location.pathname;
-    const hash = window.location.hash.replace('#', '');
-    const current = hash || path;
+    const pathname = (window.location.pathname || '/').toLowerCase().replace(/\/+$/, '') || '/';
+    const rawHash = (window.location.hash || '').toLowerCase();
+    const hashClean = rawHash.replace(/^#\/?/, '/').replace(/\/+$/, '');
 
-    if (current === '/admin/login' || current.startsWith('/admin/login')) {
+    const isLogin = 
+      pathname === '/admin/login' || 
+      pathname.startsWith('/admin/login/') ||
+      hashClean === '/admin/login' ||
+      hashClean.startsWith('/admin/login/');
+
+    const isAdmin = !isLogin && (
+      pathname === '/admin' || 
+      pathname.startsWith('/admin/') || 
+      hashClean === '/admin' || 
+      hashClean.startsWith('/admin/') ||
+      rawHash === '#admin' ||
+      rawHash === '#/admin'
+    );
+
+    if (isLogin) {
       return { path: '/admin/login', isAdmin: false, isLogin: true };
     }
-    if (current === '/admin' || current.startsWith('/admin')) {
+    if (isAdmin) {
       return { path: '/admin', isAdmin: true, isLogin: false };
     }
-    return { path: '/', isAdmin: false, isLogin: false };
+    return { path: pathname, isAdmin: false, isLogin: false };
   };
 
   const [route, setRoute] = useState(getRoute);

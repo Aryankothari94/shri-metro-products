@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { ShieldCheck, Lock, User, Eye, EyeOff, ArrowRight, ArrowLeft, KeyRound, AlertCircle } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import { LogoIcon } from '../Logo';

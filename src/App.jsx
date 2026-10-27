@@ -27,25 +27,22 @@ export default function App() {
   const [prefilledInquiryMessage, setPrefilledInquiryMessage] = useState("");
   const [catalogViewMode, setCatalogViewMode] = useState('grid'); // 'grid' | 'table'
 
-  // ROUTE 1: /admin/login
-  if (isLogin) {
-    if (isAuthenticated) {
+  // Synchronize URL to /admin when authenticated on /admin/login
+  React.useEffect(() => {
+    if (isLogin && isAuthenticated) {
       navigate('/admin');
-      return null;
     }
-    return (
-      <AdminLogin 
-        onLoginSuccess={() => navigate('/admin')} 
-        onGoHome={() => navigate('/')} 
-      />
-    );
-  }
+  }, [isLogin, isAuthenticated, navigate]);
 
-  // ROUTE 2: /admin
-  if (isAdmin) {
+  // ADMIN PORTAL & AUTHENTICATION ROUTES
+  if (isAdmin || isLogin) {
     if (!isAuthenticated) {
-      navigate('/admin/login');
-      return null;
+      return (
+        <AdminLogin 
+          onLoginSuccess={() => navigate('/admin')} 
+          onGoHome={() => navigate('/')} 
+        />
+      );
     }
     return (
       <AdminLayout 

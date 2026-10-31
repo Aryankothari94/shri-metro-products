@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import ProductCatalog from './components/ProductCatalog';
 import ProductDetailPage from './components/ProductDetailPage';
 import CatalogueBookPage from './components/CatalogueBookPage';
+import AboutUsPage from './components/AboutUsPage';
 import WhyChooseUs from './components/WhyChooseUs';
 import ContactPage from './components/ContactPage';
 import BulkQuoteDrawer from './components/BulkQuoteDrawer';
@@ -19,6 +20,7 @@ export default function App() {
   const { isAdmin, isLogin, navigate } = useRouter();
 
   const [isCatalogueBookOpen, setIsCatalogueBookOpen] = useState(false);
+  const [isAboutPageOpen, setIsAboutPageOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProductForPDP, setSelectedProductForPDP] = useState(null);
@@ -49,11 +51,32 @@ export default function App() {
         setIsCatalogueBookOpen(false);
         return;
       }
+      if (isAboutPageOpen) {
+        setIsAboutPageOpen(false);
+        return;
+      }
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [isQuoteDrawerOpen, selectedProductForPDP, isCatalogueBookOpen]);
+  }, [isQuoteDrawerOpen, selectedProductForPDP, isCatalogueBookOpen, isAboutPageOpen]);
+
+  // Synchronize hash / path navigation for #about and /about
+  React.useEffect(() => {
+    const handleHashCheck = () => {
+      const hash = window.location.hash;
+      const path = (window.location.pathname || '').toLowerCase();
+      if (hash === '#about' || path === '/about') {
+        setSelectedProductForPDP(null);
+        setIsCatalogueBookOpen(false);
+        setIsAboutPageOpen(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    handleHashCheck();
+    window.addEventListener('hashchange', handleHashCheck);
+    return () => window.removeEventListener('hashchange', handleHashCheck);
+  }, []);
 
   // ADMIN PORTAL & AUTHENTICATION ROUTES
   if (isAdmin || isLogin) {
@@ -75,6 +98,7 @@ export default function App() {
   // ROUTE 3: Public Website
   const handleOpenCatalogueBook = () => {
     setSelectedProductForPDP(null);
+    setIsAboutPageOpen(false);
     setIsCatalogueBookOpen(true);
     try {
       window.history.pushState({ view: 'catalogue' }, '', '#catalogue');
@@ -91,31 +115,97 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleOpenAboutPage = () => {
+    setSelectedProductForPDP(null);
+    setIsCatalogueBookOpen(false);
+    setIsAboutPageOpen(true);
+    try {
+      window.history.pushState({ view: 'about' }, '', '#about');
+    } catch (_) {}
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBackFromAbout = () => {
+    setIsAboutPageOpen(false);
+    if (window.location.hash === '#about') {
+      window.history.back();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleExploreCatalogFromAbout = () => {
+    setIsAboutPageOpen(false);
+    handleExploreCatalog();
+  };
+
+  const handleNavigateContactFromAbout = () => {
+    setIsAboutPageOpen(false);
+    handleNavigateContact();
+  };
+
+  const handleOpenCatalogueBookFromAbout = () => {
+    setIsAboutPageOpen(false);
+    handleOpenCatalogueBook();
+  };
+
   const handleExploreCatalog = () => {
     setSelectedProductForPDP(null);
+    setIsAboutPageOpen(false);
+    setIsCatalogueBookOpen(false);
     setCatalogViewMode('grid');
-    const catalogElement = document.getElementById('catalog-section');
-    if (catalogElement) {
-      catalogElement.scrollIntoView({ behavior: 'smooth' });
+    if (window.location.hash === '#about' || window.location.hash === '#catalogue' || window.location.hash.startsWith('#product-')) {
+      window.history.pushState({}, '', '/');
     }
+    setTimeout(() => {
+      const catalogElement = document.getElementById('catalog-section');
+      if (catalogElement) {
+        catalogElement.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 60);
   };
 
   const handleSwitchToTable = () => {
     setSelectedProductForPDP(null);
+    setIsAboutPageOpen(false);
+    setIsCatalogueBookOpen(false);
     setCatalogViewMode('table');
-    const catalogElement = document.getElementById('catalog-section');
-    if (catalogElement) {
-      catalogElement.scrollIntoView({ behavior: 'smooth' });
+    if (window.location.hash === '#about' || window.location.hash === '#catalogue' || window.location.hash.startsWith('#product-')) {
+      window.history.pushState({}, '', '/');
     }
+    setTimeout(() => {
+      const catalogElement = document.getElementById('catalog-section');
+      if (catalogElement) {
+        catalogElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 60);
+  };
+
+  const handleNavigateQuality = () => {
+    setSelectedProductForPDP(null);
+    setIsAboutPageOpen(false);
+    setIsCatalogueBookOpen(false);
+    if (window.location.hash === '#about' || window.location.hash === '#catalogue' || window.location.hash.startsWith('#product-')) {
+      window.history.pushState({}, '', '/');
+    }
+    setTimeout(() => {
+      const qualityElement = document.getElementById('why-us');
+      if (qualityElement) {
+        qualityElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 60);
   };
 
   const handleSelectCategory = (category) => {
     setSelectedProductForPDP(null);
+    setIsAboutPageOpen(false);
     setSelectedCategory(category);
   };
 
   const handleOpenPDP = (product) => {
     setSelectedProductForPDP(product);
+    setIsAboutPageOpen(false);
     try {
       window.history.pushState({ view: 'pdp', productId: product.id }, '', `#product-${product.modelCode || product.id}`);
     } catch (_) {}
@@ -137,17 +227,26 @@ export default function App() {
 
   const handleNavigateContact = () => {
     setSelectedProductForPDP(null);
+    setIsCatalogueBookOpen(false);
+    setIsAboutPageOpen(false);
+    if (window.location.hash === '#about' || window.location.hash === '#catalogue' || window.location.hash.startsWith('#product-')) {
+      window.history.pushState({}, '', '/');
+    }
     setTimeout(() => {
       const contactElement = document.getElementById('contact-section');
       if (contactElement) {
         contactElement.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 50);
+    }, 60);
   };
 
   const handleLogoClick = () => {
     setSelectedProductForPDP(null);
     setIsCatalogueBookOpen(false);
+    setIsAboutPageOpen(false);
+    if (window.location.hash === '#about' || window.location.hash === '#catalogue' || window.location.hash.startsWith('#product-')) {
+      window.history.pushState({}, '', '/');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -194,12 +293,15 @@ export default function App() {
         quoteListCount={quoteList.length}
         onOpenQuoteDrawer={() => setIsQuoteDrawerOpen(true)}
         onNavigateContact={handleNavigateContact}
+        onNavigateAbout={handleOpenAboutPage}
+        onNavigateQuality={handleNavigateQuality}
+        onNavigateCatalog={handleExploreCatalog}
         onLogoClick={handleLogoClick}
         onSwitchView={setCatalogViewMode}
         onOpenCatalogueBook={handleOpenCatalogueBook}
       />
 
-      {/* Conditional: Either show full Product Detail Page (PDP), Full Catalogue Lookbook, OR the Clean Dashboard */}
+      {/* Conditional: Either show full Product Detail Page (PDP), Full Catalogue Lookbook, Dedicated About Us Page, OR the Clean Dashboard */}
       {selectedProductForPDP ? (
         <ProductDetailPage
           product={activeProducts.find(p => p.id === selectedProductForPDP?.id) || selectedProductForPDP}
@@ -210,6 +312,13 @@ export default function App() {
         <CatalogueBookPage
           onBackToDashboard={handleBackToDashboard}
           onAddToQuoteList={handleAddToQuoteList}
+        />
+      ) : isAboutPageOpen ? (
+        <AboutUsPage
+          onBackToDashboard={handleBackFromAbout}
+          onExploreCatalog={handleExploreCatalog}
+          onNavigateContact={handleNavigateContact}
+          onOpenCatalogueBook={handleOpenCatalogueBook}
         />
       ) : (
         <>
@@ -230,19 +339,23 @@ export default function App() {
             externalViewMode={catalogViewMode}
           />
 
-          {/* 5. Clean Quality & Technical Standards Benchmark */}
+          {/* 4. Clean Quality & Technical Standards Benchmark */}
           <WhyChooseUs />
 
-          {/* 6. Comprehensive Factory Location, Route Map & Interactive Inquiry Form */}
+          {/* 5. Comprehensive Factory Location, Route Map & Interactive Inquiry Form */}
           <ContactPage prefilledMessage={prefilledInquiryMessage} />
         </>
       )}
 
-      {/* 7. Minimal Clean Footer with Admin Portal Access */}
+      {/* 6. Minimal Clean Footer with Admin Portal Access */}
       <Footer 
         onSelectCategory={handleSelectCategory} 
         onOpenCatalogueBook={handleOpenCatalogueBook}
         onNavigateAdmin={() => navigate('/admin')}
+        onNavigateAbout={handleOpenAboutPage}
+        onNavigateCatalog={handleExploreCatalog}
+        onNavigateQuality={handleNavigateQuality}
+        onNavigateContact={handleNavigateContact}
       />
 
       {/* 8. Floating Inquiry Cart Button */}

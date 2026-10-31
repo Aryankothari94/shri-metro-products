@@ -9,6 +9,17 @@ export const companyDetails = {
   whatsappLink: "https://wa.me/919845287888?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20to%20inquire%20about%20your%20furniture%20products.",
   email: "info@shrimetroproducts.com", // standard inquiries
   gstin: "29AKZPJ1388F1ZH",
+  establishedYear: "2012",
+  dailyCapacity: "2,000+ pieces/day",
+  marketPresence: "Southern Indian Market",
+  motto: "Quality you can rely on. Service you can trust.",
+  aboutUs: {
+    title: "About Us",
+    intro: "SHRI METRO PRODUCTS is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.",
+    scale: "With a manufacturing capacity of 2,000+ pieces per day and a strong presence across the Southern Indian market, we combine manufacturing expertise with a commitment to quality, consistency and dependable service.",
+    philosophy: "We believe our success comes from our customers. That’s why we focus on understanding their requirements, delivering reliable products, maintaining consistent quality and building long-term relationships based on trust.",
+    tagline: "SHRI METRO PRODUCTS — Quality you can rely on. Service you can trust."
+  },
   location: {
     siteNo: "Site no: 10, 11",
     estate: "Vaishno Devi Industrial Estate",

@@ -11,7 +11,15 @@ import {
 import { useData } from '../context/DataContext';
 import Logo from './Logo';
 
-export default function Footer({ onSelectCategory, onOpenCatalogueBook, onNavigateAdmin }) {
+export default function Footer({ 
+  onSelectCategory, 
+  onOpenCatalogueBook, 
+  onNavigateAdmin, 
+  onNavigateAbout,
+  onNavigateCatalog,
+  onNavigateQuality,
+  onNavigateContact
+}) {
   const { company, categories } = useData();
 
   const scrollToTop = () => {
@@ -19,6 +27,18 @@ export default function Footer({ onSelectCategory, onOpenCatalogueBook, onNaviga
   };
 
   const scrollToSection = (id) => {
+    if (id === 'catalog-section' && onNavigateCatalog) {
+      onNavigateCatalog();
+      return;
+    }
+    if (id === 'why-us' && onNavigateQuality) {
+      onNavigateQuality();
+      return;
+    }
+    if (id === 'contact-section' && onNavigateContact) {
+      onNavigateContact();
+      return;
+    }
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
@@ -43,24 +63,28 @@ export default function Footer({ onSelectCategory, onOpenCatalogueBook, onNaviga
             <Logo variant="horizontal" theme="dark" iconSize="w-9 h-9" subtitle="Plastic Moulded Furniture" />
             
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              Direct manufacturer of industrial-grade plastic moulded furniture. Engineered with 100% virgin polymer for banquet halls, event enterprises, and wholesale dealers across South India.
+              Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012 with a manufacturing capacity of 2,000+ pieces per day across South India.
             </p>
 
             {/* Minimalist Trust Badges */}
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                100% Virgin PP
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                Since 2012
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                200 kg Tested
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                2,000+ Pcs/Day
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300 font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                Direct Factory Gate
+                100% Virgin PP
               </span>
             </div>
+
+            <p className="text-[11px] text-slate-500 font-medium italic pt-1">
+              “Quality you can rely on. Service you can trust.”
+            </p>
           </div>
 
           {/* Quick Links (2 cols) */}
@@ -69,6 +93,18 @@ export default function Footer({ onSelectCategory, onOpenCatalogueBook, onNaviga
               Quick Links
             </p>
             <ul className="space-y-2.5">
+              <li>
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    if (onNavigateAbout) onNavigateAbout();
+                    else scrollToSection('about-section');
+                  }}
+                  className="hover:text-white transition-colors cursor-pointer text-left"
+                >
+                  About Us
+                </button>
+              </li>
               <li>
                 <button 
                   type="button" 

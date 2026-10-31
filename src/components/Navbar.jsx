@@ -14,6 +14,9 @@ export default function Navbar({
   quoteListCount = 0,
   onOpenQuoteDrawer,
   onNavigateContact,
+  onNavigateAbout,
+  onNavigateQuality,
+  onNavigateCatalog,
   onLogoClick,
   onOpenCatalogueBook
 }) {
@@ -21,20 +24,33 @@ export default function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
+    { label: "About Us", id: "about-section", isAbout: true },
     { label: "Catalogue", id: "catalog-section", isCatalogue: true },
-    { label: "Quality & Testing", id: "why-us" },
+    { label: "Quality & Testing", id: "why-us", isQuality: true },
     { label: "Contact Factory", id: "contact-section", isContact: true }
   ];
 
   const handleNavClick = (item) => {
     setMobileMenuOpen(false);
+    if (item.isAbout) {
+      if (onNavigateAbout) onNavigateAbout();
+      return;
+    }
     if (item.isCatalogue && onOpenCatalogueBook) {
       onOpenCatalogueBook();
       return;
     }
+    if (item.isQuality) {
+      if (onNavigateQuality) {
+        onNavigateQuality();
+        return;
+      }
+    }
     if (item.isContact) {
-      if (onNavigateContact) onNavigateContact();
-      return;
+      if (onNavigateContact) {
+        onNavigateContact();
+        return;
+      }
     }
     const element = document.getElementById(item.id);
     if (element) {

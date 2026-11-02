@@ -148,9 +148,10 @@
 }
 
 /* =========================================================
-   REALISTIC BOOK PAGE-TURN SYSTEM
-   A double-sided sheet hinged on the spine, with lift,
-   light/shade passes and shadows cast on the pages below.
+   REALISTIC BOOK PAGE-TURN SYSTEM (iOS WebKit & Desktop GPU Safe)
+   Uses a two-phase 3D hinge fold across the spine (0° -> 90° front,
+   90° -> 0° back) so neither sheet ever goes into negative Z space
+   or relies on fragile preserve-3d backface culling on iOS Safari.
    ========================================================= */
 .book-stage {
   perspective: 2400px;
@@ -158,8 +159,10 @@
 }
 
 .page-flipper {
-  transform-style: preserve-3d;
-  will-change: transform;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(2px);
 }
 
 .page-face {
@@ -171,34 +174,53 @@
   -webkit-backface-visibility: hidden;
 }
 
-.page-face-back {
-  transform: rotateY(180deg);
+/* Desktop NEXT: Right page folds left to spine (0-50%), Left page unfolds from spine (50-100%) */
+@keyframes pageFoldNextFrontDesktop {
+  0%     { transform: perspective(2200px) rotateY(0deg); opacity: 1; }
+  49.9%  { transform: perspective(2200px) rotateY(-90deg); opacity: 1; }
+  50%, 100% { transform: perspective(2200px) rotateY(-90deg); opacity: 0; }
 }
 
-/* Sheet rotation – lifts slightly off the book at mid-turn */
-@keyframes pageTurnNext {
-  0%   { transform: translateZ(0px)  rotateY(0deg); }
-  50%  { transform: translateZ(36px) rotateY(-90deg); }
-  100% { transform: translateZ(0px)  rotateY(-180deg); }
+@keyframes pageFoldNextBackDesktop {
+  0%, 49.9% { transform: perspective(2200px) rotateY(90deg); opacity: 0; }
+  50%    { transform: perspective(2200px) rotateY(90deg); opacity: 1; }
+  100%   { transform: perspective(2200px) rotateY(0deg); opacity: 1; }
 }
 
-@keyframes pageTurnPrev {
-  0%   { transform: translateZ(0px)  rotateY(0deg); }
-  50%  { transform: translateZ(36px) rotateY(90deg); }
-  100% { transform: translateZ(0px)  rotateY(180deg); }
+/* Desktop PREV: Left page folds right to spine (0-50%), Right page unfolds from spine (50-100%) */
+@keyframes pageFoldPrevFrontDesktop {
+  0%     { transform: perspective(2200px) rotateY(0deg); opacity: 1; }
+  49.9%  { transform: perspective(2200px) rotateY(90deg); opacity: 1; }
+  50%, 100% { transform: perspective(2200px) rotateY(90deg); opacity: 0; }
 }
 
-.animate-page-turn-next {
+@keyframes pageFoldPrevBackDesktop {
+  0%, 49.9% { transform: perspective(2200px) rotateY(-90deg); opacity: 0; }
+  50%    { transform: perspective(2200px) rotateY(-90deg); opacity: 1; }
+  100%   { transform: perspective(2200px) rotateY(0deg); opacity: 1; }
+}
+
+.animate-page-fold-next-front-desktop {
   transform-origin: left center;
-  animation: pageTurnNext var(--flip-ms, 1000ms) cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+  animation: pageFoldNextFrontDesktop var(--flip-ms, 600ms) cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-.animate-page-turn-prev {
+.animate-page-fold-next-back-desktop {
   transform-origin: right center;
-  animation: pageTurnPrev var(--flip-ms, 1000ms) cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+  animation: pageFoldNextBackDesktop var(--flip-ms, 600ms) cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-/* Shading on the turning sheet (darkens as it turns away from the light) */
+.animate-page-fold-prev-front-desktop {
+  transform-origin: right center;
+  animation: pageFoldPrevFrontDesktop var(--flip-ms, 600ms) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-page-fold-prev-back-desktop {
+  transform-origin: left center;
+  animation: pageFoldPrevBackDesktop var(--flip-ms, 600ms) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Shading on the turning sheet (darkens as it approaches 90° spine) */
 .flip-shade {
   position: absolute;
   inset: 0;
@@ -207,22 +229,22 @@
 
 @keyframes flipShadeFront {
   0%   { opacity: 0; }
-  50%  { opacity: 0.55; }
-  100% { opacity: 0.7; }
+  50%  { opacity: 0.45; }
+  100% { opacity: 0.45; }
 }
 
 @keyframes flipShadeBack {
-  0%   { opacity: 0.7; }
-  50%  { opacity: 0.55; }
+  0%   { opacity: 0.45; }
+  50%  { opacity: 0.45; }
   100% { opacity: 0; }
 }
 
 .flip-shade-front {
-  animation: flipShadeFront var(--flip-ms, 1000ms) ease-in forwards;
+  animation: flipShadeFront var(--flip-ms, 600ms) ease-in both;
 }
 
 .flip-shade-back {
-  animation: flipShadeBack var(--flip-ms, 1000ms) ease-out forwards;
+  animation: flipShadeBack var(--flip-ms, 600ms) ease-out both;
 }
 
 /* Glossy light sweep across the paper while it turns */
@@ -352,10 +374,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-page-turn-next,
-  .animate-page-turn-prev,
-  .animate-page-turn-next-vertical,
-  .animate-page-turn-prev-vertical,
+  .animate-page-fold-next-front-desktop,
+  .animate-page-fold-next-back-desktop,
+  .animate-page-fold-prev-front-desktop,
+  .animate-page-fold-prev-back-desktop,
+  .animate-page-fold-next-front-vertical,
+  .animate-page-fold-next-back-vertical,
+  .animate-page-fold-prev-front-vertical,
+  .animate-page-fold-prev-back-vertical,
   .flip-shade-front,
   .flip-shade-back,
   .flip-shade-front-vertical,
@@ -373,13 +399,11 @@
 }
 
 /* =========================================================
-   REALISTIC VERTICAL BOOK PAGE-TURN SYSTEM (MOBILE & VERTICAL SCREENS)
-   A double-sided sheet hinged on the horizontal center spine.
-   Folds vertically "up to back" in 3D perspective!
+   REALISTIC VERTICAL BOOK PAGE-TURN SYSTEM (MOBILE & iOS SAFARI)
+   Uses a two-phase hardware-accelerated 3D spine fold where
+   z' = -y * sin(angle) > 0 at all times (never behind the book).
    ========================================================= */
 .book-stage-vertical {
-  perspective: 2400px;
-  perspective-origin: 50% 50%;
   touch-action: pan-y;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -387,8 +411,9 @@
 }
 
 .page-flipper-vertical {
-  transform-style: preserve-3d;
-  will-change: transform;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .page-face-vertical {
@@ -400,53 +425,81 @@
   -webkit-backface-visibility: hidden;
 }
 
-.page-face-vertical-back {
-  transform: rotateX(180deg);
+/* Mobile NEXT:
+   Phase 1 (0% -> 50%): Bottom sheet (transform-origin: top center, y > 0)
+   lifts OUT toward viewer (rotateX: 0deg -> -90deg, so z' = -y*sin(-90deg) = +y > 0)
+   Phase 2 (50% -> 100%): Top sheet (transform-origin: bottom center, y < 0)
+   unfolds OUT toward viewer (rotateX: +90deg -> 0deg, so z' = -y*sin(+90deg) = +|y| > 0)
+*/
+@keyframes pageFoldNextFrontVertical {
+  0%     { transform: perspective(1800px) rotateX(0deg); opacity: 1; }
+  49.9%  { transform: perspective(1800px) rotateX(-90deg); opacity: 1; }
+  50%, 100% { transform: perspective(1800px) rotateX(-90deg); opacity: 0; }
 }
 
-/* Vertical Sheet rotation – bottom page folds UPWARDS over center horizontal spine onto top page */
-@keyframes pageTurnNextVertical {
-  0%   { transform: translateZ(0px)  rotateX(0deg); }
-  50%  { transform: translateZ(40px) rotateX(90deg); }
-  100% { transform: translateZ(0px)  rotateX(180deg); }
+@keyframes pageFoldNextBackVertical {
+  0%, 49.9% { transform: perspective(1800px) rotateX(90deg); opacity: 0; }
+  50%    { transform: perspective(1800px) rotateX(90deg); opacity: 1; }
+  100%   { transform: perspective(1800px) rotateX(0deg); opacity: 1; }
 }
 
-/* Top page folds DOWNWARDS over center horizontal spine onto bottom page */
-@keyframes pageTurnPrevVertical {
-  0%   { transform: translateZ(0px)  rotateX(0deg); }
-  50%  { transform: translateZ(40px) rotateX(-90deg); }
-  100% { transform: translateZ(0px)  rotateX(-180deg); }
+/* Mobile PREV:
+   Phase 1 (0% -> 50%): Top sheet (transform-origin: bottom center, y < 0)
+   lifts OUT toward viewer (rotateX: 0deg -> +90deg, so z' > 0)
+   Phase 2 (50% -> 100%): Bottom sheet (transform-origin: top center, y > 0)
+   unfolds OUT toward viewer (rotateX: -90deg -> 0deg, so z' > 0)
+*/
+@keyframes pageFoldPrevFrontVertical {
+  0%     { transform: perspective(1800px) rotateX(0deg); opacity: 1; }
+  49.9%  { transform: perspective(1800px) rotateX(90deg); opacity: 1; }
+  50%, 100% { transform: perspective(1800px) rotateX(90deg); opacity: 0; }
 }
 
-.animate-page-turn-next-vertical {
+@keyframes pageFoldPrevBackVertical {
+  0%, 49.9% { transform: perspective(1800px) rotateX(-90deg); opacity: 0; }
+  50%    { transform: perspective(1800px) rotateX(-90deg); opacity: 1; }
+  100%   { transform: perspective(1800px) rotateX(0deg); opacity: 1; }
+}
+
+.animate-page-fold-next-front-vertical {
   transform-origin: top center;
-  animation: pageTurnNextVertical var(--flip-ms, 900ms) cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+  animation: pageFoldNextFrontVertical var(--flip-ms, 600ms) cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-.animate-page-turn-prev-vertical {
+.animate-page-fold-next-back-vertical {
   transform-origin: bottom center;
-  animation: pageTurnPrevVertical var(--flip-ms, 900ms) cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+  animation: pageFoldNextBackVertical var(--flip-ms, 600ms) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-page-fold-prev-front-vertical {
+  transform-origin: bottom center;
+  animation: pageFoldPrevFrontVertical var(--flip-ms, 600ms) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-page-fold-prev-back-vertical {
+  transform-origin: top center;
+  animation: pageFoldPrevBackVertical var(--flip-ms, 600ms) cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 /* Vertical shading pass */
 @keyframes flipShadeFrontVertical {
   0%   { opacity: 0; }
-  50%  { opacity: 0.6; }
-  100% { opacity: 0.75; }
+  50%  { opacity: 0.45; }
+  100% { opacity: 0.45; }
 }
 
 @keyframes flipShadeBackVertical {
-  0%   { opacity: 0.75; }
-  50%  { opacity: 0.6; }
+  0%   { opacity: 0.45; }
+  50%  { opacity: 0.45; }
   100% { opacity: 0; }
 }
 
 .flip-shade-front-vertical {
-  animation: flipShadeFrontVertical var(--flip-ms, 900ms) ease-in forwards;
+  animation: flipShadeFrontVertical var(--flip-ms, 600ms) ease-in both;
 }
 
 .flip-shade-back-vertical {
-  animation: flipShadeBackVertical var(--flip-ms, 900ms) ease-out forwards;
+  animation: flipShadeBackVertical var(--flip-ms, 600ms) ease-out both;
 }
 
 /* Glossy light sweep vertically across paper */

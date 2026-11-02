@@ -18,7 +18,7 @@ import GestureBackIndicator from './common/GestureBackIndicator';
 import useSwipeGesture from '../hooks/useSwipeGesture';
 
 // Duration of one full page turn (keep in sync with --flip-ms on the stage)
-const FLIP_MS = 900;
+const FLIP_MS = 600;
 
 const useMediaQuery = (query, fallback = false) => {
   const [matches, setMatches] = useState(() =>
@@ -80,6 +80,20 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
   const currentProduct = filteredProducts[currentIndex] || filteredProducts[0];
   const targetProduct = flip ? filteredProducts[flip.to] : null;
   const displayIndex = flip ? flip.to : currentIndex;
+
+  // Preload adjacent product images in GPU memory so iOS Safari never flickers mid-turn
+  useEffect(() => {
+    const indicesToPreload = [currentIndex - 1, currentIndex, currentIndex + 1, currentIndex + 2];
+    indicesToPreload.forEach((idx) => {
+      const p = filteredProducts[idx];
+      if (!p) return;
+      const urls = [p.image, ...(p.colors || []).map(c => c.image)].filter(Boolean);
+      urls.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    });
+  }, [currentIndex, filteredProducts]);
 
   const getColor = (product, idx) =>
     product?.colors?.[idx] || product?.colors?.[0] || { name: "Standard", hex: "#9B111E", image: product?.image };
@@ -201,18 +215,19 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
           <img 
             src={color.image || product.image || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'} 
             alt={product.name}
-            key={color.image || product.image}
+            loading="eager"
+            decoding="sync"
             draggable="false"
             className="absolute inset-0 w-full h-full object-contain p-3 drop-shadow-md"
             onError={(e) => {
               e.currentTarget.src = 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80';
             }}
           />
-          <div className="absolute top-2 left-2 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-2xs text-[10px] font-bold text-slate-800">
+          <div className="absolute top-2 left-2 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 border border-slate-200 shadow-2xs text-[10px] font-bold text-slate-800">
             <ShieldCheck className="w-3 h-3 text-red-600" />
             <span>{product.loadCapacityKg} Tested</span>
           </div>
-          <div className="absolute bottom-2 left-2 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-2xs text-[10px] font-bold text-slate-800">
+          <div className="absolute bottom-2 left-2 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 border border-slate-200 shadow-2xs text-[10px] font-bold text-slate-800">
             <Layers className="w-3 h-3 text-slate-700" />
             <span>{product.stackabilityLimit}</span>
           </div>
@@ -404,18 +419,19 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
           <img
             src={color.image || product.image || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'}
             alt={product.name}
-            key={color.image || product.image}
+            loading="eager"
+            decoding="sync"
             draggable="false"
             className="max-h-[140px] w-auto object-contain p-1 drop-shadow-md pointer-events-none select-none"
             onError={(e) => {
               e.currentTarget.src = 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80';
             }}
           />
-          <div className="absolute top-1 left-1 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 shadow-2xs text-[9px] font-bold text-slate-800">
+          <div className="absolute top-1 left-1 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/95 border border-slate-200 shadow-2xs text-[9px] font-bold text-slate-800">
             <ShieldCheck className="w-3 h-3 text-red-600" />
             <span>{product.loadCapacityKg} Tested</span>
           </div>
-          <div className="absolute bottom-1 left-1 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 shadow-2xs text-[9px] font-bold text-slate-800">
+          <div className="absolute bottom-1 left-1 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/95 border border-slate-200 shadow-2xs text-[9px] font-bold text-slate-800">
             <Layers className="w-3 h-3 text-slate-700" />
             <span>{product.stackabilityLimit}</span>
           </div>
@@ -796,36 +812,50 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
                 {/* Binding crease */}
                 <div className="book-spine absolute inset-y-0 left-1/2 -translate-x-1/2 w-12 z-20 pointer-events-none" />
 
-                {/* The turning sheet */}
+                {/* The turning sheet (Two-phase 3D spine fold — iOS & Desktop GPU safe) */}
                 {flip && (
-                  <div
-                    key={`${flip.dir}-${flip.to}`}
-                    className={`page-flipper absolute top-0 bottom-0 w-1/2 z-30 ${
-                      flip.dir === 'next' ? 'left-1/2 animate-page-turn-next' : 'left-0 animate-page-turn-prev'
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {/* Front face */}
-                    <div className={`page-face shadow-xl ${flip.dir === 'next' ? 'rounded-r-2xl' : 'rounded-l-2xl'}`}>
-                      {sheetFront}
-                      <div className={`flip-shade flip-shade-front ${
+                  <>
+                    {/* Phase 1 (0-50%): Front sheet lifts from origin side toward center spine */}
+                    <div
+                      key={`desk-front-${flip.dir}-${flip.to}`}
+                      className={`page-flipper absolute top-0 bottom-0 w-1/2 z-30 ${
                         flip.dir === 'next'
-                          ? 'bg-gradient-to-r from-slate-900/5 via-slate-900/20 to-slate-900/40'
-                          : 'bg-gradient-to-l from-slate-900/5 via-slate-900/20 to-slate-900/40'
-                      }`} />
-                      <div className="flip-sheen" />
+                          ? 'left-1/2 animate-page-fold-next-front-desktop'
+                          : 'left-0 animate-page-fold-prev-front-desktop'
+                      }`}
+                      aria-hidden="true"
+                    >
+                      <div className={`page-face shadow-xl ${flip.dir === 'next' ? 'rounded-r-2xl' : 'rounded-l-2xl'}`}>
+                        {sheetFront}
+                        <div className={`flip-shade flip-shade-front ${
+                          flip.dir === 'next'
+                            ? 'bg-gradient-to-r from-slate-900/5 via-slate-900/20 to-slate-900/40'
+                            : 'bg-gradient-to-l from-slate-900/5 via-slate-900/20 to-slate-900/40'
+                        }`} />
+                        <div className="flip-sheen" />
+                      </div>
                     </div>
 
-                    {/* Back face */}
-                    <div className={`page-face page-face-back shadow-xl ${flip.dir === 'next' ? 'rounded-l-2xl' : 'rounded-r-2xl'}`}>
-                      {sheetBack}
-                      <div className={`flip-shade flip-shade-back ${
+                    {/* Phase 2 (50-100%): Back sheet unfolds from center spine onto destination side */}
+                    <div
+                      key={`desk-back-${flip.dir}-${flip.to}`}
+                      className={`page-flipper absolute top-0 bottom-0 w-1/2 z-30 ${
                         flip.dir === 'next'
-                          ? 'bg-gradient-to-l from-slate-900/5 via-slate-900/20 to-slate-900/40'
-                          : 'bg-gradient-to-r from-slate-900/5 via-slate-900/20 to-slate-900/40'
-                      }`} />
+                          ? 'left-0 animate-page-fold-next-back-desktop'
+                          : 'left-1/2 animate-page-fold-prev-back-desktop'
+                      }`}
+                      aria-hidden="true"
+                    >
+                      <div className={`page-face shadow-xl ${flip.dir === 'next' ? 'rounded-l-2xl' : 'rounded-r-2xl'}`}>
+                        {sheetBack}
+                        <div className={`flip-shade flip-shade-back ${
+                          flip.dir === 'next'
+                            ? 'bg-gradient-to-l from-slate-900/5 via-slate-900/20 to-slate-900/40'
+                            : 'bg-gradient-to-r from-slate-900/5 via-slate-900/20 to-slate-900/40'
+                        }`} />
+                      </div>
                     </div>
-                  </div>
+                  </>
                 )}
               </div>
 
@@ -923,30 +953,42 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
                 {/* Horizontal binding spine in the center */}
                 <div className="book-spine-horizontal absolute inset-x-0 top-1/2 -translate-y-1/2 h-8 z-20 pointer-events-none" />
 
-                {/* Mobile 3D turning sheet (folds vertically around center horizontal spine) */}
+                {/* Mobile 3D turning sheet (Two-phase vertical spine fold — 100% iOS Safari WebKit safe) */}
                 {flip && (
-                  <div
-                    key={`mobile-${flip.dir}-${flip.to}`}
-                    className={`page-flipper-vertical absolute inset-x-0 z-30 ${
-                      flip.dir === 'next'
-                        ? 'top-1/2 bottom-0 animate-page-turn-next-vertical'
-                        : 'top-0 h-1/2 animate-page-turn-prev-vertical'
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {/* Front face */}
-                    <div className={`page-face-vertical shadow-xl ${flip.dir === 'next' ? 'rounded-b-2xl' : 'rounded-t-2xl'}`}>
-                      {mobileSheetFront}
-                      <div className="flip-shade-front-vertical flip-shade bg-gradient-to-b from-slate-900/5 via-slate-900/25 to-slate-900/40" />
-                      <div className="flip-sheen-vertical" />
+                  <>
+                    {/* Phase 1 (0-50%): Front sheet folds toward center horizontal spine */}
+                    <div
+                      key={`mobile-front-${flip.dir}-${flip.to}`}
+                      className={`page-flipper-vertical absolute inset-x-0 z-30 ${
+                        flip.dir === 'next'
+                          ? 'top-1/2 bottom-0 animate-page-fold-next-front-vertical'
+                          : 'top-0 bottom-1/2 animate-page-fold-prev-front-vertical'
+                      }`}
+                      aria-hidden="true"
+                    >
+                      <div className={`page-face-vertical shadow-xl ${flip.dir === 'next' ? 'rounded-b-2xl' : 'rounded-t-2xl'}`}>
+                        {mobileSheetFront}
+                        <div className="flip-shade-front-vertical flip-shade bg-gradient-to-b from-slate-900/5 via-slate-900/25 to-slate-900/40" />
+                        <div className="flip-sheen-vertical" />
+                      </div>
                     </div>
 
-                    {/* Back face (rotated 180deg so after 3D vertical turn it lands upright) */}
-                    <div className={`page-face-vertical page-face-vertical-back shadow-xl ${flip.dir === 'next' ? 'rounded-t-2xl' : 'rounded-b-2xl'}`}>
-                      {mobileSheetBack}
-                      <div className="flip-shade-back-vertical flip-shade bg-gradient-to-t from-slate-900/5 via-slate-900/25 to-slate-900/40" />
+                    {/* Phase 2 (50-100%): Back sheet unfolds from center horizontal spine onto destination half */}
+                    <div
+                      key={`mobile-back-${flip.dir}-${flip.to}`}
+                      className={`page-flipper-vertical absolute inset-x-0 z-30 ${
+                        flip.dir === 'next'
+                          ? 'top-0 bottom-1/2 animate-page-fold-next-back-vertical'
+                          : 'top-1/2 bottom-0 animate-page-fold-prev-back-vertical'
+                      }`}
+                      aria-hidden="true"
+                    >
+                      <div className={`page-face-vertical shadow-xl ${flip.dir === 'next' ? 'rounded-t-2xl' : 'rounded-b-2xl'}`}>
+                        {mobileSheetBack}
+                        <div className="flip-shade-back-vertical flip-shade bg-gradient-to-t from-slate-900/5 via-slate-900/25 to-slate-900/40" />
+                      </div>
                     </div>
-                  </div>
+                  </>
                 )}
               </div>
 

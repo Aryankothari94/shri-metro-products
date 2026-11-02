@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import GestureBackIndicator from './common/GestureBackIndicator';
+import useSwipeGesture from '../hooks/useSwipeGesture';
 
 // Duration of one full page turn (keep in sync with --flip-ms on the stage)
 const FLIP_MS = 900;
@@ -48,11 +49,6 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
 
   const flipTimer = useRef(null);
   const toastTimer = useRef(null);
-  const touchStartY = useRef(null);
-  const touchStartX = useRef(null);
-  const touchStartTime = useRef(null);
-  const isDraggingBook = useRef(false);
-  const [swipeHint, setSwipeHint] = useState(null); // { direction: 'up' | 'down', isTriggered: boolean }
 
   // Dynamic available categories with reactive counts
   const categories = [
@@ -113,135 +109,13 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
   const handleNextPage = () => turnTo(currentIndex + 1);
   const handlePrevPage = () => turnTo(currentIndex - 1);
 
-  const [edgeSwipe, setEdgeSwipe] = useState({ isSwiping: false, direction: 'right', distanceX: 0, isTriggered: false });
-
-  // Touch Swipe handlers for mobile page turning (swipe up/down) and edge swipe-back
-  const handleTouchStart = (e) => {
-    if (!e.touches || e.touches.length === 0) return;
-    touchStartY.current = e.touches[0].clientY;
-    touchStartX.current = e.touches[0].clientX;
-    touchStartTime.current = Date.now();
-    isDraggingBook.current = true;
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isDraggingBook.current || touchStartX.current === null || touchStartY.current === null || !e.touches || e.touches.length === 0) return;
-    const currentX = e.touches[0].clientX;
-    const currentY = e.touches[0].clientY;
-    const deltaX = currentX - touchStartX.current;
-    const deltaY = currentY - touchStartY.current;
-
-    // 1. Edge swipe right from screen left (< 70px) -> Trigger back indicator
-    if (touchStartX.current < 70 && deltaX > 10 && Math.abs(deltaX) > Math.abs(deltaY)) {
-      setEdgeSwipe({
-        isSwiping: true,
-        direction: 'right',
-        distanceX: deltaX,
-        isTriggered: deltaX >= 55,
-      });
-      return;
-    }
-
-    // 2. Real-time swipe hint for vertical page folding (swipe up / down)
-    const absY = Math.abs(deltaY);
-    const absX = Math.abs(deltaX);
-    if (absY > 15 && absY > absX) {
-      setSwipeHint({
-        direction: deltaY < 0 ? 'up' : 'down',
-        isTriggered: absY >= 28,
-      });
-    } else {
-      setSwipeHint(null);
-    }
-  };
-
-  const handleTouchEnd = (e) => {
-    if (!isDraggingBook.current || touchStartY.current === null || touchStartX.current === null) {
-      isDraggingBook.current = false;
-      setSwipeHint(null);
-      return;
-    }
-    isDraggingBook.current = false;
-    setSwipeHint(null);
-
-    const touch = e.changedTouches ? e.changedTouches[0] : null;
-    if (!touch) {
-      touchStartY.current = null;
-      touchStartX.current = null;
-      setEdgeSwipe({ isSwiping: false, direction: null, distanceX: 0, isTriggered: false });
-      return;
-    }
-
-    const endY = touch.clientY;
-    const endX = touch.clientX;
-    const deltaY = endY - touchStartY.current;
-    const deltaX = endX - touchStartX.current;
-    const elapsed = Date.now() - (touchStartTime.current || Date.now());
-    const velocityY = Math.abs(deltaY) / Math.max(1, elapsed);
-    const velocityX = Math.abs(deltaX) / Math.max(1, elapsed);
-
-    // 1. Edge swipe right from screen left -> Go back to dashboard!
-    if (touchStartX.current < 70 && deltaX >= 55 && Math.abs(deltaX) > Math.abs(deltaY) * 0.8) {
-      if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        try { navigator.vibrate(12); } catch (_) {}
-      }
-      setEdgeSwipe({ isSwiping: false, direction: null, distanceX: 0, isTriggered: false });
-      touchStartY.current = null;
-      touchStartX.current = null;
-      onBackToDashboard();
-      return;
-    }
-
-    setEdgeSwipe({ isSwiping: false, direction: null, distanceX: 0, isTriggered: false });
-
-    // 2. Vertical swipe for page turning:
-    // SWIPE UP (deltaY < 0): Next Page! (bottom page folds up to back)
-    // SWIPE DOWN (deltaY > 0): Previous Page! (top page folds down to front)
-    const isVertical = Math.abs(deltaY) > Math.abs(deltaX);
-    const isHorizontal = Math.abs(deltaX) >= Math.abs(deltaY);
-
-    if (isVertical) {
-      const isSignificantY = Math.abs(deltaY) >= 28 || (Math.abs(deltaY) >= 18 && velocityY > 0.2);
-      if (isSignificantY) {
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-          try { navigator.vibrate(12); } catch (_) {}
-        }
-        if (deltaY < 0) {
-          handleNextPage();
-        } else {
-          handlePrevPage();
-        }
-      }
-    } else if (isHorizontal) {
-      // Horizontal swipe also supported: swipe left -> next, swipe right -> prev
-      const isSignificantX = Math.abs(deltaX) >= 35 || (Math.abs(deltaX) >= 22 && velocityX > 0.2);
-      if (isSignificantX) {
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-          try { navigator.vibrate(12); } catch (_) {}
-        }
-        if (deltaX < 0) {
-          handleNextPage();
-        } else {
-          if (currentIndex === 0) {
-            onBackToDashboard();
-          } else {
-            handlePrevPage();
-          }
-        }
-      }
-    }
-
-    touchStartY.current = null;
-    touchStartX.current = null;
-  };
-
-  const handleTouchCancel = () => {
-    isDraggingBook.current = false;
-    touchStartY.current = null;
-    touchStartX.current = null;
-    setSwipeHint(null);
-    setEdgeSwipe({ isSwiping: false, direction: null, distanceX: 0, isTriggered: false });
-  };
+  // Mobile edge-swipe right gesture to navigate back to dashboard (only starts from left screen edge, never interferes with vertical scroll)
+  const { gestureState: edgeSwipe, touchHandlers } = useSwipeGesture({
+    onSwipeRight: onBackToDashboard,
+    edgeOnly: true,
+    edgeWidth: 70,
+    threshold: 50,
+  });
 
   // Jump without animation (used when coming from the grid index)
   const openPageDirect = (idx) => {
@@ -252,12 +126,12 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
     setViewMode('book');
   };
 
-  // Keyboard navigation (← → or ↑ ↓)
+  // Keyboard navigation (← →)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (viewMode !== 'book') return;
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') handleNextPage();
-      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') handlePrevPage();
+      if (e.key === 'ArrowRight') handleNextPage();
+      else if (e.key === 'ArrowLeft') handlePrevPage();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -753,9 +627,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
   return (
     <div 
       className="min-h-screen bg-slate-100/90 text-slate-900 flex flex-col font-sans relative"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      {...touchHandlers}
     >
       {/* Visual Gesture Feedback for Edge Swipe Back */}
       <GestureBackIndicator gestureState={edgeSwipe} label="Back to Dashboard" />
@@ -983,51 +855,12 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
             </div>
 
             {/* ================= MOBILE: REAL 3D VERTICAL PAGE FOLD ================= */}
-            <div 
-              className="md:hidden w-full max-w-md mx-auto relative touch-none select-none"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              onTouchCancel={handleTouchCancel}
-            >
+            <div className="md:hidden w-full max-w-md mx-auto relative select-none">
               {/* Vertical book stage */}
               <div 
-                className={`book-stage-vertical relative h-[530px] sm:h-[590px] touch-none select-none ${flip ? 'pointer-events-none' : ''}`}
-                style={{ '--flip-ms': `${FLIP_MS}ms`, touchAction: 'none' }}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-                onTouchCancel={handleTouchCancel}
+                className={`book-stage-vertical relative h-[530px] sm:h-[590px] select-none ${flip ? 'pointer-events-none' : ''}`}
+                style={{ '--flip-ms': `${FLIP_MS}ms` }}
               >
-                {/* Floating Real-time Swipe Feedback Pill */}
-                {swipeHint && (
-                  <div 
-                    className="absolute inset-x-0 z-50 pointer-events-none flex justify-center items-center transition-all animate-fadeIn"
-                    style={{
-                      top: swipeHint.direction === 'up' ? 'auto' : '16px',
-                      bottom: swipeHint.direction === 'up' ? '16px' : 'auto'
-                    }}
-                  >
-                    <div className={`px-4 py-2 rounded-full backdrop-blur-md shadow-xl flex items-center gap-2 text-xs font-bold transition-all duration-150 ${
-                      swipeHint.isTriggered 
-                        ? 'bg-red-600 text-white scale-105 ring-2 ring-white/60 shadow-red-500/30' 
-                        : 'bg-slate-900/85 text-white shadow-black/20'
-                    }`}>
-                      {swipeHint.direction === 'up' ? (
-                        <>
-                          <span className="text-base font-black">↑</span>
-                          <span>{swipeHint.isTriggered ? 'Release to Turn Next Page' : 'Swipe Up for Next Model'}</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="text-base font-black">↓</span>
-                          <span>{swipeHint.isTriggered ? 'Release to Turn Prev Page' : 'Swipe Down for Prev Model'}</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                )}
-
                 {/* Soft floor shadow */}
                 <div className="absolute -bottom-4 left-6 right-6 h-10 bg-slate-900/20 blur-xl rounded-full pointer-events-none" />
 
@@ -1133,8 +966,8 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
                   <span className="text-[11px] font-bold text-slate-800 block">
                     {displayIndex + 1} of {filteredProducts.length}
                   </span>
-                  <span className="text-[10px] text-slate-500 font-semibold block">
-                    Swipe ↑ next • ↓ prev
+                  <span className="text-[10px] text-slate-400 font-medium block">
+                    Tap Next or Prev
                   </span>
                 </div>
 

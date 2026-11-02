@@ -380,7 +380,7 @@
 .book-stage-vertical {
   perspective: 2400px;
   perspective-origin: 50% 50%;
-  touch-action: none;
+  touch-action: pan-y;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;

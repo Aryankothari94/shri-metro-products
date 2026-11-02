@@ -227,7 +227,7 @@ export default function AdminLayout({ onGoHome }) {
               className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#A30D20] hover:bg-[#880A1A] text-white font-bold text-xs transition-all shadow-xs cursor-pointer active:scale-95"
             >
               <Plus className="w-3.5 h-3.5 stroke-[3]" />
-              <span>+ Add Product</span>
+              <span>Add Product</span>
             </button>
 
             <button

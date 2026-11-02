@@ -64,7 +64,7 @@ export default function AdminOverview({ onNavigateTab, onOpenAddProduct, onOpenA
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#A30D20] hover:bg-[#880A1A] text-white font-bold text-xs transition-all shadow-xs cursor-pointer active:scale-95"
             >
               <Plus className="w-4 h-4 stroke-[3]" />
-              <span>+ Add New Product</span>
+              <span>Add New Product</span>
             </button>
 
             <button

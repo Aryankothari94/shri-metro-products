@@ -1,17 +1,23 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Read from Vite environment variables or localStorage override (configured via Admin Settings)
-const getEnvOrStored = (key, storageKey) => {
+const DEFAULT_SUPABASE_URL = 'https://wbsqpzcmtdgtcgsjfhba.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_KtTKgW_PiFZS6AaJrvKtuw_lCfVaD06';
+
+// Read from Vite environment variables, localStorage override, or project default
+const getEnvOrStored = (key, storageKey, fallback = '') => {
   if (typeof window !== 'undefined') {
     const stored = localStorage.getItem(storageKey);
     if (stored && stored.trim()) return stored.trim();
   }
-  return import.meta.env[key] ? String(import.meta.env[key]).trim() : '';
+  if (import.meta.env[key] && String(import.meta.env[key]).trim()) {
+    return String(import.meta.env[key]).trim();
+  }
+  return fallback;
 };
 
 export const getSupabaseConfig = () => {
-  const url = getEnvOrStored('VITE_SUPABASE_URL', 'SMP_SUPABASE_URL');
-  const anonKey = getEnvOrStored('VITE_SUPABASE_ANON_KEY', 'SMP_SUPABASE_ANON_KEY');
+  const url = getEnvOrStored('VITE_SUPABASE_URL', 'SMP_SUPABASE_URL', DEFAULT_SUPABASE_URL);
+  const anonKey = getEnvOrStored('VITE_SUPABASE_ANON_KEY', 'SMP_SUPABASE_ANON_KEY', DEFAULT_SUPABASE_ANON_KEY);
   return { url, anonKey, isConfigured: Boolean(url && anonKey) };
 };
 

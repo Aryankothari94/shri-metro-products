@@ -122,9 +122,46 @@ DROP POLICY IF EXISTS "Allow update company profile" ON public.company_profile;
 CREATE POLICY "Allow update company profile" ON public.company_profile
     FOR ALL USING (true) WITH CHECK (true);
 
--- 8. Enable Realtime Replication
--- This broadcasts changes over WebSockets immediately when admin modifies products/categories/inquiries!
-ALTER PUBLICATION supabase_realtime ADD TABLE public.products;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.categories;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.inquiries;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.company_profile;
+-- 8. Ensure Defaults & Existing Rows Reflect ShriMetro & High-Grade Purity Polypropylene & Co-Polymers
+ALTER TABLE public.products ALTER COLUMN material SET DEFAULT 'High-Grade Purity Polypropylene & Co-Polymers';
+ALTER TABLE public.company_profile ALTER COLUMN name SET DEFAULT 'ShriMetro';
+
+UPDATE public.products
+SET material = 'High-Grade Purity Polypropylene & Co-Polymers'
+WHERE material IS NULL OR material = 'High-Grade Polypropylene';
+
+UPDATE public.company_profile
+SET name = 'ShriMetro'
+WHERE id = 'shri_metro_main';
+
+-- 9. Enable Realtime Replication (Idempotent — safe to run multiple times)
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'products'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.products;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'categories'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.categories;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'inquiries'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.inquiries;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'company_profile'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.company_profile;
+    END IF;
+END $$;

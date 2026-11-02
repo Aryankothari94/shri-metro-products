@@ -17,9 +17,9 @@ import {
 
 // Storage keys
 const STORAGE_KEYS = {
-  PRODUCTS: 'smp_admin_products_v2',
+  PRODUCTS: 'smp_admin_products_v3',
   CATEGORIES: 'smp_admin_categories_v3',
-  COMPANY: 'smp_admin_company_v1',
+  COMPANY: 'smp_admin_company_v2',
   INQUIRIES: 'smp_admin_inquiries_v1',
   AUTH: 'smp_admin_auth_v2'
 };
@@ -28,8 +28,10 @@ const STORAGE_KEYS = {
 try {
   if (typeof localStorage !== 'undefined') {
     localStorage.removeItem('smp_admin_products_v1');
+    localStorage.removeItem('smp_admin_products_v2');
     localStorage.removeItem('smp_admin_categories_v1');
     localStorage.removeItem('smp_admin_categories_v2');
+    localStorage.removeItem('smp_admin_company_v1');
     localStorage.removeItem('smp_admin_auth_v1');
   }
   if (typeof sessionStorage !== 'undefined') {
@@ -37,7 +39,7 @@ try {
   }
 } catch {}
 
-// Official categories extracted directly from the Shri Metro Products Catalogue PDF
+// Official categories extracted directly from the ShriMetro Catalogue PDF
 const defaultCategories = [
   {
     id: 'cat-monobloc',
@@ -393,7 +395,7 @@ export function DataProvider({ children }) {
       isBestSeller: false,
       loadCapacityKg: newProductData.loadCapacityKg || '200 kg',
       weightCapacity: newProductData.weightCapacity || '200 kg tested',
-      material: newProductData.material || 'High-Grade Polypropylene',
+      material: newProductData.material || 'High-Grade Purity Polypropylene & Co-Polymers',
       materialFinish: newProductData.materialFinish || 'Matte Surface (UV Stabilized)',
       stackabilityLimit: newProductData.stackabilityLimit || 'Stackable',
       isStackable: Boolean(newProductData.isStackable),

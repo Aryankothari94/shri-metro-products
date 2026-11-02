@@ -59,7 +59,7 @@ export default function ContactPage({ prefilledMessage = '' }) {
       return;
     }
 
-    const text = `*Direct Factory Inquiry - SHRI METRO PRODUCTS*%0A%0A` +
+    const text = `*Direct Factory Inquiry - ShriMetro*%0A%0A` +
       `*Contact Person:* ${encodeURIComponent(formData.name)}%0A` +
       `*Company/Business:* ${encodeURIComponent(formData.companyName || 'Wholesale Buyer')}%0A` +
       `*Delivery Location:* ${encodeURIComponent(formData.city)}%0A` +

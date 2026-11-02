@@ -160,7 +160,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
 
   const buildWhatsAppLink = (product, color) => {
     const text = encodeURIComponent(
-      `Hello Shri Metro Products, I am reviewing the Product Catalogue for ${product.name} (${product.modelCode}), Finish: ${color.name}, Quantity: ${orderQuantity} units. Please provide wholesale pricing and dispatch terms.`
+      `Hello ShriMetro, I am reviewing the Product Catalogue for ${product.name} (${product.modelCode}), Finish: ${color.name}, Quantity: ${orderQuantity} units. Please provide wholesale pricing and dispatch terms.`
     );
     return `https://api.whatsapp.com/send/?phone=${companyDetails.whatsappNumber}&text=${text}`;
   };
@@ -249,7 +249,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
           </div>
           <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400">
             <span>PAGE {String(pageIdx * 2 + 1).padStart(2, '0')}</span>
-            <span>SHRI METRO WORKS • KUMBALGODU</span>
+            <span>ShriMetro • KUMBALGODU</span>
           </div>
         </div>
       </div>
@@ -452,7 +452,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
           </div>
           <div className="pt-1 flex items-center justify-between text-[10px] text-slate-400">
             <span>PAGE {String(pageIdx * 2 + 1).padStart(2, '0')}</span>
-            <span>SHRI METRO WORKS • KUMBALGODU</span>
+            <span>ShriMetro • KUMBALGODU</span>
           </div>
         </div>
       </div>

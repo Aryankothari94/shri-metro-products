@@ -112,7 +112,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
 
             {/* Subtitle with High-Value Highlights */}
             <p className="text-slate-600 text-xs sm:text-base max-w-2xl leading-relaxed">
-              Engineered with <strong className="text-slate-900 font-bold">High-Grade Polypropylene</strong> and verified to <strong className="text-red-600 font-bold">200 kg hydraulic static load capacity</strong>. Direct manufacturer rates for event caterers, banquet halls, restaurants, institutions, and wholesale dealers.
+              Engineered with <strong className="text-slate-900 font-bold">High-Grade Purity Polypropylene & Co-Polymers</strong> and verified to <strong className="text-red-600 font-bold">200 kg hydraulic static load capacity</strong>. Direct manufacturer rates for event caterers, banquet halls, restaurants, institutions, and wholesale dealers.
             </p>
 
             {/* Reliable Primary Action Buttons */}
@@ -273,7 +273,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
                     </div>
                     <div className="flex items-center justify-between py-2 border-b border-slate-100 hover:bg-slate-50 px-2 rounded transition-colors">
                       <span className="text-slate-500">Polymer Density</span>
-                      <span className="font-bold text-emerald-700">High-Purity Grade Polypropylene</span>
+                      <span className="font-bold text-emerald-700">High-Grade Purity Polypropylene & Co-Polymers</span>
                     </div>
                     <div className="flex items-center justify-between py-2 border-b border-slate-100 hover:bg-slate-50 px-2 rounded transition-colors">
                       <span className="text-slate-500">Dimensions (L × W × H)</span>
@@ -332,7 +332,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
                 <Award className="w-3.5 h-3.5 text-slate-400 group-hover:text-red-600 transition-colors shrink-0" />
               </div>
               <p className="text-lg sm:text-2xl font-black text-slate-900 mt-1">High-Grade</p>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 line-clamp-1">Pure Polypropylene</p>
+              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 line-clamp-1">High-Grade Purity Polypropylene & Co-Polymers</p>
             </div>
             <div className="w-full bg-slate-100 rounded-full h-1 mt-2.5 overflow-hidden">
               <div className="bg-emerald-600 h-full w-full"></div>

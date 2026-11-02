@@ -1,5 +1,5 @@
 -- =========================================================================
--- SHRI METRO PRODUCTS - OFFICIAL PRODUCTION DATABASE SCHEMA (SUPABASE)
+-- SHRIMETRO - OFFICIAL PRODUCTION DATABASE SCHEMA (SUPABASE)
 -- Execute this script in your Supabase SQL Editor (https://supabase.com/dashboard/project/_/sql)
 -- =========================================================================
 
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS public.products (
     net_weight TEXT,
     load_capacity_kg TEXT DEFAULT '200 kg',
     weight_capacity TEXT DEFAULT '200 kg tested',
-    material TEXT DEFAULT 'High-Grade Polypropylene',
+    material TEXT DEFAULT 'High-Grade Purity Polypropylene & Co-Polymers',
     material_finish TEXT DEFAULT 'Matte Finish with Textured Accent (UV Stabilized)',
     is_stackable BOOLEAN DEFAULT true,
     stackability_limit TEXT DEFAULT 'Up to 8 Units Nested',
@@ -71,7 +71,7 @@ CREATE INDEX IF NOT EXISTS idx_inquiries_status ON public.inquiries(status);
 -- 5. Company Profile Table
 CREATE TABLE IF NOT EXISTS public.company_profile (
     id TEXT PRIMARY KEY DEFAULT 'shri_metro_main',
-    name TEXT DEFAULT 'SHRI METRO PRODUCTS',
+    name TEXT DEFAULT 'ShriMetro',
     proprietor TEXT DEFAULT 'Rakesh R Jain',
     established_year INT DEFAULT 2012,
     address TEXT DEFAULT 'Site no: 10, 11 Gerupalya, Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore - 560074',

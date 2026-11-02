@@ -35,7 +35,7 @@ export default function SpecTableView({ products, onQuickView, onViewDetails }) 
           <span className="text-red-600 font-mono text-[11px] font-semibold">{products.length} models listed</span>
         </div>
         <div className="text-[11px] text-slate-400">
-          Material Standard: High-Grade Polypropylene
+          Material Standard: High-Grade Purity Polypropylene & Co-Polymers
         </div>
       </div>
 
@@ -55,7 +55,7 @@ export default function SpecTableView({ products, onQuickView, onViewDetails }) 
           </thead>
           <tbody className="divide-y divide-slate-100">
             {products.map((product) => {
-              const whatsappUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20please%20send%20wholesale%20quotation%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode}).`;
+              const whatsappUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20ShriMetro%2C%20please%20send%20wholesale%20quotation%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode}).`;
 
               return (
                 <tr 
@@ -159,7 +159,7 @@ export default function SpecTableView({ products, onQuickView, onViewDetails }) 
       {/* Mobile Vertical Spec Cards View (< 640px) */}
       <div className="sm:hidden divide-y divide-slate-100">
         {products.map((product) => {
-          const whatsappUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20please%20send%20wholesale%20quotation%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode}).`;
+          const whatsappUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20ShriMetro%2C%20please%20send%20wholesale%20quotation%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode}).`;
 
           return (
             <div key={product.id} className="p-4 space-y-3 bg-white">

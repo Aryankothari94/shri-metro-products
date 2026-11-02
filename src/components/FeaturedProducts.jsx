@@ -81,7 +81,7 @@ export default function FeaturedProducts({
             Featured Heavy-Duty Moulded Furniture
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-2">
-            Manufactured from High-Grade Polypropylene with reinforced stress zones. Explore specifications or request custom container bulk loads.
+            Manufactured from High-Grade Purity Polypropylene & Co-Polymers with reinforced stress zones. Explore specifications or request custom container bulk loads.
           </p>
         </div>
 
@@ -266,7 +266,7 @@ export default function FeaturedProducts({
                     {/* Card Footer Actions */}
                     <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center gap-2">
                       <a
-                        href={`https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColor)}%20color.`}
+                        href={`https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20ShriMetro%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColor)}%20color.`}
                         target="_blank"
                         rel="noreferrer"
                         className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors shadow-xs"

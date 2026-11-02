@@ -76,7 +76,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             <LogoIcon className="w-16 h-16 drop-shadow-xs" />
           </div>
           <h1 className="text-2xl font-black tracking-tight text-[#111827]">
-            SHRI METRO PRODUCTS
+            ShriMetro
           </h1>
           <p className="text-xs font-bold text-[#A30D20] tracking-wider uppercase mt-1 flex items-center justify-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-[#A30D20]" />
@@ -183,7 +183,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
 
         {/* Footer info */}
         <p className="text-center text-[11px] text-[#64748B] mt-6 font-medium">
-          Shri Metro Products © {new Date().getFullYear()} • Kumbalgodu Unit Console
+          ShriMetro © {new Date().getFullYear()} • Kumbalgodu Unit Console
         </p>
 
       </div>

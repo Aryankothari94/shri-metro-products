@@ -125,7 +125,7 @@ export default function AdminInquiries() {
               {filteredInquiries.length > 0 ? (
                 filteredInquiries.map((inq) => {
                   const phoneRaw = inq.phone?.replace(/[^0-9]/g, '') || '';
-                  const whatsappUrl = `https://wa.me/${phoneRaw}?text=Hello%20${encodeURIComponent(inq.customerName)}%2C%20this%20is%20Shri%20Metro%20Products%20following%20up%20on%20your%20wholesale%20inquiry.`;
+                  const whatsappUrl = `https://wa.me/${phoneRaw}?text=Hello%20${encodeURIComponent(inq.customerName)}%2C%20this%20is%20ShriMetro%20following%20up%20on%20your%20wholesale%20inquiry.`;
                   
                   return (
                     <tr key={inq.id} className="hover:bg-[#F5F6F8]/60 transition-colors">

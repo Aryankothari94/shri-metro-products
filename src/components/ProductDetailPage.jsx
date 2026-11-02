@@ -57,7 +57,7 @@ export default function ProductDetailPage({
   // 3. Pre-formatted WhatsApp link generator
   const formattedWhatsAppUrl = useMemo(() => {
     if (!product) return '';
-    const message = `Hello SHRI METRO PRODUCTS, I am interested in ${product.name} (${product.modelCode}), Quantity: ${quantity} units (Color: ${selectedColor?.name || 'Standard'}). Please share bulk wholesale pricing.`;
+    const message = `Hello ShriMetro, I am interested in ${product.name} (${product.modelCode}), Quantity: ${quantity} units (Color: ${selectedColor?.name || 'Standard'}). Please share bulk wholesale pricing.`;
     return `https://wa.me/${companyDetails?.whatsappNumber || ''}?text=${encodeURIComponent(message)}`;
   }, [product, quantity, selectedColor, companyDetails]);
 
@@ -355,7 +355,7 @@ export default function ProductDetailPage({
                           </div>
                         </td>
                         <td className="py-2.5 px-3 sm:px-4 text-slate-700 font-medium">
-                          {product.materialFinish || "Matte & High Gloss UV Polypropylene"}
+                          {product.materialFinish || "Matte & High Gloss UV Polypropylene & Co-Polymers"}
                         </td>
                       </tr>
 
@@ -480,7 +480,7 @@ export default function ProductDetailPage({
                   <span className="text-slate-400 text-[10px] block mb-1 uppercase tracking-wider font-sans font-bold">
                     WhatsApp Message Preview:
                   </span>
-                  "Hello SHRI METRO PRODUCTS, I am interested in <strong className="text-slate-900">{product.name}</strong> ({product.modelCode}), Quantity: <strong className="text-slate-900">{quantity} units</strong> (Color: {selectedColor?.name}). Please share bulk wholesale pricing."
+                  "Hello ShriMetro, I am interested in <strong className="text-slate-900">{product.name}</strong> ({product.modelCode}), Quantity: <strong className="text-slate-900">{quantity} units</strong> (Color: {selectedColor?.name}). Please share bulk wholesale pricing."
                 </div>
 
                 {/* 4. ACTION BUTTONS */}

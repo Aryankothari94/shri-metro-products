@@ -109,7 +109,7 @@ export default function AdminLayout({ onGoHome }) {
             {!sidebarCollapsed && (
               <div className="flex flex-col min-w-0">
                 <span className="font-extrabold text-sm tracking-tight text-white truncate">
-                  SHRI METRO
+                  ShriMetro
                 </span>
                 <span className="text-[10px] font-bold text-red-400 uppercase tracking-widest truncate">
                   Admin Console
@@ -291,7 +291,7 @@ export default function AdminLayout({ onGoHome }) {
               <div className="flex items-center justify-between pb-4 border-b border-[#1F2937]">
                 <div className="flex items-center gap-2.5">
                   <LogoIcon className="w-8 h-8" />
-                  <span className="font-extrabold text-sm text-white">SHRI METRO</span>
+                  <span className="font-extrabold text-sm text-white">ShriMetro</span>
                 </div>
                 <button
                   type="button"

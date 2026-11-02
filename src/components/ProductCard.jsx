@@ -16,7 +16,7 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
   const selectedColorName = activeColor?.name || product?.colors?.[0]?.name || '';
   const currentImage = activeColor?.image || product?.image;
 
-  const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColorName)}%20color.`;
+  const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20ShriMetro%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColorName)}%20color.`;
 
   const handleLogWhatsAppQuote = () => {
     if (addInquiry) {

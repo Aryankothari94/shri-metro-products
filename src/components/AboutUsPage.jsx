@@ -67,7 +67,7 @@ export default function AboutUsPage({
     {
       metric: "100%",
       badge: "RAW MATERIAL",
-      label: "High-Grade Polypropylene",
+      label: "High-Grade Purity Polypropylene & Co-Polymers",
       subtext: "Tested 200 kg load capacity with UV weather shield",
       icon: ShieldCheck,
       accent: "text-slate-800 bg-slate-50 border-slate-200"
@@ -88,7 +88,7 @@ export default function AboutUsPage({
     {
       icon: CheckCircle2,
       title: "Consistent Quality Standard",
-      description: "Zero-compromise engineering using prime high-grade polypropylene. Each production run is validated for structural load bearing, flex resistance, uniform wall thickness, and all-weather UV stability."
+      description: "Zero-compromise engineering using high grade purity polypropylene and co-polymers. Each production run is validated for structural load bearing, flex resistance, uniform wall thickness, and all-weather UV stability."
     },
     {
       icon: HeartHandshake,
@@ -163,7 +163,7 @@ export default function AboutUsPage({
               </h1>
               
               <p className="text-base sm:text-xl text-slate-600 mt-3 font-medium leading-relaxed">
-                SHRI METRO PRODUCTS is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
+                ShriMetro is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
               </p>
             </div>
           </div>
@@ -217,7 +217,7 @@ export default function AboutUsPage({
                   <LogoIcon className="w-12 h-12 shadow-xs" />
                   <div>
                     <h2 className="text-xl font-black text-slate-900 tracking-tight leading-none">
-                      SHRI METRO PRODUCTS
+                      ShriMetro
                     </h2>
                     <p className="text-xs text-red-600 font-bold uppercase tracking-wider mt-1">
                       Moulded Plastic Furniture Manufacturer • Bangalore
@@ -228,7 +228,7 @@ export default function AboutUsPage({
                 {/* Exact Provided Content */}
                 <div className="space-y-4 text-slate-700 text-sm sm:text-base leading-relaxed">
                   <p className="font-semibold text-slate-900">
-                    SHRI METRO PRODUCTS is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
+                    ShriMetro is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
                   </p>
                   
                   <p>
@@ -244,7 +244,7 @@ export default function AboutUsPage({
                 <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-2">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700">
                     <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    High-Grade Polymer
+                    High-Grade Purity Polypropylene & Co-Polymers
                   </span>
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700">
                     <span className="w-2 h-2 rounded-full bg-red-600" />
@@ -267,7 +267,7 @@ export default function AboutUsPage({
                       <span>Our Official Motto</span>
                     </div>
                     <blockquote className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
-                      “SHRI METRO PRODUCTS — Quality you can rely on. Service you can trust.”
+                      “ShriMetro — Quality you can rely on. Service you can trust.”
                     </blockquote>
                     <p className="text-xs text-slate-400 font-medium pt-1">
                       Proprietor <strong className="text-slate-200">{company.proprietor}</strong> • Kumbalgodu Works, Bangalore
@@ -355,7 +355,7 @@ export default function AboutUsPage({
 
                 <div className="flex flex-col gap-2 pt-2 border-t border-slate-800">
                   <a
-                    href={`https://wa.me/${company.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20am%20interested%20in%20your%20products.`}
+                    href={`https://wa.me/${company.whatsappNumber}?text=Hello%20ShriMetro%2C%20I%20am%20interested%20in%20your%20products.`}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors"

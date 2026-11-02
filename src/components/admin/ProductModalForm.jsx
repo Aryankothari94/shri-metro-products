@@ -54,7 +54,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
     netWeight: '',
     loadCapacityKg: '200 kg',
     weightCapacity: '200 kg tested',
-    material: 'High-Grade Polypropylene',
+    material: 'High-Grade Purity Polypropylene & Co-Polymers',
     materialFinish: 'Matte Finish with Textured Accent (UV Stabilized)',
     isStackable: true,
     stackabilityLimit: 'Up to 8 Units Nested',
@@ -100,7 +100,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
           netWeight: productToEdit.netWeight || '',
           loadCapacityKg: productToEdit.loadCapacityKg || '200 kg',
           weightCapacity: productToEdit.weightCapacity || '200 kg tested',
-          material: productToEdit.material || 'High-Grade Polypropylene',
+          material: productToEdit.material || 'High-Grade Purity Polypropylene & Co-Polymers',
           materialFinish: productToEdit.materialFinish || 'Matte Finish with Textured Accent',
           isStackable: productToEdit.isStackable !== false,
           stackabilityLimit: productToEdit.stackabilityLimit || 'Up to 8 Units Nested',
@@ -130,7 +130,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
           netWeight: '2.85 kg',
           loadCapacityKg: '200 kg',
           weightCapacity: '200 kg static tested',
-          material: 'High-Grade Polypropylene',
+          material: 'High-Grade Purity Polypropylene & Co-Polymers',
           materialFinish: 'Matte Rattan Grain & Gloss Trim (UV Stabilized)',
           isStackable: true,
           stackabilityLimit: 'Up to 8 Units Nested',
@@ -483,7 +483,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. High-Grade Polypropylene"
+                    placeholder="e.g. High-Grade Purity Polypropylene & Co-Polymers"
                     value={formData.material}
                     onChange={(e) => setFormData({ ...formData, material: e.target.value })}
                     className="w-full px-3.5 py-2 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs text-[#111827] focus:bg-white focus:outline-none focus:border-[#A30D20] focus:ring-1 focus:ring-[#A30D20]"

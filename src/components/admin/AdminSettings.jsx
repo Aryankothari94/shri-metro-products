@@ -40,7 +40,7 @@ export default function AdminSettings() {
   const [seedStatus, setSeedStatus] = useState(null);
 
   const [formData, setFormData] = useState({
-    name: company.name || 'SHRI METRO PRODUCTS',
+    name: company.name || 'ShriMetro',
     tagline: company.tagline || '',
     subtitle: company.subtitle || '',
     proprietor: company.proprietor || 'Rakesh R Jain',
@@ -70,7 +70,7 @@ export default function AdminSettings() {
       phone: formData.phone,
       phoneRaw: formData.phoneRaw || formData.phone.replace(/[^0-9+]/g, ''),
       whatsappNumber: formData.whatsappNumber || formData.phone.replace(/[^0-9]/g, ''),
-      whatsappLink: `https://wa.me/${formData.whatsappNumber || formData.phone.replace(/[^0-9]/g, '')}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20to%20inquire%20about%20your%20furniture%20products.`,
+      whatsappLink: `https://wa.me/${formData.whatsappNumber || formData.phone.replace(/[^0-9]/g, '')}?text=Hello%20ShriMetro%2C%20I%20would%20like%20to%20inquire%20about%20your%20furniture%20products.`,
       email: formData.email,
       gstin: formData.gstin,
       location: {

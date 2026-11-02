@@ -52,7 +52,7 @@ export default function AboutUs({
     {
       metric: "100%",
       badge: "RAW MATERIAL",
-      label: "High-Grade Polypropylene",
+      label: "High-Grade Purity Polypropylene & Co-Polymers",
       subtext: "Tested 200 kg load capacity with UV weather shield",
       icon: ShieldCheck,
       accent: "text-slate-800 bg-slate-50 border-slate-200"
@@ -73,7 +73,7 @@ export default function AboutUs({
     {
       icon: CheckCircle2,
       title: "Consistent Quality Standard",
-      description: "Formulated with 100% prime high-grade polymers. Every chair, table, and stool undergoes strict structural validation, guaranteeing uniform strength, flawless surface finish, and true color fastness."
+      description: "Formulated with high grade purity polypropylene and co-polymers. Every chair, table, and stool undergoes strict structural validation, guaranteeing uniform strength, flawless surface finish, and true color fastness."
     },
     {
       icon: HeartHandshake,
@@ -153,7 +153,7 @@ export default function AboutUs({
                 <LogoIcon className="w-11 h-11 shadow-xs" />
                 <div>
                   <h3 className="text-lg font-black text-slate-900 tracking-tight leading-none">
-                    SHRI METRO PRODUCTS
+                    ShriMetro
                   </h3>
                   <p className="text-xs text-red-600 font-bold uppercase tracking-wider mt-1">
                     Direct Manufacturer • Bangalore Works
@@ -164,7 +164,7 @@ export default function AboutUs({
               {/* Exact Provided Content In Styled Typography */}
               <div className="space-y-4 text-slate-700 text-sm sm:text-base leading-relaxed">
                 <p className="font-semibold text-slate-900">
-                  SHRI METRO PRODUCTS is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
+                  ShriMetro is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
                 </p>
                 
                 <p>
@@ -180,7 +180,7 @@ export default function AboutUs({
               <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700">
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  High-Grade Polymer
+                  High-Grade Purity Polypropylene & Co-Polymers
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700">
                   <span className="w-2 h-2 rounded-full bg-red-600" />
@@ -203,7 +203,7 @@ export default function AboutUs({
                     <span>Our Brand Promise</span>
                   </div>
                   <blockquote className="text-lg sm:text-xl font-black text-white tracking-tight leading-snug">
-                    “SHRI METRO PRODUCTS — Quality you can rely on. Service you can trust.”
+                    “ShriMetro — Quality you can rely on. Service you can trust.”
                   </blockquote>
                   <p className="text-xs text-slate-400 font-medium">
                     Led by Proprietor <strong className="text-slate-200">{company.proprietor}</strong> • Kumbalgodu, Bangalore

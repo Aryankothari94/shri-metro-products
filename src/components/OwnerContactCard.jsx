@@ -61,7 +61,7 @@ export default function OwnerContactCard() {
                   {companyDetails.proprietor}
                 </h3>
                 <p className="text-sm font-semibold text-brand-primary mt-0.5">
-                  SHRI METRO PRODUCTS • Bangalore
+                  ShriMetro • Bangalore
                 </p>
 
                 <p className="text-xs sm:text-sm text-slate-600 mt-4 leading-relaxed">

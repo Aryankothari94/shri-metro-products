@@ -46,7 +46,7 @@ export class ErrorBoundary extends React.Component {
 
             <div className="flex items-center justify-center gap-2 mb-2">
               <LogoIcon className="w-7 h-7" />
-              <span className="font-extrabold text-sm tracking-tight text-[#111827]">SHRI METRO PRODUCTS</span>
+              <span className="font-extrabold text-sm tracking-tight text-[#111827]">ShriMetro</span>
             </div>
 
             <h2 className="text-xl font-black text-[#111827] mb-2">Something went wrong</h2>

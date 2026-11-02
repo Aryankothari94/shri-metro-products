@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const SITE_URL = 'https://shri-metro-products.vercel.app';
+const SITE_URL = 'https://shrimetroproducts.in';
 
 const BASE_KEYWORDS = [
   'ShriMetro',

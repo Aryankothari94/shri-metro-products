@@ -7,6 +7,7 @@ export const companyDetails = {
   phoneRaw: "+919845287888",
   whatsappNumber: "919845287888",
   whatsappLink: "https://wa.me/919845287888?text=Hello%20ShriMetro%2C%20I%20would%20like%20to%20inquire%20about%20your%20furniture%20products.",
+  website: "https://shrimetroproducts.in",
   email: "info@shrimetroproducts.com", // standard inquiries
   gstin: "29AKZPJ1388F1ZH",
   establishedYear: "2012",

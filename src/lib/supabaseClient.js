@@ -1,17 +1,18 @@
 import { createClient } from '@supabase/supabase-js';
+import SECURITY_CONFIG from '../config/securityConfig';
 
-// Read from Vite environment variables (.env) or localStorage override (configured via Admin Settings)
-const getEnvOrStored = (key, storageKey) => {
+// Read from localStorage override or centralized security config (.env + encoded fallback)
+const getEnvOrStored = (storageKey, fallbackValue) => {
   if (typeof window !== 'undefined') {
     const stored = localStorage.getItem(storageKey);
     if (stored && stored.trim()) return stored.trim();
   }
-  return import.meta.env[key] ? String(import.meta.env[key]).trim() : '';
+  return fallbackValue || '';
 };
 
 export const getSupabaseConfig = () => {
-  const url = getEnvOrStored('VITE_SUPABASE_URL', 'SMP_SUPABASE_URL');
-  const anonKey = getEnvOrStored('VITE_SUPABASE_ANON_KEY', 'SMP_SUPABASE_ANON_KEY');
+  const url = getEnvOrStored('SMP_SUPABASE_URL', SECURITY_CONFIG.supabaseUrl);
+  const anonKey = getEnvOrStored('SMP_SUPABASE_ANON_KEY', SECURITY_CONFIG.supabaseAnonKey);
   return { url, anonKey, isConfigured: Boolean(url && anonKey) };
 };
 

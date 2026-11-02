@@ -16,6 +16,7 @@ import {
   getSupabaseConfig, 
   saveSupabaseConfig 
 } from '../lib/supabaseClient';
+import SECURITY_CONFIG from '../config/securityConfig';
 
 // Storage keys
 const STORAGE_KEYS = {
@@ -380,10 +381,10 @@ export function DataProvider({ children }) {
     persistData(STORAGE_KEYS.INQUIRIES, inquiries);
   }, [inquiries]);
 
-  // Auth methods (Credentials loaded from confidential .env file)
+  // Auth methods (Credentials loaded from centralized security config)
   const login = useCallback((username, password, remember = false) => {
-    const expectedUser = (import.meta.env.VITE_ADMIN_USERNAME || '').trim().toLowerCase();
-    const expectedPass = (import.meta.env.VITE_ADMIN_PASSWORD || '').trim();
+    const expectedUser = SECURITY_CONFIG.adminUsername;
+    const expectedPass = SECURITY_CONFIG.adminPassword;
     const normalizedUser = (username || '').trim().toLowerCase();
     const cleanPassword = (password || '').trim();
 

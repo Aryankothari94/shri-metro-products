@@ -1,13 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
+import SECURITY_CONFIG from '../config/securityConfig';
 
-const envAdminPath = (import.meta.env.VITE_ADMIN_PATH || '/admin').trim().toLowerCase();
-const envAdminAltPath = (import.meta.env.VITE_ADMIN_ALT_PATH || '').trim().toLowerCase();
+export const ADMIN_URL_PATH = SECURITY_CONFIG.primaryAdminPath;
 
-export const ADMIN_URL_PATH = envAdminPath;
-
-const ADMIN_BASE_PATHS = Array.from(
-  new Set([envAdminPath, envAdminAltPath, '/shrimetro-admin', '/admin'].filter(Boolean))
-);
+const ADMIN_BASE_PATHS = SECURITY_CONFIG.adminPaths;
 
 export function useRouter() {
   const getRoute = () => {

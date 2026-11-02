@@ -81,7 +81,7 @@ export default function FeaturedProducts({
             Featured Heavy-Duty Moulded Furniture
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-2">
-            Manufactured from 100% Virgin Polypropylene with reinforced stress zones. Explore specifications or request custom container bulk loads.
+            Manufactured from High-Grade Polypropylene with reinforced stress zones. Explore specifications or request custom container bulk loads.
           </p>
         </div>
 

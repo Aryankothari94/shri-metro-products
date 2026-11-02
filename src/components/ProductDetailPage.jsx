@@ -169,7 +169,7 @@ export default function ProductDetailPage({
 
                   {/* Factory Material Guarantee Pill */}
                   <div className="absolute bottom-4 right-4 bg-emerald-600/90 backdrop-blur-md text-white px-2.5 py-1 rounded-lg text-[10px] font-bold shadow-md">
-                    100% Virgin PP
+                    High-Grade PP
                   </div>
                 </div>
 
@@ -355,7 +355,7 @@ export default function ProductDetailPage({
                           </div>
                         </td>
                         <td className="py-2.5 px-3 sm:px-4 text-slate-700 font-medium">
-                          {product.materialFinish || "Matte & High Gloss UV Virgin Polypropylene"}
+                          {product.materialFinish || "Matte & High Gloss UV Polypropylene"}
                         </td>
                       </tr>
 

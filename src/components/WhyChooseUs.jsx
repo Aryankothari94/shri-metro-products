@@ -27,7 +27,7 @@ export default function WhyChooseUs() {
     {
       metric: "100%",
       badge: "RAW RESIN",
-      title: "Virgin Polypropylene",
+      title: "High-Grade Polypropylene",
       desc: "Zero recycled scrap or chalk. Maximum flexibility without brittle fracture.",
       icon: Sparkles
     },
@@ -73,13 +73,13 @@ export default function WhyChooseUs() {
       id: 'purity',
       label: 'Polymer Purity',
       icon: Sparkles,
-      headline: '100% Virgin Resin vs Adulterated Scrap',
+      headline: 'High-Grade Resin vs Adulterated Scrap',
       shriMetro: {
-        metric: '100% Virgin',
+        metric: 'High-Grade',
         percent: 100,
         badge: 'Prime Granules',
         title: 'High Tensile Resilience',
-        summary: 'Moulded exclusively from first-grade virgin polypropylene. Absorbs impact and bending stress without micro-fissures.'
+        summary: 'Moulded exclusively from first-grade high-purity polypropylene. Absorbs impact and bending stress without micro-fissures.'
       },
       generic: {
         metric: '45% Fillers',
@@ -149,7 +149,7 @@ export default function WhyChooseUs() {
           </h2>
           
           <p className="text-slate-500 text-sm sm:text-base mt-2 leading-relaxed">
-            Direct from our Kumbalgodu plant — virgin polymers, hydraulic load testing, and all-weather stabilizers built into every piece.
+            Direct from our Kumbalgodu plant — high-grade polymers, hydraulic load testing, and all-weather stabilizers built into every piece.
           </p>
         </div>
 

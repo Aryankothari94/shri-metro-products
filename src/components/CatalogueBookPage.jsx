@@ -410,7 +410,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
           <div className="border border-slate-200/90 rounded-xl overflow-hidden text-xs">
             <div className="bg-slate-50 px-3 py-2 border-b border-slate-200/90 font-bold text-slate-800 text-[11px] flex items-center justify-between">
               <span>TECHNICAL BENCHMARK</span>
-              <span className="text-emerald-700 font-mono text-[10px]">ISO VIRGIN PP</span>
+              <span className="text-emerald-700 font-mono text-[10px]">ISO HIGH-GRADE PP</span>
             </div>
             <div className="divide-y divide-slate-100 text-[11px]">
               {[
@@ -604,7 +604,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
                 {product.modelCode}
               </span>
               <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                ISO VIRGIN PP
+                ISO HIGH-GRADE PP
               </span>
             </div>
             <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-tight mt-0.5">
@@ -628,7 +628,7 @@ export default function CatalogueBookPage({ onBackToDashboard, onAddToQuoteList 
               </div>
               <div className="flex items-center justify-between px-2.5 py-1">
                 <span className="text-slate-500">Net Weight / Finish:</span>
-                <span className="font-semibold text-slate-800">{product.netWeight} • Virgin PP</span>
+                <span className="font-semibold text-slate-800">{product.netWeight} • High-Grade PP</span>
               </div>
             </div>
           </div>

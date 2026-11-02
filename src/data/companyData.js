@@ -31,7 +31,7 @@ export const companyDetails = {
     googleMapsUrl: "https://maps.google.com/?q=Vaishno+Devi+Industrial+Estate+Kumbalgodu+Bangalore+560074",
   },
   highlights: [
-    "100% Virgin Polypropylene Raw Material",
+    "High-Grade Polypropylene Raw Material",
     "High Load Bearing Capacity (Up to 200 kg tested)",
     "UV Stabilized & Weather Resistant",
     "Stackable & Space-Efficient Storage",

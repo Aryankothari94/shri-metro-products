@@ -67,7 +67,7 @@ export default function AboutUsPage({
     {
       metric: "100%",
       badge: "RAW MATERIAL",
-      label: "Virgin Polypropylene",
+      label: "High-Grade Polypropylene",
       subtext: "Tested 200 kg load capacity with UV weather shield",
       icon: ShieldCheck,
       accent: "text-slate-800 bg-slate-50 border-slate-200"
@@ -88,7 +88,7 @@ export default function AboutUsPage({
     {
       icon: CheckCircle2,
       title: "Consistent Quality Standard",
-      description: "Zero-compromise engineering using 100% prime virgin polypropylene. Each production run is validated for structural load bearing, flex resistance, uniform wall thickness, and all-weather UV stability."
+      description: "Zero-compromise engineering using prime high-grade polypropylene. Each production run is validated for structural load bearing, flex resistance, uniform wall thickness, and all-weather UV stability."
     },
     {
       icon: HeartHandshake,
@@ -244,7 +244,7 @@ export default function AboutUsPage({
                 <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-2">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700">
                     <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    100% Virgin Polymer
+                    High-Grade Polymer
                   </span>
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700">
                     <span className="w-2 h-2 rounded-full bg-red-600" />

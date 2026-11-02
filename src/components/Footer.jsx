@@ -78,7 +78,7 @@ export default function Footer({
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300 font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                100% Virgin PP
+                High-Grade PP
               </span>
             </div>
 

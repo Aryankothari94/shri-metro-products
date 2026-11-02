@@ -112,7 +112,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
 
             {/* Subtitle with High-Value Highlights */}
             <p className="text-slate-600 text-xs sm:text-base max-w-2xl leading-relaxed">
-              Engineered with <strong className="text-slate-900 font-bold">100% Virgin Polypropylene</strong> and verified to <strong className="text-red-600 font-bold">200 kg hydraulic static load capacity</strong>. Direct manufacturer rates for event caterers, banquet halls, restaurants, institutions, and wholesale dealers.
+              Engineered with <strong className="text-slate-900 font-bold">High-Grade Polypropylene</strong> and verified to <strong className="text-red-600 font-bold">200 kg hydraulic static load capacity</strong>. Direct manufacturer rates for event caterers, banquet halls, restaurants, institutions, and wholesale dealers.
             </p>
 
             {/* Reliable Primary Action Buttons */}
@@ -217,7 +217,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
                     <div className="absolute bottom-2.5 right-2.5 z-10">
                       <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 shadow-2xs text-[11px] font-bold text-slate-800">
                         <Award className="w-3.5 h-3.5 text-amber-500" />
-                        <span>100% Virgin PP</span>
+                        <span>High-Grade PP</span>
                       </div>
                     </div>
 
@@ -273,7 +273,7 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
                     </div>
                     <div className="flex items-center justify-between py-2 border-b border-slate-100 hover:bg-slate-50 px-2 rounded transition-colors">
                       <span className="text-slate-500">Polymer Density</span>
-                      <span className="font-bold text-emerald-700">100% Virgin (0% Recycled Filler)</span>
+                      <span className="font-bold text-emerald-700">High-Purity Grade Polypropylene</span>
                     </div>
                     <div className="flex items-center justify-between py-2 border-b border-slate-100 hover:bg-slate-50 px-2 rounded transition-colors">
                       <span className="text-slate-500">Dimensions (L × W × H)</span>
@@ -331,8 +331,8 @@ export default function Hero({ onExploreCatalog, onSwitchToTable, onOpenCatalogu
                 <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-red-600 transition-colors">Material Grade</p>
                 <Award className="w-3.5 h-3.5 text-slate-400 group-hover:text-red-600 transition-colors shrink-0" />
               </div>
-              <p className="text-lg sm:text-2xl font-black text-slate-900 mt-1">100% Virgin</p>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 line-clamp-1">Polypropylene granules</p>
+              <p className="text-lg sm:text-2xl font-black text-slate-900 mt-1">High-Grade</p>
+              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 line-clamp-1">Pure Polypropylene</p>
             </div>
             <div className="w-full bg-slate-100 rounded-full h-1 mt-2.5 overflow-hidden">
               <div className="bg-emerald-600 h-full w-full"></div>

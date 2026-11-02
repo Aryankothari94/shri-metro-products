@@ -54,7 +54,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
     netWeight: '',
     loadCapacityKg: '200 kg',
     weightCapacity: '200 kg tested',
-    material: '100% Virgin Polypropylene',
+    material: 'High-Grade Polypropylene',
     materialFinish: 'Matte Finish with Textured Accent (UV Stabilized)',
     isStackable: true,
     stackabilityLimit: 'Up to 8 Units Nested',
@@ -100,7 +100,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
           netWeight: productToEdit.netWeight || '',
           loadCapacityKg: productToEdit.loadCapacityKg || '200 kg',
           weightCapacity: productToEdit.weightCapacity || '200 kg tested',
-          material: productToEdit.material || '100% Virgin Polypropylene',
+          material: productToEdit.material || 'High-Grade Polypropylene',
           materialFinish: productToEdit.materialFinish || 'Matte Finish with Textured Accent',
           isStackable: productToEdit.isStackable !== false,
           stackabilityLimit: productToEdit.stackabilityLimit || 'Up to 8 Units Nested',
@@ -124,13 +124,13 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
           modelCode: stableSku,
           category: categories[0]?.name || 'Plastic Chairs (Armrest)',
           subcategory: 'Commercial Series',
-          tagline: 'Heavy-duty virgin polymer commercial furniture',
+          tagline: 'Heavy-duty commercial polymer furniture',
           description: 'Engineered for banquets, catering, institutes, and wholesale distribution.',
           dimensions: 'L: 550mm x W: 520mm x H: 850mm',
           netWeight: '2.85 kg',
           loadCapacityKg: '200 kg',
           weightCapacity: '200 kg static tested',
-          material: '100% Virgin Polypropylene',
+          material: 'High-Grade Polypropylene',
           materialFinish: 'Matte Rattan Grain & Gloss Trim (UV Stabilized)',
           isStackable: true,
           stackabilityLimit: 'Up to 8 Units Nested',
@@ -483,7 +483,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. 100% Virgin Polypropylene"
+                    placeholder="e.g. High-Grade Polypropylene"
                     value={formData.material}
                     onChange={(e) => setFormData({ ...formData, material: e.target.value })}
                     className="w-full px-3.5 py-2 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs text-[#111827] focus:bg-white focus:outline-none focus:border-[#A30D20] focus:ring-1 focus:ring-[#A30D20]"

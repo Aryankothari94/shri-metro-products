@@ -66,7 +66,7 @@ const defaultCategories = [
     id: 'cat-baby',
     name: 'Baby & Kids Chairs',
     subcategories: ['Study Chair', 'Activity Chair'],
-    description: 'Child-safe virgin polymer chairs with rounded edges and anti-slip feet for preschools and homes.',
+    description: 'Child-safe high-grade polymer chairs with rounded edges and anti-slip feet for preschools and homes.',
     bannerImage: '/products/chota-bheem.jpeg'
   },
   {
@@ -423,7 +423,7 @@ export function DataProvider({ children }) {
       isBestSeller: false,
       loadCapacityKg: newProductData.loadCapacityKg || '200 kg',
       weightCapacity: newProductData.weightCapacity || '200 kg tested',
-      material: newProductData.material || '100% Virgin Polypropylene',
+      material: newProductData.material || 'High-Grade Polypropylene',
       materialFinish: newProductData.materialFinish || 'Matte Surface (UV Stabilized)',
       stackabilityLimit: newProductData.stackabilityLimit || 'Stackable',
       isStackable: Boolean(newProductData.isStackable),

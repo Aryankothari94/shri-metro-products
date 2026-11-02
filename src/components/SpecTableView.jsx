@@ -22,7 +22,7 @@ export default function SpecTableView({ products, onQuickView, onViewDetails }) 
           <span className="text-red-600 font-mono text-[11px] font-semibold">{products.length} models listed</span>
         </div>
         <div className="text-[11px] text-slate-400">
-          Material Standard: 100% Virgin Polypropylene
+          Material Standard: High-Grade Polypropylene
         </div>
       </div>
 

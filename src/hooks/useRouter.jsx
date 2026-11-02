@@ -4,6 +4,7 @@ export const ADMIN_URL_PATH = '/shri-metro-admin';
 
 const ADMIN_BASE_PATHS = [
   '/shri-metro-admin',
+  '/shrimetro-admin',
   '/smp-admin-7888',
   '/admin'
 ];

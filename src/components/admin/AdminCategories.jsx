@@ -97,13 +97,13 @@ export default function AdminCategories({ autoOpenAdd = false, onAutoOpenHandled
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-[#E5E7EB]">
         <div>
           <h2 className="text-xl font-extrabold text-[#111827] tracking-tight flex items-center gap-2">
-            <span>Product Categories Engine</span>
+            <span>ShriMetro Categories Engine</span>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-red-50 text-[#A30D20] font-semibold border border-red-200/80">
               {categories.length} Categories Active
             </span>
           </h2>
           <p className="text-xs text-[#64748B] mt-0.5 font-medium">
-            Changes made here instantly sync with public navigation bars, filter sidebars, and catalogue lookbooks.
+            Changes made here instantly sync with ShriMetro public navigation bars, filter sidebars, and catalogue lookbooks.
           </p>
         </div>
 
@@ -150,7 +150,7 @@ export default function AdminCategories({ autoOpenAdd = false, onAutoOpenHandled
                   {category.name}
                 </h3>
                 <p className="text-xs text-[#64748B] mt-1 leading-relaxed line-clamp-2 font-medium">
-                  {category.description || 'Precision injection moulded commercial furniture line.'}
+                  {category.description || 'ShriMetro precision injection moulded furniture made from high grade purity polypropylene and co-polymers.'}
                 </p>
 
                 {/* Subcategories tags */}

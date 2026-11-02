@@ -32,7 +32,7 @@ export default function AdminOverview({ onNavigateTab, onOpenAddProduct, onOpenA
             <div className="flex flex-wrap items-center gap-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-[#A30D20] text-xs font-bold">
                 <span className="w-2 h-2 rounded-full bg-[#A30D20] animate-pulse" />
-                <span>Plant Operational • Kumbalgodu Unit Console</span>
+                <span>ShriMetro • Plant Operational • Kumbalgodu Unit Console</span>
               </div>
               <button
                 type="button"
@@ -49,10 +49,10 @@ export default function AdminOverview({ onNavigateTab, onOpenAddProduct, onOpenA
               </button>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-[#111827] tracking-tight">
-              Welcome, {company.proprietor}
+              Welcome, {company.proprietor} ({company.name || 'ShriMetro'})
             </h1>
             <p className="text-xs sm:text-sm text-[#64748B] leading-relaxed">
-              Manage your commercial plastic moulded catalog, review incoming wholesale procurement leads, and sync factory specs across the public portal in real-time.
+              Manage your ShriMetro plastic moulded furniture catalog manufactured from <strong className="text-[#111827]">high grade purity polypropylene and co-polymers</strong>, review incoming wholesale procurement leads, and sync factory specs across the public portal in real-time.
             </p>
           </div>
 
@@ -277,7 +277,8 @@ export default function AdminOverview({ onNavigateTab, onOpenAddProduct, onOpenA
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold text-[#111827] truncate">{p.name}</p>
-                    <p className="text-[10px] text-[#A30D20] font-mono font-semibold">{p.modelCode} • {p.loadCapacityKg}</p>
+                    <p className="text-[10px] text-[#A30D20] font-mono font-semibold truncate">{p.modelCode} • {p.loadCapacityKg}</p>
+                    <p className="text-[10px] text-[#64748B] truncate">{p.material || 'High-Grade Purity Polypropylene & Co-Polymers'}</p>
                   </div>
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-[#15803D] font-bold border border-emerald-200">
                     Live
@@ -289,7 +290,7 @@ export default function AdminOverview({ onNavigateTab, onOpenAddProduct, onOpenA
 
           <div className="pt-4 border-t border-[#E5E7EB] flex items-center justify-between text-xs text-[#64748B]">
             <span>GSTIN: <strong className="text-[#111827] font-mono">{company.gstin}</strong></span>
-            <span>Unit: Kumbalgodu</span>
+            <span>ShriMetro • Kumbalgodu</span>
           </div>
         </div>
 

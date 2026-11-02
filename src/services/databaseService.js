@@ -4,6 +4,23 @@ import { companyDetails as defaultCompany } from '../data/companyData';
 /**
  * Data Mappers between Frontend CamelCase and Database snake_case
  */
+export const normalizeMaterialSpec = (mat) => {
+  if (!mat || typeof mat !== 'string') return 'High-Grade Purity Polypropylene & Co-Polymers';
+  return mat
+    .replace(/100%\s*Non-Toxic\s*High-Grade\s*Polypropylene(?!\s*&\s*Co-Polymers|\s*Purity)/gi, '100% Non-Toxic High-Grade Purity Polypropylene & Co-Polymers')
+    .replace(/High-Grade\s*Polypropylene\s*with\s*Heavy\s*Under-Ribbing/gi, 'High-Grade Purity Polypropylene & Co-Polymers with Heavy Under-Ribbing')
+    .replace(/^High-Grade\s*Polypropylene$/i, 'High-Grade Purity Polypropylene & Co-Polymers');
+};
+
+export const normalizeBrandText = (str, fallback = 'ShriMetro') => {
+  if (!str || typeof str !== 'string') return fallback;
+  return str
+    .replace(/SHRI\s+METRO\s+PRODUCTS/gi, 'ShriMetro')
+    .replace(/Shri\s+Metro\s+Products/gi, 'ShriMetro')
+    .replace(/SHRI\s+METRO/gi, 'ShriMetro')
+    .replace(/Shri\s+Metro/gi, 'ShriMetro');
+};
+
 export const mapProductFromDb = (row) => {
   if (!row) return null;
   return {
@@ -13,12 +30,12 @@ export const mapProductFromDb = (row) => {
     category: row.category || '',
     subcategory: row.subcategory || '',
     tagline: row.tagline || '',
-    description: row.description || '',
+    description: normalizeBrandText(row.description || '', ''),
     dimensions: row.dimensions || '',
     netWeight: row.net_weight || '',
     loadCapacityKg: row.load_capacity_kg || '200 kg',
     weightCapacity: row.weight_capacity || '200 kg tested',
-    material: row.material || 'High-Grade Purity Polypropylene & Co-Polymers',
+    material: normalizeMaterialSpec(row.material),
     materialFinish: row.material_finish || '',
     isStackable: row.is_stackable ?? true,
     stackabilityLimit: row.stackability_limit || 'Up to 8 Units Nested',
@@ -44,12 +61,12 @@ export const mapProductToDb = (p) => {
     category: p.category || '',
     subcategory: p.subcategory || '',
     tagline: p.tagline || '',
-    description: p.description || '',
+    description: normalizeBrandText(p.description || '', ''),
     dimensions: p.dimensions || '',
     net_weight: p.netWeight || p.net_weight || '',
     load_capacity_kg: p.loadCapacityKg || p.load_capacity_kg || '200 kg',
     weight_capacity: p.weightCapacity || p.weight_capacity || '200 kg tested',
-    material: p.material || 'High-Grade Purity Polypropylene & Co-Polymers',
+    material: normalizeMaterialSpec(p.material),
     material_finish: p.materialFinish || p.material_finish || '',
     is_stackable: p.isStackable ?? true,
     stackability_limit: p.stackabilityLimit || p.stackability_limit || 'Up to 8 Units Nested',
@@ -130,7 +147,7 @@ export const mapCompanyFromDb = (row) => {
   const fullAddress = row.address || defaultCompany.location?.fullAddress || 'Site no: 10,11 Gerupalya, Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore - 560074';
   return {
     ...defaultCompany,
-    name: row.name || defaultCompany.name || 'ShriMetro',
+    name: normalizeBrandText(row.name || defaultCompany.name || 'ShriMetro', 'ShriMetro'),
     proprietor: row.proprietor || defaultCompany.proprietor || 'Rakesh R Jain',
     establishedYear: row.established_year || defaultCompany.establishedYear || '2012',
     address: fullAddress,
@@ -151,7 +168,7 @@ export const mapCompanyFromDb = (row) => {
 
 export const mapCompanyToDb = (c) => ({
   id: 'shri_metro_main',
-  name: c.name || defaultCompany.name,
+  name: normalizeBrandText(c.name || defaultCompany.name, 'ShriMetro'),
   proprietor: c.proprietor || defaultCompany.proprietor,
   established_year: parseInt(c.establishedYear, 10) || 2012,
   address: c.location?.fullAddress || c.address || defaultCompany.location.fullAddress,

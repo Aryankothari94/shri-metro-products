@@ -185,7 +185,7 @@ export default function AdminLayout({ onGoHome }) {
 
           {!sidebarCollapsed && (
             <div className="pt-2 border-t border-[#1F2937] px-2 text-[10px] text-slate-400">
-              <p className="truncate font-semibold text-slate-300">{company.proprietor}</p>
+              <p className="truncate font-semibold text-slate-300">ShriMetro • {company.proprietor}</p>
               <p className="font-mono text-slate-500">Kumbalgodu Works</p>
             </div>
           )}
@@ -211,7 +211,7 @@ export default function AdminLayout({ onGoHome }) {
             </button>
 
             <div className="flex items-center gap-2 text-xs font-bold">
-              <span className="text-[#64748B] hidden sm:inline">Admin</span>
+              <span className="text-[#64748B] hidden sm:inline">ShriMetro Admin</span>
               <span className="text-slate-300 hidden sm:inline">/</span>
               <span className="text-[#111827] font-extrabold capitalize">
                 {navItems.find(i => i.id === activeTab)?.label || 'Dashboard'}

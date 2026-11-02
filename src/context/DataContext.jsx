@@ -6,7 +6,9 @@ import db, {
   mapProductFromDb, 
   mapCategoryFromDb, 
   mapInquiryFromDb, 
-  mapCompanyFromDb 
+  mapCompanyFromDb,
+  normalizeMaterialSpec,
+  normalizeBrandText
 } from '../services/databaseService';
 import { 
   getSupabase, 
@@ -17,9 +19,9 @@ import {
 
 // Storage keys
 const STORAGE_KEYS = {
-  PRODUCTS: 'smp_admin_products_v3',
-  CATEGORIES: 'smp_admin_categories_v3',
-  COMPANY: 'smp_admin_company_v2',
+  PRODUCTS: 'smp_admin_products_v4',
+  CATEGORIES: 'smp_admin_categories_v4',
+  COMPANY: 'smp_admin_company_v3',
   INQUIRIES: 'smp_admin_inquiries_v1',
   AUTH: 'smp_admin_auth_v2'
 };
@@ -29,9 +31,12 @@ try {
   if (typeof localStorage !== 'undefined') {
     localStorage.removeItem('smp_admin_products_v1');
     localStorage.removeItem('smp_admin_products_v2');
+    localStorage.removeItem('smp_admin_products_v3');
     localStorage.removeItem('smp_admin_categories_v1');
     localStorage.removeItem('smp_admin_categories_v2');
+    localStorage.removeItem('smp_admin_categories_v3');
     localStorage.removeItem('smp_admin_company_v1');
+    localStorage.removeItem('smp_admin_company_v2');
     localStorage.removeItem('smp_admin_auth_v1');
   }
   if (typeof sessionStorage !== 'undefined') {
@@ -80,7 +85,7 @@ const defaultCategories = [
     id: 'cat-baby',
     name: 'Baby Chairs',
     subcategories: ['Study Chair', 'Activity Chair', 'Kids Seating'],
-    description: 'Child-safe high-grade polymer chairs with rounded edges and anti-slip feet for preschools and homes.',
+    description: 'Child-safe high grade purity polypropylene and co-polymers chairs with rounded edges and anti-slip feet for preschools and homes.',
     bannerImage: '/products/baby-futura.jpeg'
   },
   {
@@ -124,13 +129,20 @@ export function DataProvider({ children }) {
       const saved = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map(p => ({
+            ...p,
+            material: normalizeMaterialSpec(p.material),
+            description: normalizeBrandText(p.description || '', '')
+          }));
+        }
       }
     } catch (e) {
       console.warn('Failed to load products from localStorage, using defaults', e);
     }
     return defaultProducts.map(p => ({
       ...p,
+      material: normalizeMaterialSpec(p.material),
       isActive: p.isActive !== false,
       isBestSeller: p.isBestSeller ?? (p.isFeatured && p.id === 'smp-001')
     }));
@@ -156,7 +168,12 @@ export function DataProvider({ children }) {
       const saved = localStorage.getItem(STORAGE_KEYS.COMPANY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === 'object') return parsed;
+        if (parsed && typeof parsed === 'object') {
+          return {
+            ...parsed,
+            name: normalizeBrandText(parsed.name, 'ShriMetro')
+          };
+        }
       }
     } catch (e) {
       console.warn('Failed to load company details from localStorage, using defaults', e);

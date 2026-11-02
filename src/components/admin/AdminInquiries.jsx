@@ -66,13 +66,13 @@ export default function AdminInquiries() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-[#E5E7EB]">
         <div>
           <h2 className="text-xl font-extrabold text-[#111827] tracking-tight flex items-center gap-2">
-            <span>Wholesale Inquiries Desk</span>
+            <span>ShriMetro Wholesale Inquiries Desk</span>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-red-50 text-[#A30D20] font-semibold border border-red-200/80">
               {inquiries.length} Inquiries Logged
             </span>
           </h2>
           <p className="text-xs text-[#64748B] mt-0.5 font-medium">
-            Real-time feed of quotations and wholesale inquiries received from public web forms and WhatsApp triggers.
+            Real-time feed of ShriMetro quotations and wholesale inquiries received from public web forms and WhatsApp triggers.
           </p>
         </div>
       </div>

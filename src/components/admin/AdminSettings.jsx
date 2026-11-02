@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Building2, 
   Phone, 
@@ -59,6 +59,16 @@ export default function AdminSettings() {
   });
 
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      name: company.name || 'ShriMetro',
+      tagline: company.tagline || prev.tagline,
+      subtitle: company.subtitle || prev.subtitle,
+      proprietor: company.proprietor || prev.proprietor,
+    }));
+  }, [company.name, company.tagline, company.subtitle, company.proprietor]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -136,10 +146,10 @@ export default function AdminSettings() {
       {/* Header */}
       <div className="pb-2 border-b border-[#E5E7EB]">
         <h2 className="text-xl font-extrabold text-[#111827] tracking-tight">
-          Factory Business Credentials & Settings
+          ShriMetro Factory Business Credentials & Settings
         </h2>
         <p className="text-xs text-[#64748B] mt-0.5 font-medium">
-          Manage factory credentials, company specs, and configure real-time cloud database synchronization.
+          Manage ShriMetro factory credentials, High-Grade Purity Polypropylene & Co-Polymers specs, and configure real-time cloud database synchronization.
         </p>
       </div>
 
@@ -369,6 +379,18 @@ export default function AdminSettings() {
               onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
               className="w-full px-3.5 py-2 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs text-[#111827] focus:bg-white focus:outline-none focus:border-[#A30D20] focus:ring-1 focus:ring-[#A30D20]"
             />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[#111827]">
+              Factory Material Standard (Global Spec)
+            </label>
+            <div className="w-full px-3.5 py-2 bg-red-50/60 border border-red-200/80 rounded-xl text-xs font-bold text-[#A30D20] flex items-center justify-between">
+              <span>High-Grade Purity Polypropylene & Co-Polymers</span>
+              <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-white border border-red-200 text-[#A30D20]">
+                ShriMetro Standard
+              </span>
+            </div>
           </div>
         </div>
 

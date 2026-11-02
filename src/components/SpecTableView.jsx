@@ -97,7 +97,7 @@ export default function SpecTableView({ products, onQuickView, onViewDetails }) 
 
                   {/* Stacking Limit */}
                   <td className="py-3 px-4 whitespace-nowrap text-slate-600 text-[11px]">
-                    {product.stackingLimit}
+                    {product.stackabilityLimit}
                   </td>
 
                   {/* Colors */}
@@ -189,7 +189,7 @@ export default function SpecTableView({ products, onQuickView, onViewDetails }) 
                 </div>
                 <div className="text-slate-500 flex items-center gap-1">
                   <Layers className="w-3 h-3 text-slate-400 shrink-0" />
-                  <span className="truncate">{product.stackingLimit}</span>
+                  <span className="truncate">{product.stackabilityLimit}</span>
                 </div>
                 <div className="flex items-center justify-end gap-1">
                   {product.colors.map((c, i) => (

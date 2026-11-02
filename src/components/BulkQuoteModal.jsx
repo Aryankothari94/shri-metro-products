@@ -9,16 +9,16 @@ import {
   Phone,
   ShieldAlert
 } from 'lucide-react';
-import { companyDetails } from '../data/companyData';
-import { productCategories } from '../data/productsData';
+import { useData } from '../context/DataContext';
 
 export default function BulkQuoteModal({ isOpen, onClose }) {
+  const { company: companyDetails, categories, addInquiry } = useData();
   if (!isOpen) return null;
 
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    category: 'Plastic Chairs (Armrest)',
+    category: categories[0]?.name || 'Plastic Chairs',
     quantity: '50',
     city: 'Bangalore',
     notes: ''
@@ -31,6 +31,15 @@ export default function BulkQuoteModal({ isOpen, onClose }) {
 
   const handleWhatsAppSubmit = (e) => {
     e.preventDefault();
+    addInquiry({
+      customerName: formData.name,
+      businessName: formData.name,
+      phone: formData.phone,
+      email: '',
+      quantity: parseInt(formData.quantity, 10) || 50,
+      productName: formData.category,
+      message: `${formData.notes ? formData.notes + ' | ' : ''}Delivery: ${formData.city}`
+    });
     const text = `*New Bulk Quote Request - Shri Metro Products*%0A%0A` +
       `*Client Name:* ${encodeURIComponent(formData.name || 'Not specified')}%0A` +
       `*Phone:* ${encodeURIComponent(formData.phone || 'Not specified')}%0A` +
@@ -114,8 +123,8 @@ export default function BulkQuoteModal({ isOpen, onClose }) {
                 onChange={handleChange}
                 className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary"
               >
-                {productCategories.filter(c => c !== "All Products").map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.name}>{cat.name}</option>
                 ))}
               </select>
             </div>

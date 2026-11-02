@@ -1,16 +1,28 @@
 import React from 'react';
-import { Layers, ArrowRight, Check } from 'lucide-react';
-import { categoriesData } from '../data/categoriesData';
+import { Check } from 'lucide-react';
+import { useData } from '../context/DataContext';
 
 export default function CategoryGrid({ onSelectCategory, selectedCategory }) {
-  const handleCategorySelect = (categoryFilter) => {
-    const nextCategory = selectedCategory === categoryFilter ? "All Products" : categoryFilter;
+  const { categories, activeProducts } = useData();
+
+  const handleCategorySelect = (categoryName) => {
+    const nextCategory = selectedCategory === categoryName ? "All Products" : categoryName;
     onSelectCategory(nextCategory);
     const catalogElement = document.getElementById('catalog-section');
     if (catalogElement) {
       catalogElement.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  // Count active products per category
+  const countForCategory = (cat) => {
+    const subs = cat.subcategories || [];
+    return activeProducts.filter(p =>
+      p.category === cat.name || subs.includes(p.category)
+    ).length;
+  };
+
+  const totalCount = activeProducts.length;
 
   return (
     <section className="bg-slate-50/50 border-b border-slate-200/80 py-5">
@@ -29,21 +41,22 @@ export default function CategoryGrid({ onSelectCategory, selectedCategory }) {
               onClick={() => handleCategorySelect("All Products")}
               className="text-xs font-bold text-red-600 hover:text-red-700 transition-colors cursor-pointer"
             >
-              Reset to All (10 Models)
+              {`Reset to All (${totalCount} Models)`}
             </button>
           )}
         </div>
 
-        {/* Minimal Category Tiles (No repetitive Filter View buttons) */}
+        {/* Category Tiles */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
-          {categoriesData.map((cat) => {
-            const isSelected = selectedCategory === cat.filterValue;
+          {categories.map((cat) => {
+            const isSelected = selectedCategory === cat.name;
+            const count = countForCategory(cat);
 
             return (
               <button
                 key={cat.id}
                 type="button"
-                onClick={() => handleCategorySelect(cat.filterValue)}
+                onClick={() => handleCategorySelect(cat.name)}
                 className={`group rounded-xl p-3 border transition-all duration-150 cursor-pointer text-left flex flex-col justify-between ${
                   isSelected
                     ? 'bg-white border-red-500 ring-2 ring-red-500/15 shadow-xs'
@@ -52,7 +65,7 @@ export default function CategoryGrid({ onSelectCategory, selectedCategory }) {
               >
                 <div className="flex items-center justify-between gap-1 w-full mb-1">
                   <span className="text-[10px] font-mono text-slate-400 font-semibold">
-                    {cat.count.replace(' Available', '')}
+                    {count} Model{count !== 1 ? 's' : ''}
                   </span>
                   {isSelected && (
                     <span className="w-3.5 h-3.5 rounded-full bg-red-600 text-white flex items-center justify-center shadow-xs">
@@ -64,7 +77,7 @@ export default function CategoryGrid({ onSelectCategory, selectedCategory }) {
                   {cat.name}
                 </h4>
                 <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
-                  {cat.tagline}
+                  {cat.description}
                 </p>
               </button>
             );

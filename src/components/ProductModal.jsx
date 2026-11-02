@@ -128,7 +128,7 @@ export default function ProductModal({ product, onClose, onOpenPDP }) {
                   <span className="text-slate-500 flex items-center gap-1.5">
                     <Layers className="w-3.5 h-3.5 text-slate-400" /> Stacking Limit
                   </span>
-                  <span className="font-semibold text-emerald-700">{product.stackingLimit}</span>
+                  <span className="font-semibold text-emerald-700">{product.stackabilityLimit}</span>
                 </div>
 
                 {product.suitableFor && (

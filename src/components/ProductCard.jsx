@@ -75,7 +75,7 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
             </div>
             <div className="flex items-center gap-1 text-slate-500">
               <Layers className="w-3 h-3 text-slate-400 shrink-0" />
-              <span className="truncate">{product.stackingLimit}</span>
+              <span className="truncate">{product.stackabilityLimit}</span>
             </div>
             <div className="col-span-2 flex items-center gap-1 text-slate-500 font-mono text-[10px] truncate">
               <Maximize2 className="w-3 h-3 text-slate-400 shrink-0" />

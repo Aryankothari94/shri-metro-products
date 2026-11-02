@@ -106,44 +106,7 @@ const defaultCategories = [
   }
 ];
 
-const defaultInquiries = [
-  {
-    id: 'inq-101',
-    customerName: 'Suresh Patel',
-    businessName: 'Patel Event Organizers',
-    phone: '+91 98450 12345',
-    email: 'suresh@patelevent.in',
-    quantity: 450,
-    productName: 'Metro Alexa Monobloc Armchair (SMP-001)',
-    message: 'Requirement for upcoming convention season in Bangalore. Need quotation for 450 units in Teak Wood finish with delivery to Palace Grounds.',
-    status: 'New',
-    date: '2026-10-27T09:30:00Z'
-  },
-  {
-    id: 'inq-102',
-    customerName: 'Meenakshi Sundaram',
-    businessName: 'Sri Balaji Wedding Hall',
-    phone: '+91 94432 98765',
-    email: 'balajihall@gmail.com',
-    quantity: 300,
-    productName: 'Metro Heritage Cane Armchair (SMP-004)',
-    message: 'Urgent bulk supply needed for banquet hall renovation. Need 300 Cane armchairs in Rosewood. Please share wholesale terms and lead time.',
-    status: 'New',
-    date: '2026-10-26T18:15:00Z'
-  },
-  {
-    id: 'inq-103',
-    customerName: 'Vinay Kumar',
-    businessName: 'Apex Educational Trust',
-    phone: '+91 97412 55432',
-    email: 'admin@apextrust.edu',
-    quantity: 120,
-    productName: 'Metro Grandeur 6-Seater Rectangular Dining Table (SMP-TBL-802D)',
-    message: 'Canteen renovation requirement. Need 120 dining tables in Marble Beige finish.',
-    status: 'Quoted',
-    date: '2026-10-25T11:20:00Z'
-  }
-];
+
 
 const DataContext = createContext(null);
 
@@ -205,7 +168,7 @@ export function DataProvider({ children }) {
     } catch (e) {
       console.warn('Failed to load inquiries from localStorage, using defaults', e);
     }
-    return defaultInquiries;
+    return [];
   });
 
   // 5. Auth State
@@ -671,7 +634,7 @@ export function DataProvider({ children }) {
     setProducts(defaultProducts);
     setCategories(defaultCategories);
     setCompany(defaultCompany);
-    setInquiries(defaultInquiries);
+    setInquiries([]);
   }, []);
 
   const activeProducts = products.filter(p => p.isActive !== false);

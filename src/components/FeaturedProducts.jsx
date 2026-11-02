@@ -229,7 +229,7 @@ export default function FeaturedProducts({
                             <Layers className="w-3.5 h-3.5" /> Stack
                           </span>
                           <span className={`font-semibold text-[11px] ${product.isStackable ? 'text-emerald-700' : 'text-slate-500'}`}>
-                            {product.stackingLimit}
+                            {product.stackabilityLimit}
                           </span>
                         </div>
                       </div>

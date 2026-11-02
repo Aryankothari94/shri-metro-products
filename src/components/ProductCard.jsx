@@ -41,7 +41,7 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
       >
         <img
           src={currentImage || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'}
-          alt={product.name}
+          alt={`${product.name} (${product.modelCode}) - ShriMetro ${product.category} (${selectedColorName || 'Standard'}) made from High-Grade Purity Polypropylene & Co-Polymers`}
           key={currentImage}
           className="w-full h-full object-contain group-hover:scale-105 transition-all duration-300 drop-shadow-2xs"
           loading="lazy"

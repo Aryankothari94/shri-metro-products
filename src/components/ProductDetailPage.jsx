@@ -137,7 +137,7 @@ export default function ProductDetailPage({
                 <div className="relative rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm aspect-square max-h-[480px] w-full flex items-center justify-center">
                   <img
                     src={activeImage || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'}
-                    alt={`${product.name} in ${selectedColor?.name}`}
+                    alt={`${product.name} (${product.modelCode}) in ${selectedColor?.name || 'Standard'} - ShriMetro ${product.category} Manufacturer Bangalore`}
                     className="w-full h-full object-contain p-4 transition-all duration-500 ease-out drop-shadow-sm"
                     onError={(e) => {
                       e.currentTarget.src = 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80';

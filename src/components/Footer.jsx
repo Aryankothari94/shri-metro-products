@@ -61,7 +61,7 @@ export default function Footer({
             <Logo variant="horizontal" theme="dark" iconSize="w-9 h-9" subtitle="Plastic Moulded Furniture" />
             
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012 with a manufacturing capacity of 2,000+ pieces per day across South India.
+              Bangalore&apos;s premier manufacturer of heavy-duty plastic moulded furniture made from <strong className="text-slate-300 font-semibold">high grade purity polypropylene and co-polymers</strong>, proudly serving wholesale dealers, banquet halls, and distributors since 2012 with 2,000+ pieces/day capacity across South India.
             </p>
 
             {/* Minimalist Trust Badges */}
@@ -76,7 +76,7 @@ export default function Footer({
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300 font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                High-Grade PP
+                High-Grade Purity Polypropylene &amp; Co-Polymers
               </span>
             </div>
 
@@ -206,6 +206,27 @@ export default function Footer({
             </div>
           </div>
 
+        </div>
+        {/* SEO Keyword & Wholesale Category Directory */}
+        <div className="mt-10 pt-8 border-t border-slate-900/90 space-y-3">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+            ShriMetro Wholesale Furniture Categories &amp; Regional B2B Supply
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {categories.map((cat) => (
+              <button
+                key={`seo-${cat.id || cat.name}`}
+                type="button"
+                onClick={() => handleCategoryClick(cat.name)}
+                className="px-2.5 py-1 rounded-md bg-slate-900/80 hover:bg-slate-800 border border-slate-800/80 text-[11px] text-slate-400 hover:text-white transition-colors cursor-pointer"
+              >
+                ShriMetro {cat.name}
+              </button>
+            ))}
+          </div>
+          <p className="text-[11px] text-slate-500 leading-relaxed">
+            <strong className="text-slate-400 font-semibold">Popular Searches:</strong> Plastic Moulded Furniture Manufacturer in Bangalore • High-Grade Purity Polypropylene &amp; Co-Polymers Chairs • Heavy-Duty 200 kg Tested Monobloc Armchairs • Wholesale Banquet &amp; Marriage Hall Chairs Karnataka • Armless Event Seating • Cafeteria &amp; Restaurant Plastic Chairs • Relax Lounge Chairs • Kids &amp; Baby Study Chairs • Knockdown Plastic Dining Tables • Center Tables &amp; Teapoys • Ribbed Commercial Stools &amp; Anti-Skid Bathroom Patlas • Direct Factory Dispatch from Vaishno Devi Industrial Estate, Gerupalya, Kumbalgodu, Bengaluru - 560074 across Karnataka, Tamil Nadu, Andhra Pradesh, Telangana &amp; Kerala.
+          </p>
         </div>
       </div>
 

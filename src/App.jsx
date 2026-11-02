@@ -10,6 +10,7 @@ import FloatingInquiryButton from './components/FloatingInquiryButton';
 import Footer from './components/Footer';
 import { useData } from './context/DataContext';
 import { useRouter, ADMIN_URL_PATH } from './hooks/useRouter';
+import SeoHead from './components/common/SeoHead';
 
 const CatalogueBookPage = lazy(() => import('./components/CatalogueBookPage'));
 const AboutUsPage = lazy(() => import('./components/AboutUsPage'));
@@ -17,7 +18,7 @@ const AdminLayout = lazy(() => import('./components/admin/AdminLayout'));
 const AdminLogin = lazy(() => import('./components/admin/AdminLogin'));
 
 export default function App() {
-  const { isAuthenticated, activeProducts } = useData();
+  const { isAuthenticated, activeProducts, company } = useData();
   const { isAdmin, isLogin, navigate } = useRouter();
 
   const [isCatalogueBookOpen, setIsCatalogueBookOpen] = useState(false);
@@ -98,18 +99,21 @@ export default function App() {
   // ADMIN PORTAL & AUTHENTICATION ROUTES
   if (isAdmin || isLogin) {
     return (
-      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#F5F6F8] text-xs font-bold text-slate-600">Loading Administrative Console…</div>}>
-        {!isAuthenticated ? (
-          <AdminLogin 
-            onLoginSuccess={() => navigate(ADMIN_URL_PATH)} 
-            onGoHome={() => navigate('/')} 
-          />
-        ) : (
-          <AdminLayout 
-            onGoHome={() => navigate('/')} 
-          />
-        )}
-      </Suspense>
+      <>
+        <SeoHead isAdmin={true} />
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#F5F6F8] text-xs font-bold text-slate-600">Loading Administrative Console…</div>}>
+          {!isAuthenticated ? (
+            <AdminLogin 
+              onLoginSuccess={() => navigate(ADMIN_URL_PATH)} 
+              onGoHome={() => navigate('/')} 
+            />
+          ) : (
+            <AdminLayout 
+              onGoHome={() => navigate('/')} 
+            />
+          )}
+        </Suspense>
+      </>
     );
   }
 
@@ -303,6 +307,17 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-slate-900 selection:text-white antialiased">
+      {/* Dynamic SEO & Structured Data Engine */}
+      <SeoHead
+        isAdmin={false}
+        isAboutPageOpen={isAboutPageOpen}
+        isCatalogueBookOpen={isCatalogueBookOpen}
+        selectedCategory={selectedCategory}
+        selectedProduct={selectedProductForPDP}
+        products={activeProducts}
+        company={company}
+      />
+
       {/* 1. Sleek Dashboard Header Bar */}
       <Navbar
         searchQuery={searchQuery}

@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 
-export const ADMIN_URL_PATH = '/shri-metro-admin';
+const envAdminPath = (import.meta.env.VITE_ADMIN_PATH || '/admin').trim().toLowerCase();
+const envAdminAltPath = (import.meta.env.VITE_ADMIN_ALT_PATH || '').trim().toLowerCase();
 
-const ADMIN_BASE_PATHS = [
-  '/shri-metro-admin',
-  '/shrimetro-admin',
-  '/smp-admin-7888',
-  '/admin'
-];
+export const ADMIN_URL_PATH = envAdminPath;
+
+const ADMIN_BASE_PATHS = Array.from(
+  new Set([envAdminPath, envAdminAltPath, '/shrimetro-admin', '/admin'].filter(Boolean))
+);
 
 export function useRouter() {
   const getRoute = () => {

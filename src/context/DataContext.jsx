@@ -380,11 +380,14 @@ export function DataProvider({ children }) {
     persistData(STORAGE_KEYS.INQUIRIES, inquiries);
   }, [inquiries]);
 
-  // Auth methods
+  // Auth methods (Credentials loaded from confidential .env file)
   const login = useCallback((username, password, remember = false) => {
+    const expectedUser = (import.meta.env.VITE_ADMIN_USERNAME || '').trim().toLowerCase();
+    const expectedPass = (import.meta.env.VITE_ADMIN_PASSWORD || '').trim();
     const normalizedUser = (username || '').trim().toLowerCase();
     const cleanPassword = (password || '').trim();
-    if (normalizedUser === 'shreemetro777@gmail.com' && (password === 'Rakesh@7888' || cleanPassword === 'Rakesh@7888')) {
+
+    if (expectedUser && expectedPass && normalizedUser === expectedUser && (password === expectedPass || cleanPassword === expectedPass)) {
       setIsAuthenticated(true);
       if (remember) {
         localStorage.setItem(STORAGE_KEYS.AUTH, 'true');

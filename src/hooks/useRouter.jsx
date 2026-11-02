@@ -1,5 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 
+export const ADMIN_URL_PATH = '/shri-metro-admin';
+
+const ADMIN_BASE_PATHS = [
+  '/shri-metro-admin',
+  '/smp-admin-7888',
+  '/admin'
+];
+
 export function useRouter() {
   const getRoute = () => {
     if (typeof window === 'undefined') return { path: '/', isAdmin: false, isLogin: false };
@@ -8,26 +16,27 @@ export function useRouter() {
     const rawHash = (window.location.hash || '').toLowerCase();
     const hashClean = rawHash.replace(/^#\/?/, '/').replace(/\/+$/, '');
 
-    const isLogin = 
-      pathname === '/admin/login' || 
-      pathname.startsWith('/admin/login/') ||
-      hashClean === '/admin/login' ||
-      hashClean.startsWith('/admin/login/');
+    const isLogin = ADMIN_BASE_PATHS.some(base =>
+      pathname === `${base}/login` ||
+      pathname.startsWith(`${base}/login/`) ||
+      hashClean === `${base}/login` ||
+      hashClean.startsWith(`${base}/login/`)
+    );
 
-    const isAdmin = !isLogin && (
-      pathname === '/admin' || 
-      pathname.startsWith('/admin/') || 
-      hashClean === '/admin' || 
-      hashClean.startsWith('/admin/') ||
-      rawHash === '#admin' ||
-      rawHash === '#/admin'
+    const isAdmin = !isLogin && ADMIN_BASE_PATHS.some(base =>
+      pathname === base ||
+      pathname.startsWith(`${base}/`) ||
+      hashClean === base ||
+      hashClean.startsWith(`${base}/`) ||
+      rawHash === `#${base.slice(1)}` ||
+      rawHash === `#${base}`
     );
 
     if (isLogin) {
-      return { path: '/admin/login', isAdmin: false, isLogin: true };
+      return { path: `${ADMIN_URL_PATH}/login`, isAdmin: false, isLogin: true };
     }
     if (isAdmin) {
-      return { path: '/admin', isAdmin: true, isLogin: false };
+      return { path: ADMIN_URL_PATH, isAdmin: true, isLogin: false };
     }
     return { path: pathname, isAdmin: false, isLogin: false };
   };

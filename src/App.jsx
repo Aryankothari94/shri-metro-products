@@ -11,7 +11,7 @@ import BulkQuoteDrawer from './components/BulkQuoteDrawer';
 import FloatingInquiryButton from './components/FloatingInquiryButton';
 import Footer from './components/Footer';
 import { useData } from './context/DataContext';
-import { useRouter } from './hooks/useRouter';
+import { useRouter, ADMIN_URL_PATH } from './hooks/useRouter';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminLogin from './components/admin/AdminLogin';
 
@@ -29,10 +29,10 @@ export default function App() {
   const [prefilledInquiryMessage, setPrefilledInquiryMessage] = useState("");
   const [catalogViewMode, setCatalogViewMode] = useState('grid'); // 'grid' | 'table'
 
-  // Synchronize URL to /admin when authenticated on /admin/login
+  // Synchronize URL to admin portal when authenticated on login route
   React.useEffect(() => {
     if (isLogin && isAuthenticated) {
-      navigate('/admin');
+      navigate(ADMIN_URL_PATH);
     }
   }, [isLogin, isAuthenticated, navigate]);
 
@@ -83,7 +83,7 @@ export default function App() {
     if (!isAuthenticated) {
       return (
         <AdminLogin 
-          onLoginSuccess={() => navigate('/admin')} 
+          onLoginSuccess={() => navigate(ADMIN_URL_PATH)} 
           onGoHome={() => navigate('/')} 
         />
       );
@@ -347,11 +347,10 @@ export default function App() {
         </>
       )}
 
-      {/* 6. Minimal Clean Footer with Admin Portal Access */}
+      {/* 6. Minimal Clean Footer */}
       <Footer 
         onSelectCategory={handleSelectCategory} 
         onOpenCatalogueBook={handleOpenCatalogueBook}
-        onNavigateAdmin={() => navigate('/admin')}
         onNavigateAbout={handleOpenAboutPage}
         onNavigateCatalog={handleExploreCatalog}
         onNavigateQuality={handleNavigateQuality}

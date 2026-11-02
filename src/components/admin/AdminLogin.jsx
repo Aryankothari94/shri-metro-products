@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Lock, User, Eye, EyeOff, ArrowRight, ArrowLeft, KeyRound, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Lock, User, Eye, EyeOff, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import { LogoIcon } from '../Logo';
 import useSwipeGesture from '../../hooks/useSwipeGesture';
@@ -37,12 +37,6 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
       }
       setIsSubmitting(false);
     }, 350);
-  };
-
-  const handleFillDemo = () => {
-    setUsername('admin');
-    setPassword('metro123');
-    setError('');
   };
 
   return (
@@ -115,14 +109,14 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             {/* Username Input */}
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-[#111827] block">
-                Administrator Username
+                Administrator Username / Email
               </label>
               <div className="relative">
                 <User className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   required
-                  placeholder="Username (e.g. admin)"
+                  placeholder="Enter admin email"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs sm:text-sm text-[#111827] placeholder:text-[#64748B] focus:bg-white focus:outline-none focus:border-[#A30D20] focus:ring-1 focus:ring-[#A30D20] transition-all"
@@ -136,21 +130,13 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
                 <label className="text-xs font-bold text-[#111827] block">
                   Security Passkey
                 </label>
-                <button
-                  type="button"
-                  onClick={handleFillDemo}
-                  className="text-[11px] font-bold text-[#A30D20] hover:text-[#880A1A] cursor-pointer flex items-center gap-1"
-                >
-                  <KeyRound className="w-3 h-3" />
-                  <span>Auto-fill (admin / metro123)</span>
-                </button>
               </div>
               <div className="relative">
                 <Lock className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
-                  placeholder="Passkey"
+                  placeholder="Enter password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-10 py-2.5 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs sm:text-sm text-[#111827] placeholder:text-[#64748B] focus:bg-white focus:outline-none focus:border-[#A30D20] focus:ring-1 focus:ring-[#A30D20] transition-all font-mono"
@@ -190,13 +176,6 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             </button>
 
           </form>
-
-          {/* Quick Demo Helper */}
-          <div className="mt-6 pt-5 border-t border-[#E5E7EB] text-center">
-            <p className="text-[11px] text-[#64748B]">
-              Demo Credentials: <code className="text-[#111827] bg-[#F5F6F8] border border-[#E5E7EB] px-1.5 py-0.5 rounded font-mono font-bold">admin</code> / <code className="text-[#111827] bg-[#F5F6F8] border border-[#E5E7EB] px-1.5 py-0.5 rounded font-mono font-bold">metro123</code>
-            </p>
-          </div>
 
         </div>
 

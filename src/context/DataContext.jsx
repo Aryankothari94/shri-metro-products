@@ -21,7 +21,7 @@ const STORAGE_KEYS = {
   CATEGORIES: 'smp_admin_categories_v2',
   COMPANY: 'smp_admin_company_v1',
   INQUIRIES: 'smp_admin_inquiries_v1',
-  AUTH: 'smp_admin_auth_v1'
+  AUTH: 'smp_admin_auth_v2'
 };
 
 // Cleanup old v1 keys if present
@@ -29,6 +29,10 @@ try {
   if (typeof localStorage !== 'undefined') {
     localStorage.removeItem('smp_admin_products_v1');
     localStorage.removeItem('smp_admin_categories_v1');
+    localStorage.removeItem('smp_admin_auth_v1');
+  }
+  if (typeof sessionStorage !== 'undefined') {
+    sessionStorage.removeItem('smp_admin_auth_v1');
   }
 } catch {}
 
@@ -358,7 +362,9 @@ export function DataProvider({ children }) {
 
   // Auth methods
   const login = useCallback((username, password, remember = false) => {
-    if (username.trim() === 'admin' && (password === 'metro123' || password === 'admin123')) {
+    const normalizedUser = (username || '').trim().toLowerCase();
+    const cleanPassword = (password || '').trim();
+    if (normalizedUser === 'shreemetro777@gmail.com' && (password === 'Rakesh@7888' || cleanPassword === 'Rakesh@7888')) {
       setIsAuthenticated(true);
       if (remember) {
         localStorage.setItem(STORAGE_KEYS.AUTH, 'true');

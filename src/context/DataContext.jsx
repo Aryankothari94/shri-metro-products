@@ -18,17 +18,18 @@ import {
 // Storage keys
 const STORAGE_KEYS = {
   PRODUCTS: 'smp_admin_products_v2',
-  CATEGORIES: 'smp_admin_categories_v2',
+  CATEGORIES: 'smp_admin_categories_v3',
   COMPANY: 'smp_admin_company_v1',
   INQUIRIES: 'smp_admin_inquiries_v1',
   AUTH: 'smp_admin_auth_v2'
 };
 
-// Cleanup old v1 keys if present
+// Cleanup old keys if present
 try {
   if (typeof localStorage !== 'undefined') {
     localStorage.removeItem('smp_admin_products_v1');
     localStorage.removeItem('smp_admin_categories_v1');
+    localStorage.removeItem('smp_admin_categories_v2');
     localStorage.removeItem('smp_admin_auth_v1');
   }
   if (typeof sessionStorage !== 'undefined') {
@@ -41,16 +42,16 @@ const defaultCategories = [
   {
     id: 'cat-monobloc',
     name: 'Monobloc Chairs',
-    subcategories: ['Armchair', 'Banquet Armchair', 'Tub Chair', 'Cane Chair'],
+    subcategories: ['Armchair', 'High-Back Armchair', 'Tub Chair', 'Cane Chair'],
     description: 'Heavy-duty single-piece monobloc armchairs with 200 kg load capacity and gas-assist moulding.',
     bannerImage: '/products/alexa.jpeg'
   },
   {
     id: 'cat-armless',
     name: 'Armless Chairs',
-    subcategories: ['Dining Chair', 'Tent House Chair', 'Wave Slat Chair'],
+    subcategories: ['Dining Chair', 'Tent House Chair', 'Event Chair'],
     description: 'Space-efficient stackable armless chairs engineered for high-density banquet and event seating.',
-    bannerImage: '/products/platina.jpeg'
+    bannerImage: '/products/samrat.jpeg'
   },
   {
     id: 'cat-cafeteria',
@@ -64,49 +65,49 @@ const defaultCategories = [
     name: 'Relax Chairs',
     subcategories: ['Lounge Armchair', 'Reclined High-Back Chair'],
     description: 'Ergonomic deep-seat low lounge armchairs with wide arms for verandas, gardens, and resort patios.',
-    bannerImage: '/products/relax-deluxe.jpeg'
+    bannerImage: '/products/easy.jpeg'
+  },
+  {
+    id: 'cat-banquet',
+    name: 'Banquet Chairs',
+    subcategories: ['Banquet Armchair', 'Event Hall Chair'],
+    description: 'Reinforced heavy-duty wedding and convention seating built for continuous commercial rental cycles.',
+    bannerImage: '/products/bahubali.jpeg'
   },
   {
     id: 'cat-baby',
-    name: 'Baby & Kids Chairs',
-    subcategories: ['Study Chair', 'Activity Chair'],
+    name: 'Baby Chairs',
+    subcategories: ['Study Chair', 'Activity Chair', 'Kids Seating'],
     description: 'Child-safe high-grade polymer chairs with rounded edges and anti-slip feet for preschools and homes.',
-    bannerImage: '/products/chota-bheem.jpeg'
-  },
-  {
-    id: 'cat-stools',
-    name: 'Stools & Multipurpose',
-    subcategories: ['Round Stool', 'Square Stool', 'Rattan Stool', 'Folding Step Stool'],
-    description: 'Reinforced utility seating with ribbed understructure for restaurants, counters, and household tasks.',
-    bannerImage: '/products/rattan-big.jpeg'
-  },
-  {
-    id: 'cat-patlas',
-    name: 'Patlas (Low Seats)',
-    subcategories: ['Bathroom Patla', 'Kitchen Patla', 'Rattan Patla'],
-    description: 'Waterproof anti-skid bathroom and kitchen floor seats with textured grip and non-slip rubber bushes.',
-    bannerImage: '/products/classic-patla.jpeg'
+    bannerImage: '/products/baby-futura.jpeg'
   },
   {
     id: 'cat-dining',
     name: 'Dining Tables',
     subcategories: ['6-Seater Rectangular Table', '4-Seater Square Table', 'Round Bistro Table'],
     description: 'Full-size knockdown dining tables with central parasol hole for banquet halls, food courts, and gardens.',
-    bannerImage: '/products/grandeur.jpeg'
+    bannerImage: '/products/party-table-print.jpeg'
   },
   {
     id: 'cat-center',
     name: 'Center Tables',
-    subcategories: ['Coffee Table', 'Teapoy', 'Patio Table'],
-    description: 'Sturdy low coffee tables with storage shelf for office waiting lounges, verandas, and event setups.',
-    bannerImage: '/products/matrix.jpeg'
+    subcategories: ['Coffee Table', 'Teapoy', 'Wheeled Trolley Table'],
+    description: 'Sturdy low coffee tables and wheeled teapoys with storage shelf for lounges, verandas, and event setups.',
+    bannerImage: '/products/sapphire.jpeg'
   },
   {
-    id: 'cat-storage',
-    name: 'Storage & Accessories',
-    subcategories: ['Waste Bin', 'Heavy Crate'],
-    description: 'Industrial material-handling crates and pedal waste bins for catering operations and warehouse logistics.',
-    bannerImage: '/products/waste-bin.jpeg'
+    id: 'cat-stools',
+    name: 'Stools',
+    subcategories: ['Round Stool', 'Square Stool', 'Rattan Stool', 'Step Stool'],
+    description: 'Reinforced utility seating with ribbed understructure for restaurants, counters, and household tasks.',
+    bannerImage: '/products/dabangg.jpeg'
+  },
+  {
+    id: 'cat-patla',
+    name: 'Patla',
+    subcategories: ['Bathroom Patla', 'Kitchen Patla', 'Low Stool'],
+    description: 'Waterproof anti-skid bathroom and kitchen floor seats with textured grip and non-slip stability.',
+    bannerImage: '/products/anchor.jpeg'
   }
 ];
 

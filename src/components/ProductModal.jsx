@@ -16,7 +16,7 @@ import { useData } from '../context/DataContext';
 import useSwipeGesture from '../hooks/useSwipeGesture';
 
 export default function ProductModal({ product, onClose, onOpenPDP }) {
-  const { company: companyDetails } = useData();
+  const { company: companyDetails, addInquiry } = useData();
 
   // Swipe right or swipe down to dismiss modal
   const { gestureState, touchHandlers } = useSwipeGesture({
@@ -182,6 +182,18 @@ export default function ProductModal({ product, onClose, onOpenPDP }) {
                   href={whatsappInquiryUrl}
                   target="_blank"
                   rel="noreferrer"
+                  onClick={() => {
+                    if (addInquiry) {
+                      addInquiry({
+                        customerName: 'WhatsApp Quick-View Visitor',
+                        businessName: 'Direct Product Quote',
+                        phone: 'WhatsApp Inquiry',
+                        quantity: 25,
+                        productName: `${product.name} (${product.modelCode})`,
+                        message: `Requested bulk quotation from Quick-View Modal for ${product.name} (${product.modelCode}).`
+                      });
+                    }
+                  }}
                   className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors shadow-sm"
                 >
                   <MessageCircle className="w-4 h-4" />

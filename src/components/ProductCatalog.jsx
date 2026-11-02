@@ -62,6 +62,32 @@ export default function ProductCatalog({
     return Array.from(map.values()).sort((a, b) => b.count - a.count);
   }, [activeProducts]);
 
+  // Helper to match a product against any selected category name or category object
+  const matchesProductCategory = React.useCallback((product, catName) => {
+    if (!catName || catName === "All Products") return true;
+    const pCat = (product.category || '').trim();
+    const pSub = (product.subcategory || '').trim();
+    const pCatLower = pCat.toLowerCase();
+    const targetLower = catName.trim().toLowerCase();
+
+    if (pCat === catName || pCatLower === targetLower) return true;
+    if (targetLower === "chairs" || targetLower === "plastic chairs") {
+      return pCatLower.includes("chair");
+    }
+    if (targetLower.includes("patla") && pCatLower.includes("patla")) return true;
+    if (targetLower.includes("stool") && pCatLower.includes("stool")) return true;
+    if (targetLower.includes("baby") && pCatLower.includes("baby")) return true;
+    if (pCatLower.includes(targetLower) || targetLower.includes(pCatLower)) return true;
+
+    const catObj = categories.find(c => c.name === catName);
+    if (catObj && Array.isArray(catObj.subcategories)) {
+      if (catObj.subcategories.some(sub => sub.toLowerCase() === pCatLower || sub.toLowerCase() === pSub.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+  }, [categories]);
+
   // Calculate product counts per category dynamically
   const categoryCounts = useMemo(() => {
     const counts = {
@@ -69,31 +95,17 @@ export default function ProductCatalog({
     };
 
     categories.forEach(c => {
-      counts[c.name] = 0;
-    });
-
-    activeProducts.forEach(p => {
-      if (counts[p.category] !== undefined) {
-        counts[p.category] += 1;
-      } else {
-        counts[p.category] = 1;
-      }
+      counts[c.name] = activeProducts.filter(p => matchesProductCategory(p, c.name)).length;
     });
 
     return counts;
-  }, [activeProducts, categories]);
+  }, [activeProducts, categories, matchesProductCategory]);
 
   // Filter products
   const filteredProducts = useMemo(() => {
     return activeProducts.filter(product => {
       if (selectedCategory !== "All Products") {
-        if (selectedCategory === "Chairs" || selectedCategory === "Plastic Chairs") {
-          if (!product.category.toLowerCase().includes("chair")) return false;
-        } else if (selectedCategory === "Patlas" || selectedCategory === "Patla") {
-          if (!product.category.toLowerCase().includes("patla")) return false;
-        } else {
-          if (product.category !== selectedCategory && !product.category.toLowerCase().includes(selectedCategory.toLowerCase())) return false;
-        }
+        if (!matchesProductCategory(product, selectedCategory)) return false;
       }
 
       if (stackableOnly && !product.isStackable) return false;
@@ -133,7 +145,7 @@ export default function ProductCatalog({
       }
       return 0;
     });
-  }, [activeProducts, selectedCategory, stackableOnly, selectedColor, searchQuery, sortBy]);
+  }, [activeProducts, selectedCategory, stackableOnly, selectedColor, searchQuery, sortBy, matchesProductCategory]);
 
   // 6 Items Per Page Pagination State & Calculations
   const [currentPage, setCurrentPage] = useState(1);
@@ -245,6 +257,7 @@ export default function ProductCatalog({
                 {/* Sort Selector */}
                 <div className="relative text-xs">
                   <select
+                    aria-label="Sort products"
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
                     className="appearance-none pl-2.5 pr-6 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 focus:outline-none focus:border-red-500 cursor-pointer"
@@ -299,7 +312,7 @@ export default function ProductCatalog({
                 {selectedCategory !== "All Products" && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-red-50 text-red-700 text-[11px] font-medium border border-red-200">
                     Category: {selectedCategory}
-                    <button onClick={() => onSelectCategory("All Products")} className="hover:text-red-950">
+                    <button onClick={() => onSelectCategory("All Products")} aria-label="Remove category filter" className="hover:text-red-950">
                       <X className="w-3 h-3" />
                     </button>
                   </span>
@@ -308,7 +321,7 @@ export default function ProductCatalog({
                 {stackableOnly && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-red-50 text-red-700 text-[11px] font-medium border border-red-200">
                     Stackable Only
-                    <button onClick={() => setStackableOnly(false)} className="hover:text-red-950">
+                    <button onClick={() => setStackableOnly(false)} aria-label="Remove stackable filter" className="hover:text-red-950">
                       <X className="w-3 h-3" />
                     </button>
                   </span>
@@ -317,7 +330,7 @@ export default function ProductCatalog({
                 {selectedColor && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-red-50 text-red-700 text-[11px] font-medium border border-red-200">
                     Color: {selectedColor}
-                    <button onClick={() => setSelectedColor(null)} className="hover:text-red-950">
+                    <button onClick={() => setSelectedColor(null)} aria-label="Remove color filter" className="hover:text-red-950">
                       <X className="w-3 h-3" />
                     </button>
                   </span>
@@ -326,7 +339,7 @@ export default function ProductCatalog({
                 {searchQuery && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 text-[11px] font-medium border border-slate-200">
                     "{searchQuery}"
-                    <button onClick={() => setSearchQuery('')} className="hover:text-slate-950">
+                    <button onClick={() => setSearchQuery('')} aria-label="Clear search filter" className="hover:text-slate-950">
                       <X className="w-3 h-3" />
                     </button>
                   </span>
@@ -476,7 +489,7 @@ export default function ProductCatalog({
                   <span>Filters</span>
                   <span className="text-[10px] text-slate-400 font-normal">Swipe →</span>
                 </span>
-                <button onClick={() => setMobileFilterOpen(false)} className="p-1 text-slate-400 hover:text-slate-700">
+                <button onClick={() => setMobileFilterOpen(false)} aria-label="Close filters drawer" className="p-1 text-slate-400 hover:text-slate-700">
                   <X className="w-4 h-4" />
                 </button>
               </div>

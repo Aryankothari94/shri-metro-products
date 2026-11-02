@@ -11,12 +11,25 @@ import {
 import { useData } from '../context/DataContext';
 
 export default function ProductCard({ product, onQuickView, onViewDetails }) {
-  const { company: companyDetails } = useData();
+  const { company: companyDetails, addInquiry } = useData();
   const [activeColor, setActiveColor] = useState(product?.colors?.[0] || null);
   const selectedColorName = activeColor?.name || product?.colors?.[0]?.name || '';
   const currentImage = activeColor?.image || product?.image;
 
   const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColorName)}%20color.`;
+
+  const handleLogWhatsAppQuote = () => {
+    if (addInquiry) {
+      addInquiry({
+        customerName: 'WhatsApp Catalog Visitor',
+        businessName: 'Direct Product Quote',
+        phone: 'WhatsApp Inquiry',
+        quantity: 25,
+        productName: `${product.name} (${product.modelCode})`,
+        message: `Requested price quote via WhatsApp for ${product.name} (${product.modelCode}) in ${selectedColorName || 'Standard'} finish.`
+      });
+    }
+  };
 
   return (
     <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:border-red-300 hover:shadow-md transition-all duration-200 flex flex-col group">
@@ -125,6 +138,7 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
             href={whatsappInquiryUrl}
             target="_blank"
             rel="noreferrer"
+            onClick={handleLogWhatsAppQuote}
             className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-colors shadow-sm shadow-red-500/20"
           >
             <MessageCircle className="w-3 h-3 text-white" />

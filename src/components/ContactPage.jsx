@@ -53,8 +53,9 @@ export default function ContactPage({ prefilledMessage = '' }) {
   // Submit via WhatsApp
   const handleWhatsAppSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      alert("Please enter your name and phone number.");
+    const digitsOnly = (formData.phone || '').replace(/\D/g, '');
+    if (!formData.name.trim() || digitsOnly.length < 10) {
+      alert("Please enter your full name and a valid 10-digit mobile / WhatsApp number.");
       return;
     }
 
@@ -68,13 +69,17 @@ export default function ContactPage({ prefilledMessage = '' }) {
 
     window.open(`https://wa.me/${companyDetails.whatsappNumber}?text=${text}`, '_blank');
     
+    // Extract numeric quantity if mentioned in message, else default to 25 (MOQ)
+    const qtyMatch = (formData.message || '').match(/\b(\d+)\s*(?:units|pcs|pieces|chairs|tables|stools)?\b/i);
+    const parsedQty = qtyMatch ? Math.max(1, parseInt(qtyMatch[1], 10)) : 25;
+
     // Automatically log into Admin Inquiries
     if (addInquiry) {
       addInquiry({
-        customerName: formData.name,
-        businessName: formData.companyName || 'Wholesale Buyer',
-        phone: formData.phone,
-        quantity: 'Direct Inquiry',
+        customerName: formData.name.trim(),
+        businessName: formData.companyName.trim() || 'Wholesale Buyer',
+        phone: formData.phone.trim(),
+        quantity: parsedQty,
         productName: formData.city ? `Delivery Hub: ${formData.city}` : 'Product Catalog Inquiry',
         message: formData.message || 'Direct factory inquiry submitted via contact form.'
       });
@@ -213,7 +218,7 @@ export default function ContactPage({ prefilledMessage = '' }) {
 
               {/* Minimal Directions Button */}
               <a
-                href={companyDetails.location.googleMapsUrl}
+                href={companyDetails.location?.googleMapsUrl || 'https://maps.google.com/?q=Vaishno+Devi+Industrial+Estate+Kumbalgodu+Bangalore+560074'}
                 target="_blank"
                 rel="noreferrer"
                 className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-700 hover:text-slate-900 text-xs font-semibold flex items-center justify-between transition-all cursor-pointer shadow-2xs group"
@@ -266,10 +271,11 @@ export default function ContactPage({ prefilledMessage = '' }) {
                 {/* Row 1: Name & Business */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-slate-600 text-xs font-semibold mb-1">
+                    <label htmlFor="contact-name" className="block text-slate-600 text-xs font-semibold mb-1">
                       Your Name *
                     </label>
                     <input
+                      id="contact-name"
                       type="text"
                       required
                       name="name"
@@ -281,10 +287,11 @@ export default function ContactPage({ prefilledMessage = '' }) {
                   </div>
 
                   <div>
-                    <label className="block text-slate-600 text-xs font-semibold mb-1">
+                    <label htmlFor="contact-company" className="block text-slate-600 text-xs font-semibold mb-1">
                       Business / Company Name
                     </label>
                     <input
+                      id="contact-company"
                       type="text"
                       name="companyName"
                       placeholder="e.g. Sri Balaji Tent House / Cafe"
@@ -298,10 +305,11 @@ export default function ContactPage({ prefilledMessage = '' }) {
                 {/* Row 2: Phone & City */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-slate-600 text-xs font-semibold mb-1">
+                    <label htmlFor="contact-phone" className="block text-slate-600 text-xs font-semibold mb-1">
                       Phone / WhatsApp *
                     </label>
                     <input
+                      id="contact-phone"
                       type="tel"
                       required
                       name="phone"
@@ -313,10 +321,11 @@ export default function ContactPage({ prefilledMessage = '' }) {
                   </div>
 
                   <div>
-                    <label className="block text-slate-600 text-xs font-semibold mb-1">
+                    <label htmlFor="contact-city" className="block text-slate-600 text-xs font-semibold mb-1">
                       Delivery City / District *
                     </label>
                     <input
+                      id="contact-city"
                       type="text"
                       required
                       name="city"
@@ -330,10 +339,11 @@ export default function ContactPage({ prefilledMessage = '' }) {
 
                 {/* Row 3: Order Details */}
                 <div>
-                  <label className="block text-slate-600 text-xs font-semibold mb-1">
+                  <label htmlFor="contact-message" className="block text-slate-600 text-xs font-semibold mb-1">
                     Order Requirements / Models & Quantities
                   </label>
                   <textarea
+                    id="contact-message"
                     rows="3"
                     name="message"
                     placeholder="Mention models, required quantities (e.g. 50 armchairs + 10 dining tables), and target delivery date..."

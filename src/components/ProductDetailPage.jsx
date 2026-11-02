@@ -27,7 +27,7 @@ export default function ProductDetailPage({
   onBack, 
   onAddToQuoteList 
 }) {
-  const { company: companyDetails } = useData();
+  const { company: companyDetails, addInquiry } = useData();
 
   // Swipe gesture to go back to catalog
   const { gestureState, touchHandlers } = useSwipeGesture({
@@ -157,18 +157,18 @@ export default function ProductDetailPage({
                   </div>
 
                   {/* Active Selected Color Badge */}
-                  <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200 shadow-md flex items-center gap-2 text-xs">
+                  <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 bg-white/95 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl border border-slate-200 shadow-md flex items-center gap-1.5 text-[11px] sm:text-xs max-w-[62%]">
                     <span
-                      className="w-4 h-4 rounded-full border border-slate-300 shadow-xs"
+                      className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border border-slate-300 shadow-xs shrink-0"
                       style={{ backgroundColor: selectedColor?.hex }}
                     />
-                    <span className="font-bold text-slate-800">
-                      Active: {selectedColor?.name}
+                    <span className="font-bold text-slate-800 truncate">
+                      {selectedColor?.name}
                     </span>
                   </div>
 
                   {/* Factory Material Guarantee Pill */}
-                  <div className="absolute bottom-4 right-4 bg-emerald-600/90 backdrop-blur-md text-white px-2.5 py-1 rounded-lg text-[10px] font-bold shadow-md">
+                  <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-emerald-600/90 backdrop-blur-md text-white px-2 py-1 sm:px-2.5 rounded-lg text-[10px] font-bold shadow-md">
                     High-Grade PP
                   </div>
                 </div>
@@ -422,16 +422,23 @@ export default function ProductDetailPage({
                 {/* Quantity Input & Preset Chips */}
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                    <label className="text-xs text-slate-600 font-semibold shrink-0">
+                    <label htmlFor="pdp-required-quantity" className="text-xs text-slate-600 font-semibold shrink-0">
                       Required Quantity:
                     </label>
                     <div className="relative w-32 sm:w-36">
                       <input
+                        id="pdp-required-quantity"
                         type="number"
-                        min="10"
+                        min="25"
                         step="5"
                         value={quantity}
-                        onChange={(e) => setQuantity(Math.max(1, Number(e.target.value) || 1))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setQuantity(val === '' ? '' : Math.max(1, Number(val)));
+                        }}
+                        onBlur={() => {
+                          setQuantity(prev => Math.max(25, Number(prev) || 25));
+                        }}
                         className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-900 font-mono font-bold text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/20"
                       />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">
@@ -484,6 +491,18 @@ export default function ProductDetailPage({
                     href={formattedWhatsAppUrl}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={() => {
+                      if (addInquiry) {
+                        addInquiry({
+                          customerName: 'WhatsApp PDP Buyer',
+                          businessName: 'Product Detail Requisition',
+                          phone: 'WhatsApp Inquiry',
+                          quantity: Number(quantity) || 25,
+                          productName: `${product.name} (${product.modelCode})`,
+                          message: `Requested wholesale pricing for ${Number(quantity) || 25} units of ${product.name} (${product.modelCode}) in ${selectedColor?.name || 'Standard'} shade.`
+                        });
+                      }
+                    }}
                     className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-red-500/25 transition-all cursor-pointer"
                   >
                     <MessageCircle className="w-4 h-4 text-white shrink-0" />

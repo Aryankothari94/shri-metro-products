@@ -61,6 +61,34 @@ export default function CatalogSidebar({
 
 
 
+      {/* 1. Search Input */}
+      <div>
+        <label htmlFor="catalog-sidebar-search" className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+          Search Inventory
+        </label>
+        <div className="relative">
+          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <input
+            id="catalog-sidebar-search"
+            type="text"
+            placeholder="Model name, code (SMP-001)..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-8 pr-7 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/20 transition-all"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              aria-label="Clear search query"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 cursor-pointer p-0.5"
+            >
+              <X className="w-3 h-3" />
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* 2. Category List */}
       <div>
         <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">

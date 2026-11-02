@@ -13,7 +13,7 @@ import {
 import { useData } from '../../context/DataContext';
 import ImageUploadPicker from '../common/ImageUploadPicker';
 
-export default function AdminCategories() {
+export default function AdminCategories({ autoOpenAdd = false, onAutoOpenHandled }) {
   const { categories, products, addCategory, updateCategory, deleteCategory } = useData();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -31,10 +31,17 @@ export default function AdminCategories() {
       name: '',
       subcategories: '',
       description: '',
-      bannerImage: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'
+      bannerImage: '/products/alexa.jpeg'
     });
     setModalOpen(true);
   };
+
+  React.useEffect(() => {
+    if (autoOpenAdd) {
+      handleOpenAdd();
+      if (onAutoOpenHandled) onAutoOpenHandled();
+    }
+  }, [autoOpenAdd, onAutoOpenHandled]);
 
   const handleOpenEdit = (category) => {
     setEditingCategory(category);
@@ -123,9 +130,12 @@ export default function AdminCategories() {
                 {/* Banner Image Preview */}
                 <div className="relative h-28 rounded-xl overflow-hidden bg-[#F5F6F8] border border-[#E5E7EB] mb-3.5">
                   <img 
-                    src={category.bannerImage || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'} 
+                    src={category.bannerImage || '/products/alexa.jpeg'} 
                     alt={category.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    onError={(e) => {
+                      e.currentTarget.src = '/products/alexa.jpeg';
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#111827]/70 via-transparent to-transparent" />
                   <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between">

@@ -46,6 +46,8 @@ CREATE TABLE IF NOT EXISTS public.categories (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,
     description TEXT,
+    subcategories JSONB DEFAULT '[]'::jsonb,
+    banner_image TEXT,
     display_order INT DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -57,10 +59,10 @@ CREATE TABLE IF NOT EXISTS public.inquiries (
     business_name TEXT,
     phone TEXT NOT NULL,
     email TEXT,
-    quantity INT DEFAULT 1,
+    quantity INT DEFAULT 25,
     product_name TEXT,
     message TEXT,
-    status TEXT DEFAULT 'New' CHECK (status IN ('New', 'Contacted', 'Quoted', 'Closed')),
+    status TEXT DEFAULT 'New' CHECK (status IN ('New', 'In Progress', 'Contacted', 'Quoted', 'Closed')),
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -72,10 +74,10 @@ CREATE TABLE IF NOT EXISTS public.company_profile (
     name TEXT DEFAULT 'SHRI METRO PRODUCTS',
     proprietor TEXT DEFAULT 'Rakesh R Jain',
     established_year INT DEFAULT 2012,
-    address TEXT DEFAULT 'Plot No. 42-P, 2nd Phase, Kumbalgodu Industrial Area, Mysore Road, Bangalore - 560074',
+    address TEXT DEFAULT 'Site no: 10, 11 Gerupalya, Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore - 560074',
     plant_location TEXT DEFAULT 'Kumbalgodu Industrial Area, Bangalore',
-    phone TEXT DEFAULT '+91 94480 87311',
-    whatsapp_number TEXT DEFAULT '919448087311',
+    phone TEXT DEFAULT '+91 9845287888',
+    whatsapp_number TEXT DEFAULT '919845287888',
     email TEXT DEFAULT 'info@shrimetroproducts.com',
     catalog_download_url TEXT DEFAULT '#',
     updated_at TIMESTAMPTZ DEFAULT NOW()

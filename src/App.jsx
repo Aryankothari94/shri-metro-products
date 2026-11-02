@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductCatalog from './components/ProductCatalog';
 import ProductDetailPage from './components/ProductDetailPage';
-import CatalogueBookPage from './components/CatalogueBookPage';
-import AboutUsPage from './components/AboutUsPage';
 import WhyChooseUs from './components/WhyChooseUs';
 import ContactPage from './components/ContactPage';
 import BulkQuoteDrawer from './components/BulkQuoteDrawer';
@@ -12,8 +10,11 @@ import FloatingInquiryButton from './components/FloatingInquiryButton';
 import Footer from './components/Footer';
 import { useData } from './context/DataContext';
 import { useRouter, ADMIN_URL_PATH } from './hooks/useRouter';
-import AdminLayout from './components/admin/AdminLayout';
-import AdminLogin from './components/admin/AdminLogin';
+
+const CatalogueBookPage = lazy(() => import('./components/CatalogueBookPage'));
+const AboutUsPage = lazy(() => import('./components/AboutUsPage'));
+const AdminLayout = lazy(() => import('./components/admin/AdminLayout'));
+const AdminLogin = lazy(() => import('./components/admin/AdminLogin'));
 
 export default function App() {
   const { isAuthenticated, activeProducts } = useData();
@@ -61,37 +62,54 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [isQuoteDrawerOpen, selectedProductForPDP, isCatalogueBookOpen, isAboutPageOpen]);
 
-  // Synchronize hash / path navigation for #about and /about
+  // Synchronize hash / path navigation for #about, #catalogue, and #product-*
   React.useEffect(() => {
     const handleHashCheck = () => {
-      const hash = window.location.hash;
+      const hash = window.location.hash || '';
       const path = (window.location.pathname || '').toLowerCase();
       if (hash === '#about' || path === '/about') {
         setSelectedProductForPDP(null);
         setIsCatalogueBookOpen(false);
         setIsAboutPageOpen(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === '#catalogue' || path === '/catalogue') {
+        setSelectedProductForPDP(null);
+        setIsAboutPageOpen(false);
+        setIsCatalogueBookOpen(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash.startsWith('#product-')) {
+        const codeOrId = decodeURIComponent(hash.replace('#product-', '')).trim().toLowerCase();
+        const matched = activeProducts.find(
+          p => (p.modelCode || '').toLowerCase() === codeOrId || (p.id || '').toLowerCase() === codeOrId
+        );
+        if (matched) {
+          setIsAboutPageOpen(false);
+          setIsCatalogueBookOpen(false);
+          setSelectedProductForPDP(matched);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       }
     };
     handleHashCheck();
     window.addEventListener('hashchange', handleHashCheck);
     return () => window.removeEventListener('hashchange', handleHashCheck);
-  }, []);
+  }, [activeProducts]);
 
   // ADMIN PORTAL & AUTHENTICATION ROUTES
   if (isAdmin || isLogin) {
-    if (!isAuthenticated) {
-      return (
-        <AdminLogin 
-          onLoginSuccess={() => navigate(ADMIN_URL_PATH)} 
-          onGoHome={() => navigate('/')} 
-        />
-      );
-    }
     return (
-      <AdminLayout 
-        onGoHome={() => navigate('/')} 
-      />
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#F5F6F8] text-xs font-bold text-slate-600">Loading Administrative Console…</div>}>
+        {!isAuthenticated ? (
+          <AdminLogin 
+            onLoginSuccess={() => navigate(ADMIN_URL_PATH)} 
+            onGoHome={() => navigate('/')} 
+          />
+        ) : (
+          <AdminLayout 
+            onGoHome={() => navigate('/')} 
+          />
+        )}
+      </Suspense>
     );
   }
 
@@ -309,17 +327,21 @@ export default function App() {
           onAddToQuoteList={handleAddToQuoteList}
         />
       ) : isCatalogueBookOpen ? (
-        <CatalogueBookPage
-          onBackToDashboard={handleBackToDashboard}
-          onAddToQuoteList={handleAddToQuoteList}
-        />
+        <Suspense fallback={<div className="min-h-[60vh] flex items-center justify-center text-xs font-bold text-slate-500">Loading Digital Catalogue…</div>}>
+          <CatalogueBookPage
+            onBackToDashboard={handleBackToDashboard}
+            onAddToQuoteList={handleAddToQuoteList}
+          />
+        </Suspense>
       ) : isAboutPageOpen ? (
-        <AboutUsPage
-          onBackToDashboard={handleBackFromAbout}
-          onExploreCatalog={handleExploreCatalog}
-          onNavigateContact={handleNavigateContact}
-          onOpenCatalogueBook={handleOpenCatalogueBook}
-        />
+        <Suspense fallback={<div className="min-h-[60vh] flex items-center justify-center text-xs font-bold text-slate-500">Loading About Us…</div>}>
+          <AboutUsPage
+            onBackToDashboard={handleBackFromAbout}
+            onExploreCatalog={handleExploreCatalog}
+            onNavigateContact={handleNavigateContact}
+            onOpenCatalogueBook={handleOpenCatalogueBook}
+          />
+        </Suspense>
       ) : (
         <>
           {/* 2. Executive Dashboard Overview & KPIs */}

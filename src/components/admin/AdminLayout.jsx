@@ -32,6 +32,7 @@ export default function AdminLayout({ onGoHome }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [quickProductModalOpen, setQuickProductModalOpen] = useState(false);
+  const [autoOpenCategoryModal, setAutoOpenCategoryModal] = useState(false);
 
   // Edge swipe to go back (from modals -> subtabs -> overview -> public website)
   const handleEdgeBack = () => {
@@ -258,14 +259,22 @@ export default function AdminLayout({ onGoHome }) {
             <AdminOverview
               onNavigateTab={setActiveTab}
               onOpenAddProduct={() => setQuickProductModalOpen(true)}
-              onOpenAddCategory={() => setActiveTab('categories')}
+              onOpenAddCategory={() => {
+                setAutoOpenCategoryModal(true);
+                setActiveTab('categories');
+              }}
               onGoHome={onGoHome}
             />
           )}
 
           {activeTab === 'products' && <AdminProducts />}
 
-          {activeTab === 'categories' && <AdminCategories />}
+          {activeTab === 'categories' && (
+            <AdminCategories
+              autoOpenAdd={autoOpenCategoryModal}
+              onAutoOpenHandled={() => setAutoOpenCategoryModal(false)}
+            />
+          )}
 
           {activeTab === 'inquiries' && <AdminInquiries />}
 

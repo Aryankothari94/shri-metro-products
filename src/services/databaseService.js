@@ -1,4 +1,5 @@
 import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient';
+import { companyDetails as defaultCompany } from '../data/companyData';
 
 /**
  * Data Mappers between Frontend CamelCase and Database snake_case
@@ -65,10 +66,25 @@ export const mapProductToDb = (p) => {
   };
 };
 
+const CATEGORY_DEFAULT_BANNERS = {
+  'Monobloc Chairs': '/products/alexa.jpeg',
+  'Armless Chairs': '/products/samrat.jpeg',
+  'Cafeteria Chairs': '/products/crystal.jpeg',
+  'Relax Chairs': '/products/easy.jpeg',
+  'Banquet Chairs': '/products/bahubali.jpeg',
+  'Baby Chairs': '/products/baby-futura.jpeg',
+  'Dining Tables': '/products/party-table-print.jpeg',
+  'Center Tables': '/products/sapphire.jpeg',
+  'Stools': '/products/dabangg.jpeg',
+  'Patla': '/products/anchor.jpeg'
+};
+
 export const mapCategoryFromDb = (row) => ({
   id: row.id,
   name: row.name,
   description: row.description || '',
+  subcategories: Array.isArray(row.subcategories) ? row.subcategories : [],
+  bannerImage: row.banner_image || CATEGORY_DEFAULT_BANNERS[row.name] || '/products/alexa.jpeg',
   displayOrder: row.display_order ?? 0
 });
 
@@ -76,6 +92,8 @@ export const mapCategoryToDb = (c) => ({
   id: c.id,
   name: c.name,
   description: c.description || '',
+  subcategories: Array.isArray(c.subcategories) ? c.subcategories : [],
+  banner_image: c.bannerImage || CATEGORY_DEFAULT_BANNERS[c.name] || '/products/alexa.jpeg',
   display_order: c.displayOrder ?? 0
 });
 
@@ -85,7 +103,7 @@ export const mapInquiryFromDb = (row) => ({
   businessName: row.business_name || '',
   phone: row.phone || '',
   email: row.email || '',
-  quantity: Number(row.quantity) || 1,
+  quantity: Number(row.quantity) || 25,
   productName: row.product_name || '',
   message: row.message || '',
   status: row.status || 'New',
@@ -98,36 +116,50 @@ export const mapInquiryToDb = (inq) => ({
   business_name: inq.businessName || '',
   phone: inq.phone || '',
   email: inq.email || '',
-  quantity: Number(inq.quantity) || 1,
+  quantity: Number.isFinite(Number(inq.quantity)) && Number(inq.quantity) > 0 ? Number(inq.quantity) : 25,
   product_name: inq.productName || '',
   message: inq.message || '',
   status: inq.status || 'New',
   created_at: inq.date || new Date().toISOString()
 });
 
-export const mapCompanyFromDb = (row) => ({
-  name: row.name || 'SHRI METRO PRODUCTS',
-  proprietor: row.proprietor || 'Rakesh R Jain',
-  establishedYear: row.established_year || 2012,
-  address: row.address || 'Plot No. 42-P, 2nd Phase, Kumbalgodu Industrial Area, Mysore Road, Bangalore - 560074',
-  plantLocation: row.plant_location || 'Kumbalgodu Industrial Area, Bangalore',
-  phone: row.phone || '+91 94480 87311',
-  whatsappNumber: row.whatsapp_number || '919448087311',
-  email: row.email || 'info@shrimetroproducts.com',
-  catalogDownloadUrl: row.catalog_download_url || '#'
-});
+export const mapCompanyFromDb = (row) => {
+  const phone = row.phone || defaultCompany.phone || '+91 9845287888';
+  const phoneRaw = phone.replace(/[^0-9+]/g, '') || defaultCompany.phoneRaw || '+919845287888';
+  const whatsappNumber = row.whatsapp_number || defaultCompany.whatsappNumber || '919845287888';
+  const fullAddress = row.address || defaultCompany.location?.fullAddress || 'Site no: 10,11 Gerupalya, Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore - 560074';
+  return {
+    ...defaultCompany,
+    name: row.name || defaultCompany.name || 'SHRI METRO PRODUCTS',
+    proprietor: row.proprietor || defaultCompany.proprietor || 'Rakesh R Jain',
+    establishedYear: row.established_year || defaultCompany.establishedYear || '2012',
+    address: fullAddress,
+    plantLocation: row.plant_location || 'Kumbalgodu Industrial Area, Bangalore',
+    phone,
+    phoneRaw,
+    whatsappNumber,
+    whatsappLink: `https://wa.me/${whatsappNumber}?text=Hello%20Shri%20Metro%20Products%2C%20I%20would%20like%20to%20inquire%20about%20your%20furniture%20products.`,
+    email: row.email || defaultCompany.email || 'info@shrimetroproducts.com',
+    gstin: row.gstin || defaultCompany.gstin || '29AKZPJ1388F1ZH',
+    catalogDownloadUrl: row.catalog_download_url || '#',
+    location: {
+      ...defaultCompany.location,
+      fullAddress
+    }
+  };
+};
 
 export const mapCompanyToDb = (c) => ({
   id: 'shri_metro_main',
-  name: c.name,
-  proprietor: c.proprietor,
-  established_year: c.establishedYear,
-  address: c.address,
-  plant_location: c.plantLocation,
-  phone: c.phone,
-  whatsapp_number: c.whatsappNumber,
-  email: c.email,
-  catalog_download_url: c.catalogDownloadUrl,
+  name: c.name || defaultCompany.name,
+  proprietor: c.proprietor || defaultCompany.proprietor,
+  established_year: parseInt(c.establishedYear, 10) || 2012,
+  address: c.location?.fullAddress || c.address || defaultCompany.location.fullAddress,
+  plant_location: c.plantLocation || 'Kumbalgodu Industrial Area, Bangalore',
+  phone: c.phone || defaultCompany.phone,
+  whatsapp_number: c.whatsappNumber || defaultCompany.whatsappNumber,
+  email: c.email || defaultCompany.email,
+  catalog_download_url: c.catalogDownloadUrl || '#',
   updated_at: new Date().toISOString()
 });
 
@@ -225,6 +257,8 @@ export const db = {
     const dbFields = {};
     if (updatedFields.name !== undefined) dbFields.name = updatedFields.name;
     if (updatedFields.description !== undefined) dbFields.description = updatedFields.description;
+    if (updatedFields.subcategories !== undefined) dbFields.subcategories = updatedFields.subcategories;
+    if (updatedFields.bannerImage !== undefined) dbFields.banner_image = updatedFields.bannerImage;
     if (updatedFields.displayOrder !== undefined) dbFields.display_order = updatedFields.displayOrder;
 
     const { data, error } = await supabase.from('categories').update(dbFields).eq('id', id).select().single();

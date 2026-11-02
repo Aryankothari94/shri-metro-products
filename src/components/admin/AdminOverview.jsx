@@ -223,7 +223,7 @@ export default function AdminOverview({ onNavigateTab, onOpenAddProduct, onOpenA
                       {inq.businessName && <span className="text-[#64748B] font-normal"> • {inq.businessName}</span>}
                     </p>
                     <p className="text-[11px] text-[#64748B] truncate mt-0.5">
-                      {inq.productName} ({inq.quantity ? `${inq.quantity} units` : 'Wholesale inquiry'})
+                      {inq.productName} ({inq.quantity ? (Number.isFinite(Number(inq.quantity)) ? `${inq.quantity} units` : inq.quantity) : 'Wholesale inquiry'})
                     </p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">

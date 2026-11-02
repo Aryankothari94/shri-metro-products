@@ -182,7 +182,7 @@ export default function AdminInquiries() {
                           {inq.productName || 'Wholesale Catalog Mix'}
                         </p>
                         <span className="inline-block mt-0.5 px-2 py-0.5 rounded bg-red-50 border border-red-200/80 text-[#A30D20] font-bold text-[10px]">
-                          {inq.quantity ? `${inq.quantity} Units` : 'Bulk Lot'}
+                          {inq.quantity ? (Number.isFinite(Number(inq.quantity)) ? `${inq.quantity} Units` : inq.quantity) : 'Bulk Lot'}
                         </span>
                       </td>
 

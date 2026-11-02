@@ -9,7 +9,20 @@ import {
 import { useData } from '../context/DataContext';
 
 export default function SpecTableView({ products, onQuickView, onViewDetails }) {
-  const { company: companyDetails } = useData();
+  const { company: companyDetails, addInquiry } = useData();
+
+  const handleLogQuote = (product) => {
+    if (addInquiry) {
+      addInquiry({
+        customerName: 'WhatsApp Spec Table Visitor',
+        businessName: 'Technical Spec Quote',
+        phone: 'WhatsApp Inquiry',
+        quantity: 25,
+        productName: `${product.name} (${product.modelCode})`,
+        message: `Requested wholesale quotation from Technical Spec Register for ${product.name} (${product.modelCode}).`
+      });
+    }
+  };
   return (
     <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs">
       
@@ -128,6 +141,7 @@ export default function SpecTableView({ products, onQuickView, onViewDetails }) 
                         href={whatsappUrl}
                         target="_blank"
                         rel="noreferrer"
+                        onClick={() => handleLogQuote(product)}
                         className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-colors shadow-xs shadow-red-500/20"
                       >
                         <MessageCircle className="w-3 h-3 text-white" />

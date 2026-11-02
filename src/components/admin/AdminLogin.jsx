@@ -108,12 +108,13 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             
             {/* Username Input */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#111827] block">
+              <label htmlFor="admin-login-username" className="text-xs font-bold text-[#111827] block">
                 Administrator Username / Email
               </label>
               <div className="relative">
                 <User className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
+                  id="admin-login-username"
                   type="text"
                   required
                   placeholder="Enter admin email"
@@ -127,13 +128,14 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             {/* Password Input */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-[#111827] block">
+                <label htmlFor="admin-login-password" className="text-xs font-bold text-[#111827] block">
                   Security Passkey
                 </label>
               </div>
               <div className="relative">
                 <Lock className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
+                  id="admin-login-password"
                   type={showPassword ? 'text' : 'password'}
                   required
                   placeholder="Enter password"

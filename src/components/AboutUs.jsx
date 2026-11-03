@@ -153,7 +153,7 @@ export default function AboutUs({
                 <LogoIcon className="w-11 h-11 shadow-xs" />
                 <div>
                   <h3 className="text-lg font-black text-slate-900 tracking-tight leading-none">
-                    ShriMetro
+                    Shri Metro
                   </h3>
                   <p className="text-xs text-red-600 font-bold uppercase tracking-wider mt-1">
                     Direct Manufacturer • Bangalore Works
@@ -164,7 +164,7 @@ export default function AboutUs({
               {/* Exact Provided Content In Styled Typography */}
               <div className="space-y-4 text-slate-700 text-sm sm:text-base leading-relaxed">
                 <p className="font-semibold text-slate-900">
-                  ShriMetro is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
+                  Shri Metro is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
                 </p>
                 
                 <p>
@@ -203,7 +203,7 @@ export default function AboutUs({
                     <span>Our Brand Promise</span>
                   </div>
                   <blockquote className="text-lg sm:text-xl font-black text-white tracking-tight leading-snug">
-                    “ShriMetro — Quality you can rely on. Service you can trust.”
+                    “Shri Metro — Quality you can rely on. Service you can trust.”
                   </blockquote>
                   <p className="text-xs text-slate-400 font-medium">
                     Led by Proprietor <strong className="text-slate-200">{company.proprietor}</strong> • Kumbalgodu, Bangalore

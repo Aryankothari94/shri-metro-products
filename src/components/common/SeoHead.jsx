@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 const SITE_URL = 'https://shrimetroproducts.in';
 
 const BASE_KEYWORDS = [
-  'ShriMetro',
-  'ShriMetro Plastic Moulded Furniture',
+  'Shri Metro',
+  'Shri Metro Plastic Moulded Furniture',
   'Shri Metro Products',
   'plastic chairs manufacturer in Bangalore',
   'moulded plastic furniture manufacturer India',
@@ -24,7 +24,7 @@ const BASE_KEYWORDS = [
   'UV stabilized outdoor plastic furniture',
   'Kumbalgodu plastic furniture factory',
   'Vaishno Devi Industrial Estate Gerupalya Kumbalgodu',
-  'Rakesh R Jain ShriMetro'
+  'Rakesh R Jain Shri Metro'
 ];
 
 function setMetaTag(selector, attrName, attrValue, content) {
@@ -63,7 +63,7 @@ export default function SeoHead({
 
     // 1. Admin Portal: prevent search engine indexing of private admin console
     if (isAdmin) {
-      document.title = 'ShriMetro | Administrative Command Portal';
+      document.title = 'Shri Metro | Administrative Command Portal';
       setMetaTag('meta[name="robots"]', 'name', 'robots', 'noindex, nofollow');
       setMetaTag('meta[name="googlebot"]', 'name', 'googlebot', 'noindex, nofollow');
       return;
@@ -83,9 +83,9 @@ export default function SeoHead({
       'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
     );
 
-    let title = 'ShriMetro | #1 Plastic Moulded Furniture Manufacturer in Bangalore | Wholesale Chairs, Tables & Stools';
+    let title = 'Shri Metro | #1 Plastic Moulded Furniture Manufacturer in Bangalore | Wholesale Chairs, Tables & Stools';
     let description =
-      "ShriMetro is Bangalore's leading manufacturer & wholesale supplier of heavy-duty plastic moulded furniture made from high grade purity polypropylene and co-polymers. Direct factory pricing on 43+ models of Monobloc Chairs, Banquet Chairs, Armless Chairs, Cafeteria Chairs, Relax Chairs, Baby Chairs, Dining Tables, Center Tables, Stools & Patlas from Kumbalgodu, Bengaluru.";
+      "Shri Metro is Bangalore's leading manufacturer & wholesale supplier of heavy-duty plastic moulded furniture made from high grade purity polypropylene and co-polymers. Direct factory pricing on 43+ models of Monobloc Chairs, Banquet Chairs, Armless Chairs, Cafeteria Chairs, Relax Chairs, Baby Chairs, Dining Tables, Center Tables, Stools & Patlas from Kumbalgodu, Bengaluru.";
     let keywords = [...BASE_KEYWORDS];
     let canonicalUrl = `${SITE_URL}/`;
     let ogImage = `${SITE_URL}/logo-emblem.png`;
@@ -95,12 +95,12 @@ export default function SeoHead({
       const pCode = selectedProduct.modelCode || '';
       const pCat = selectedProduct.category || 'Moulded Furniture';
       const pMat = selectedProduct.material || 'High-Grade Purity Polypropylene & Co-Polymers';
-      title = `${pName} (${pCode}) | ${pCat} | ShriMetro Plastic Moulded Furniture Bangalore`;
-      description = `Buy ${pName} (${pCode}) wholesale direct from ShriMetro Bangalore factory. ${selectedProduct.description || ''} Manufactured from ${pMat} with ${selectedProduct.loadCapacityKg || '200 kg'} static load tolerance.`.trim();
+      title = `${pName} (${pCode}) | ${pCat} | Shri Metro Plastic Moulded Furniture Bangalore`;
+      description = `Buy ${pName} (${pCode}) wholesale direct from Shri Metro Bangalore factory. ${selectedProduct.description || ''} Manufactured from ${pMat} with ${selectedProduct.loadCapacityKg || '200 kg'} static load tolerance.`.trim();
       keywords = [
         pName,
         `${pName} ${pCode}`,
-        `ShriMetro ${pName}`,
+        `Shri Metro ${pName}`,
         `${pCat} wholesale Bangalore`,
         pMat,
         ...BASE_KEYWORDS
@@ -112,35 +112,35 @@ export default function SeoHead({
           : `${SITE_URL}${selectedProduct.image}`;
       }
     } else if (isCatalogueBookOpen) {
-      title = 'Official Digital Product Catalogue (43+ Models) | ShriMetro Plastic Moulded Furniture Bangalore';
+      title = 'Official Digital Product Catalogue (43+ Models) | Shri Metro Plastic Moulded Furniture Bangalore';
       description =
-        'Browse the interactive 3D ShriMetro Digital Product Catalogue featuring all 43+ heavy-duty plastic chairs, dining tables, center tables, stools, and patlas manufactured from High-Grade Purity Polypropylene & Co-Polymers in Kumbalgodu, Bangalore.';
+        'Browse the interactive 3D Shri Metro Digital Product Catalogue featuring all 43+ heavy-duty plastic chairs, dining tables, center tables, stools, and patlas manufactured from High-Grade Purity Polypropylene & Co-Polymers in Kumbalgodu, Bangalore.';
       keywords = [
-        'ShriMetro digital catalogue',
+        'Shri Metro digital catalogue',
         'plastic furniture catalogue PDF Bangalore',
         'wholesale plastic chairs price list Bangalore',
         ...BASE_KEYWORDS
       ];
       canonicalUrl = `${SITE_URL}/#catalogue`;
     } else if (isAboutPageOpen) {
-      title = 'About ShriMetro | Kumbalgodu Plastic Moulded Furniture Manufacturing Plant Bangalore (Since 2012)';
+      title = 'About Shri Metro | Kumbalgodu Plastic Moulded Furniture Manufacturing Plant Bangalore (Since 2012)';
       description =
-        'Learn about ShriMetro (Est. 2012 by Rakesh R Jain) at Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore. 2,000+ units/day injection moulding capacity using High-Grade Purity Polypropylene & Co-Polymers.';
+        'Learn about Shri Metro (Est. 2012 by Rakesh R Jain) at Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore. 2,000+ units/day injection moulding capacity using High-Grade Purity Polypropylene & Co-Polymers.';
       keywords = [
-        'About ShriMetro',
-        'Rakesh R Jain ShriMetro',
+        'About Shri Metro',
+        'Rakesh R Jain Shri Metro',
         'Kumbalgodu plastic furniture factory Bangalore',
         'Vaishno Devi Industrial Estate Gerupalya',
         ...BASE_KEYWORDS
       ];
       canonicalUrl = `${SITE_URL}/#about`;
     } else if (selectedCategory && selectedCategory !== 'All Products') {
-      title = `${selectedCategory} Wholesale Manufacturer in Bangalore | ShriMetro Plastic Moulded Furniture`;
-      description = `Explore ShriMetro's heavy-duty ${selectedCategory} engineered from High-Grade Purity Polypropylene & Co-Polymers (200 kg tested load capacity). Direct factory wholesale dispatch from Kumbalgodu, Bangalore across South India.`;
+      title = `${selectedCategory} Wholesale Manufacturer in Bangalore | Shri Metro Plastic Moulded Furniture`;
+      description = `Explore Shri Metro's heavy-duty ${selectedCategory} engineered from High-Grade Purity Polypropylene & Co-Polymers (200 kg tested load capacity). Direct factory wholesale dispatch from Kumbalgodu, Bangalore across South India.`;
       keywords = [
         `${selectedCategory} Bangalore`,
         `wholesale ${selectedCategory} manufacturer`,
-        `ShriMetro ${selectedCategory}`,
+        `Shri Metro ${selectedCategory}`,
         ...BASE_KEYWORDS
       ];
     }
@@ -181,7 +181,7 @@ export default function SeoHead({
         position: idx + 1,
         item: {
           '@type': 'Product',
-          name: `ShriMetro ${p.name} (${p.modelCode})`,
+          name: `Shri Metro ${p.name} (${p.modelCode})`,
           sku: p.modelCode || p.id,
           mpn: p.modelCode || p.id,
           category: p.category,
@@ -189,14 +189,14 @@ export default function SeoHead({
           image: imgUrl,
           description:
             p.description ||
-            `${p.name} (${p.modelCode}) heavy-duty ${p.category} manufactured by ShriMetro in Bangalore from High-Grade Purity Polypropylene & Co-Polymers.`,
+            `${p.name} (${p.modelCode}) heavy-duty ${p.category} manufactured by Shri Metro in Bangalore from High-Grade Purity Polypropylene & Co-Polymers.`,
           brand: {
             '@type': 'Brand',
-            name: company?.name || 'ShriMetro'
+            name: company?.name || 'Shri Metro'
           },
           manufacturer: {
             '@type': 'Organization',
-            name: company?.name || 'ShriMetro',
+            name: company?.name || 'Shri Metro',
             address: 'Site no: 10, 11 Gerupalya, Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore - 560074'
           },
           additionalProperty: [
@@ -223,9 +223,9 @@ export default function SeoHead({
     const schemaPayload = {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: 'ShriMetro Plastic Moulded Furniture Complete Wholesale Catalog',
+      name: 'Shri Metro Plastic Moulded Furniture Complete Wholesale Catalog',
       description:
-        'All 43+ heavy-duty injection-moulded plastic chairs, dining tables, center tables, stools, and patlas manufactured by ShriMetro in Kumbalgodu, Bangalore.',
+        'All 43+ heavy-duty injection-moulded plastic chairs, dining tables, center tables, stools, and patlas manufactured by Shri Metro in Kumbalgodu, Bangalore.',
       numberOfItems: itemListElements.length,
       itemListElement: itemListElements
     };

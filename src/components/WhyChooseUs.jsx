@@ -199,7 +199,7 @@ export default function WhyChooseUs() {
                 Visual Comparison Studio
               </span>
               <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                ShriMetro Standard vs Ordinary Market
+                Shri Metro Standard vs Ordinary Market
               </h3>
             </div>
 
@@ -230,7 +230,7 @@ export default function WhyChooseUs() {
           {/* Active Comparison Display: Side-by-Side Visual Gauge Cards */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
             
-            {/* Left: The ShriMetro Advantage (Clean White Card with Red Brand Identity) */}
+            {/* Left: The Shri Metro Advantage (Clean White Card with Red Brand Identity) */}
             <div className="bg-white rounded-2xl p-4 sm:p-7 border-2 border-red-600/30 shadow-md flex flex-col justify-between relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-40 h-40 bg-red-500/5 rounded-full blur-2xl pointer-events-none" />
 
@@ -240,7 +240,7 @@ export default function WhyChooseUs() {
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" />
                     <span className="font-extrabold text-sm text-slate-900 tracking-tight">
-                      ShriMetro
+                      Shri Metro
                     </span>
                   </div>
                   <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200/80 px-2.5 py-0.5 rounded-full">

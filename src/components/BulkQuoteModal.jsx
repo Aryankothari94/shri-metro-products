@@ -40,7 +40,7 @@ export default function BulkQuoteModal({ isOpen, onClose }) {
       productName: formData.category,
       message: `${formData.notes ? formData.notes + ' | ' : ''}Delivery: ${formData.city}`
     });
-    const text = `*New Bulk Quote Request - ShriMetro*%0A%0A` +
+    const text = `*New Bulk Quote Request - Shri Metro*%0A%0A` +
       `*Client Name:* ${encodeURIComponent(formData.name || 'Not specified')}%0A` +
       `*Phone:* ${encodeURIComponent(formData.phone || 'Not specified')}%0A` +
       `*Category/Model:* ${encodeURIComponent(formData.category)}%0A` +

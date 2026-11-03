@@ -57,7 +57,7 @@ export default function ProductDetailPage({
   // 3. Pre-formatted WhatsApp link generator
   const formattedWhatsAppUrl = useMemo(() => {
     if (!product) return '';
-    const message = `Hello ShriMetro, I am interested in ${product.name} (${product.modelCode}), Quantity: ${quantity} units (Color: ${selectedColor?.name || 'Standard'}). Please share bulk wholesale pricing.`;
+    const message = `Hello Shri Metro, I am interested in ${product.name} (${product.modelCode}), Quantity: ${quantity} units (Color: ${selectedColor?.name || 'Standard'}). Please share bulk wholesale pricing.`;
     return `https://wa.me/${companyDetails?.whatsappNumber || ''}?text=${encodeURIComponent(message)}`;
   }, [product, quantity, selectedColor, companyDetails]);
 
@@ -137,7 +137,7 @@ export default function ProductDetailPage({
                 <div className="relative rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm aspect-square max-h-[480px] w-full flex items-center justify-center">
                   <img
                     src={activeImage || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'}
-                    alt={`${product.name} (${product.modelCode}) in ${selectedColor?.name || 'Standard'} - ShriMetro ${product.category} Manufacturer Bangalore`}
+                    alt={`${product.name} (${product.modelCode}) in ${selectedColor?.name || 'Standard'} - Shri Metro ${product.category} Manufacturer Bangalore`}
                     className="w-full h-full object-contain p-4 transition-all duration-500 ease-out drop-shadow-sm"
                     onError={(e) => {
                       e.currentTarget.src = 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80';
@@ -480,7 +480,7 @@ export default function ProductDetailPage({
                   <span className="text-slate-400 text-[10px] block mb-1 uppercase tracking-wider font-sans font-bold">
                     WhatsApp Message Preview:
                   </span>
-                  "Hello ShriMetro, I am interested in <strong className="text-slate-900">{product.name}</strong> ({product.modelCode}), Quantity: <strong className="text-slate-900">{quantity} units</strong> (Color: {selectedColor?.name}). Please share bulk wholesale pricing."
+                  "Hello Shri Metro, I am interested in <strong className="text-slate-900">{product.name}</strong> ({product.modelCode}), Quantity: <strong className="text-slate-900">{quantity} units</strong> (Color: {selectedColor?.name}). Please share bulk wholesale pricing."
                 </div>
 
                 {/* 4. ACTION BUTTONS */}

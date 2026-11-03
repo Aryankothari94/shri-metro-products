@@ -163,7 +163,7 @@ export default function AboutUsPage({
               </h1>
               
               <p className="text-base sm:text-xl text-slate-600 mt-3 font-medium leading-relaxed">
-                ShriMetro is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
+                Shri Metro is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
               </p>
             </div>
           </div>
@@ -217,7 +217,7 @@ export default function AboutUsPage({
                   <LogoIcon className="w-12 h-12 shadow-xs" />
                   <div>
                     <h2 className="text-xl font-black text-slate-900 tracking-tight leading-none">
-                      ShriMetro
+                      Shri Metro
                     </h2>
                     <p className="text-xs text-red-600 font-bold uppercase tracking-wider mt-1">
                       Moulded Plastic Furniture Manufacturer • Bangalore
@@ -228,7 +228,7 @@ export default function AboutUsPage({
                 {/* Exact Provided Content */}
                 <div className="space-y-4 text-slate-700 text-sm sm:text-base leading-relaxed">
                   <p className="font-semibold text-slate-900">
-                    ShriMetro is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
+                    Shri Metro is a Bangalore-based manufacturer of high-quality moulded plastic furniture, proudly serving the industry since 2012.
                   </p>
                   
                   <p>
@@ -267,7 +267,7 @@ export default function AboutUsPage({
                       <span>Our Official Motto</span>
                     </div>
                     <blockquote className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
-                      “ShriMetro — Quality you can rely on. Service you can trust.”
+                      “Shri Metro — Quality you can rely on. Service you can trust.”
                     </blockquote>
                     <p className="text-xs text-slate-400 font-medium pt-1">
                       Proprietor <strong className="text-slate-200">{company.proprietor}</strong> • Kumbalgodu Works, Bangalore
@@ -355,7 +355,7 @@ export default function AboutUsPage({
 
                 <div className="flex flex-col gap-2 pt-2 border-t border-slate-800">
                   <a
-                    href={`https://wa.me/${company.whatsappNumber}?text=Hello%20ShriMetro%2C%20I%20am%20interested%20in%20your%20products.`}
+                    href={`https://wa.me/${company.whatsappNumber}?text=Hello%20Shri%20Metro%2C%20I%20am%20interested%20in%20your%20products.`}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors"

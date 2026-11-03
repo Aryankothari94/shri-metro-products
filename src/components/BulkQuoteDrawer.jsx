@@ -50,7 +50,7 @@ export default function BulkQuoteDrawer({
       });
     }
 
-    let text = `*Consolidated Wholesale Procurement Inquiry - ShriMetro*%0A%0A`;
+    let text = `*Consolidated Wholesale Procurement Inquiry - Shri Metro*%0A%0A`;
     text += `Hello Rakesh R Jain, I would like to request factory wholesale quotation for the following items:%0A%0A`;
 
     items.forEach((item, index) => {

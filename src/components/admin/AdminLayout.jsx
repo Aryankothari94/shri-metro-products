@@ -109,7 +109,7 @@ export default function AdminLayout({ onGoHome }) {
             {!sidebarCollapsed && (
               <div className="flex flex-col min-w-0">
                 <span className="font-extrabold text-sm tracking-tight text-white truncate">
-                  ShriMetro
+                  Shri Metro
                 </span>
                 <span className="text-[10px] font-bold text-red-400 uppercase tracking-widest truncate">
                   Admin Console
@@ -185,7 +185,7 @@ export default function AdminLayout({ onGoHome }) {
 
           {!sidebarCollapsed && (
             <div className="pt-2 border-t border-[#1F2937] px-2 text-[10px] text-slate-400">
-              <p className="truncate font-semibold text-slate-300">ShriMetro • {company.proprietor}</p>
+              <p className="truncate font-semibold text-slate-300">Shri Metro • {company.proprietor}</p>
               <p className="font-mono text-slate-500">Kumbalgodu Works</p>
             </div>
           )}
@@ -211,7 +211,7 @@ export default function AdminLayout({ onGoHome }) {
             </button>
 
             <div className="flex items-center gap-2 text-xs font-bold">
-              <span className="text-[#64748B] hidden sm:inline">ShriMetro Admin</span>
+              <span className="text-[#64748B] hidden sm:inline">Shri Metro Admin</span>
               <span className="text-slate-300 hidden sm:inline">/</span>
               <span className="text-[#111827] font-extrabold capitalize">
                 {navItems.find(i => i.id === activeTab)?.label || 'Dashboard'}
@@ -291,7 +291,7 @@ export default function AdminLayout({ onGoHome }) {
               <div className="flex items-center justify-between pb-4 border-b border-[#1F2937]">
                 <div className="flex items-center gap-2.5">
                   <LogoIcon className="w-8 h-8" />
-                  <span className="font-extrabold text-sm text-white">ShriMetro</span>
+                  <span className="font-extrabold text-sm text-white">Shri Metro</span>
                 </div>
                 <button
                   type="button"

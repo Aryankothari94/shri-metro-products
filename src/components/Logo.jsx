@@ -1,14 +1,14 @@
 import React from 'react';
 
 /**
- * ShriMetro Official Brand Logo
+ * Shri Metro Official Brand Logo
  * 
  * Variants:
  *  - 'icon': Circular emblem with white chair & red 'M' backrest on dark circle.
- *  - 'horizontal': Emblem on left, bold text 'ShriMetro' & subtitle on right.
- *  - 'full': Stacked emblem with 'ShriMetro' text underneath.
+ *  - 'horizontal': Emblem on left, bold text 'Shri Metro' & subtitle on right.
+ *  - 'full': Stacked emblem with 'Shri Metro' text underneath.
  */
-export function LogoIcon({ className = "w-9 h-9", alt = "ShriMetro Logo", ...props }) {
+export function LogoIcon({ className = "w-9 h-9", alt = "Shri Metro Logo", ...props }) {
   return (
     <img 
       src="/logo-emblem.png" 
@@ -41,7 +41,7 @@ export default function Logo({
     return (
       <img 
         src={src} 
-        alt="ShriMetro - Plastic Moulded Furniture" 
+        alt="Shri Metro - Plastic Moulded Furniture" 
         className={`h-9 w-auto object-contain select-none ${className}`}
       />
     );
@@ -52,7 +52,7 @@ export default function Logo({
       <div className={`flex flex-col items-center text-center ${className}`}>
         <LogoIcon className={iconSize || "w-16 h-16"} />
         <span className={`font-black tracking-tight text-lg mt-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-          ShriMetro
+          Shri Metro
         </span>
         {subtitle && (
           <span className={`text-[10px] font-semibold uppercase tracking-wider mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
@@ -69,7 +69,7 @@ export default function Logo({
       <LogoIcon className={iconSize} />
       <div className="flex flex-col min-w-0">
         <span className={`font-extrabold text-base tracking-tight leading-none ${isDark ? 'text-white' : 'text-slate-900 group-hover:text-red-600 transition-colors'}`}>
-          ShriMetro
+          Shri Metro
         </span>
         {subtitle && (
           <span className={`text-[10px] font-semibold uppercase tracking-wider mt-0.5 truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>

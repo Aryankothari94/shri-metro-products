@@ -1,5 +1,5 @@
 /**
- * Complete Official Product Database for ShriMetro
+ * Complete Official Product Database for Shri Metro
  * Extracted directly from the Factory Catalog PDF.
  * Total 43 Products across 10 Authentic Mould Categories.
  * Model Codes: SMP-001 through SMP-043.
@@ -839,7 +839,7 @@ export const productsData = [
     "category": "Cafeteria Chairs",
     "parentCategory": "Chairs",
     "tagline": "Iconic organic cutout designer cafe chair",
-    "description": "Signature designer cafeteria chair with organic branch cutout nest back. Featured on the ShriMetro catalogue cover as a benchmark of modern injection moulding.",
+    "description": "Signature designer cafeteria chair with organic branch cutout nest back. Featured on the Shri Metro catalogue cover as a benchmark of modern injection moulding.",
     "image": "/products/crystal.jpeg",
     "dimensions": "H 880 X W 608 X D 620 mm",
     "netWeight": "3.10 kg \u00b1 2%",

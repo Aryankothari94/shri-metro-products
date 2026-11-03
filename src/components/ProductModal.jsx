@@ -28,7 +28,7 @@ export default function ProductModal({ product, onClose, onOpenPDP }) {
 
   if (!product) return null;
 
-  const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20ShriMetro%2C%20I%20would%20like%20a%20bulk%20quotation%20for%20${encodeURIComponent(product.name)}%20(Model%20Code%3A%20${product.modelCode}).`;
+  const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%2C%20I%20would%20like%20a%20bulk%20quotation%20for%20${encodeURIComponent(product.name)}%20(Model%20Code%3A%20${product.modelCode}).`;
 
   return (
     <div 

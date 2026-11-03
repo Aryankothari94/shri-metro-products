@@ -12,13 +12,14 @@ export const normalizeMaterialSpec = (mat) => {
     .replace(/^High-Grade\s*Polypropylene$/i, 'High-Grade Purity Polypropylene & Co-Polymers');
 };
 
-export const normalizeBrandText = (str, fallback = 'ShriMetro') => {
+export const normalizeBrandText = (str, fallback = 'Shri Metro') => {
   if (!str || typeof str !== 'string') return fallback;
   return str
-    .replace(/SHRI\s+METRO\s+PRODUCTS/gi, 'ShriMetro')
-    .replace(/Shri\s+Metro\s+Products/gi, 'ShriMetro')
-    .replace(/SHRI\s+METRO/gi, 'ShriMetro')
-    .replace(/Shri\s+Metro/gi, 'ShriMetro');
+    .replace(/SHRI\s+METRO\s+PRODUCTS/gi, 'Shri Metro')
+    .replace(/Shri\s+Metro\s+Products/gi, 'Shri Metro')
+    .replace(/ShriMetro/gi, 'Shri Metro')
+    .replace(/SHRI\s+METRO/gi, 'Shri Metro')
+    .replace(/Shri\s+Metro/gi, 'Shri Metro');
 };
 
 export const mapProductFromDb = (row) => {
@@ -147,7 +148,7 @@ export const mapCompanyFromDb = (row) => {
   const fullAddress = row.address || defaultCompany.location?.fullAddress || 'Site no: 10,11 Gerupalya, Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore - 560074';
   return {
     ...defaultCompany,
-    name: normalizeBrandText(row.name || defaultCompany.name || 'ShriMetro', 'ShriMetro'),
+    name: normalizeBrandText(row.name || defaultCompany.name || 'Shri Metro', 'Shri Metro'),
     proprietor: row.proprietor || defaultCompany.proprietor || 'Rakesh R Jain',
     establishedYear: row.established_year || defaultCompany.establishedYear || '2012',
     address: fullAddress,
@@ -155,7 +156,7 @@ export const mapCompanyFromDb = (row) => {
     phone,
     phoneRaw,
     whatsappNumber,
-    whatsappLink: `https://wa.me/${whatsappNumber}?text=Hello%20ShriMetro%2C%20I%20would%20like%20to%20inquire%20about%20your%20furniture%20products.`,
+    whatsappLink: `https://wa.me/${whatsappNumber}?text=Hello%20Shri%20Metro%2C%20I%20would%20like%20to%20inquire%20about%20your%20furniture%20products.`,
     email: row.email || defaultCompany.email || 'info@shrimetroproducts.com',
     gstin: row.gstin || defaultCompany.gstin || '29AKZPJ1388F1ZH',
     catalogDownloadUrl: row.catalog_download_url || '#',
@@ -168,7 +169,7 @@ export const mapCompanyFromDb = (row) => {
 
 export const mapCompanyToDb = (c) => ({
   id: 'shri_metro_main',
-  name: normalizeBrandText(c.name || defaultCompany.name, 'ShriMetro'),
+  name: normalizeBrandText(c.name || defaultCompany.name, 'Shri Metro'),
   proprietor: c.proprietor || defaultCompany.proprietor,
   established_year: parseInt(c.establishedYear, 10) || 2012,
   address: c.location?.fullAddress || c.address || defaultCompany.location.fullAddress,

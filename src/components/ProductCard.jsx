@@ -16,7 +16,7 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
   const selectedColorName = activeColor?.name || product?.colors?.[0]?.name || '';
   const currentImage = activeColor?.image || product?.image;
 
-  const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20ShriMetro%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColorName)}%20color.`;
+  const whatsappInquiryUrl = `https://wa.me/${companyDetails.whatsappNumber}?text=Hello%20Shri%20Metro%2C%20I%20would%20like%20a%20price%20quote%20for%20${encodeURIComponent(product.name)}%20(Model%3A%20${product.modelCode})%20in%20${encodeURIComponent(selectedColorName)}%20color.`;
 
   const handleLogWhatsAppQuote = () => {
     if (addInquiry) {
@@ -41,7 +41,7 @@ export default function ProductCard({ product, onQuickView, onViewDetails }) {
       >
         <img
           src={currentImage || 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=800&q=80'}
-          alt={`${product.name} (${product.modelCode}) - ShriMetro ${product.category} (${selectedColorName || 'Standard'}) made from High-Grade Purity Polypropylene & Co-Polymers`}
+          alt={`${product.name} (${product.modelCode}) - Shri Metro ${product.category} (${selectedColorName || 'Standard'}) made from High-Grade Purity Polypropylene & Co-Polymers`}
           key={currentImage}
           className="w-full h-full object-contain group-hover:scale-105 transition-all duration-300 drop-shadow-2xs"
           loading="lazy"

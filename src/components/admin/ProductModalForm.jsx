@@ -125,7 +125,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
           category: categories[0]?.name || 'Plastic Chairs (Armrest)',
           subcategory: 'Commercial Series',
           tagline: 'Heavy-duty High-Grade Purity Polypropylene & Co-Polymers furniture',
-          description: 'Engineered by ShriMetro for banquets, catering, institutes, and wholesale distribution.',
+          description: 'Engineered by Shri Metro for banquets, catering, institutes, and wholesale distribution.',
           dimensions: 'L: 550mm x W: 520mm x H: 850mm',
           netWeight: '2.85 kg',
           loadCapacityKg: '200 kg',
@@ -346,7 +346,7 @@ export default function ProductModalForm({ isOpen, onClose, productToEdit, onSav
                   <input
                     type="text"
                     required
-                    placeholder="e.g. ShriMetro Royal Elegance Armchair"
+                    placeholder="e.g. Shri Metro Royal Elegance Armchair"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-3.5 py-2 bg-[#F5F6F8] border border-[#E5E7EB] rounded-xl text-xs sm:text-sm text-[#111827] placeholder:text-[#64748B] focus:bg-white focus:outline-none focus:border-[#A30D20] focus:ring-1 focus:ring-[#A30D20]"

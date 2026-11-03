@@ -93,13 +93,13 @@ export default function AdminProducts() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-[#E5E7EB]">
         <div>
           <h2 className="text-xl font-extrabold text-[#111827] tracking-tight flex items-center gap-2">
-            <span>ShriMetro Product Catalog Inventory</span>
+            <span>Shri Metro Product Catalog Inventory</span>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-red-50 text-[#A30D20] font-semibold border border-red-200/80">
               {products.length} Items Total
             </span>
           </h2>
           <p className="text-xs text-[#64748B] mt-0.5 font-medium">
-            Manage ShriMetro models, High-Grade Purity Polypropylene & Co-Polymers benchmarks, finish swatches, and live visibility.
+            Manage Shri Metro models, High-Grade Purity Polypropylene & Co-Polymers benchmarks, finish swatches, and live visibility.
           </p>
         </div>
 
@@ -338,7 +338,7 @@ export default function AdminProducts() {
 
         {/* Table Summary Footer */}
         <div className="bg-[#F5F6F8] px-4 py-3 border-t border-[#E5E7EB] flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs text-[#64748B] font-medium">
-          <span>Showing {filteredProducts.length} of {products.length} ShriMetro catalog items</span>
+          <span>Showing {filteredProducts.length} of {products.length} Shri Metro catalog items</span>
           <span className="font-mono text-[11px] text-[#64748B]/90">Material Standard: High-Grade Purity Polypropylene & Co-Polymers</span>
         </div>
 

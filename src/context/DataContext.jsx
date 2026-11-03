@@ -45,7 +45,7 @@ try {
   }
 } catch {}
 
-// Official categories extracted directly from the ShriMetro Catalogue PDF
+// Official categories extracted directly from the Shri Metro Catalogue PDF
 const defaultCategories = [
   {
     id: 'cat-monobloc',
@@ -172,7 +172,7 @@ export function DataProvider({ children }) {
         if (parsed && typeof parsed === 'object') {
           return {
             ...parsed,
-            name: normalizeBrandText(parsed.name, 'ShriMetro')
+            name: normalizeBrandText(parsed.name, 'Shri Metro')
           };
         }
       }

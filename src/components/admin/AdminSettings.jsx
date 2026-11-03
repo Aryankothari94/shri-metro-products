@@ -40,7 +40,7 @@ export default function AdminSettings() {
   const [seedStatus, setSeedStatus] = useState(null);
 
   const [formData, setFormData] = useState({
-    name: company.name || 'ShriMetro',
+    name: company.name || 'Shri Metro',
     tagline: company.tagline || '',
     subtitle: company.subtitle || '',
     proprietor: company.proprietor || 'Rakesh R Jain',
@@ -63,7 +63,7 @@ export default function AdminSettings() {
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      name: company.name || 'ShriMetro',
+      name: company.name || 'Shri Metro',
       tagline: company.tagline || prev.tagline,
       subtitle: company.subtitle || prev.subtitle,
       proprietor: company.proprietor || prev.proprietor,
@@ -80,7 +80,7 @@ export default function AdminSettings() {
       phone: formData.phone,
       phoneRaw: formData.phoneRaw || formData.phone.replace(/[^0-9+]/g, ''),
       whatsappNumber: formData.whatsappNumber || formData.phone.replace(/[^0-9]/g, ''),
-      whatsappLink: `https://wa.me/${formData.whatsappNumber || formData.phone.replace(/[^0-9]/g, '')}?text=Hello%20ShriMetro%2C%20I%20would%20like%20to%20inquire%20about%20your%20furniture%20products.`,
+      whatsappLink: `https://wa.me/${formData.whatsappNumber || formData.phone.replace(/[^0-9]/g, '')}?text=Hello%20Shri%20Metro%2C%20I%20would%20like%20to%20inquire%20about%20your%20furniture%20products.`,
       email: formData.email,
       gstin: formData.gstin,
       location: {
@@ -146,10 +146,10 @@ export default function AdminSettings() {
       {/* Header */}
       <div className="pb-2 border-b border-[#E5E7EB]">
         <h2 className="text-xl font-extrabold text-[#111827] tracking-tight">
-          ShriMetro Factory Business Credentials & Settings
+          Shri Metro Factory Business Credentials & Settings
         </h2>
         <p className="text-xs text-[#64748B] mt-0.5 font-medium">
-          Manage ShriMetro factory credentials, High-Grade Purity Polypropylene & Co-Polymers specs, and configure real-time cloud database synchronization.
+          Manage Shri Metro factory credentials, High-Grade Purity Polypropylene & Co-Polymers specs, and configure real-time cloud database synchronization.
         </p>
       </div>
 
@@ -388,7 +388,7 @@ export default function AdminSettings() {
             <div className="w-full px-3.5 py-2 bg-red-50/60 border border-red-200/80 rounded-xl text-xs font-bold text-[#A30D20] flex items-center justify-between">
               <span>High-Grade Purity Polypropylene & Co-Polymers</span>
               <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-white border border-red-200 text-[#A30D20]">
-                ShriMetro Standard
+                Shri Metro Standard
               </span>
             </div>
           </div>

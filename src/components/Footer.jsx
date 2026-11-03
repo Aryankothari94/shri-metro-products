@@ -225,7 +225,7 @@ export default function Footer({
             ))}
           </div>
           <p className="text-[10px] text-slate-500 leading-relaxed">
-            <strong className="text-slate-400 font-semibold">Popular Searches:</strong> Plastic Moulded Furniture Manufacturer in Bangalore • High-Grade Purity Polypropylene &amp; Co-Polymers Chairs • Heavy-Duty 200 kg Tested Monobloc Armchairs • Wholesale Banquet &amp; Marriage Hall Chairs Karnataka • Armless Event Seating • Cafeteria &amp; Restaurant Plastic Chairs • Relax Lounge Chairs • Kids &amp; Baby Study Chairs • Knockdown Plastic Dining Tables • Center Tables &amp; Teapoys • Ribbed Commercial Stools &amp; Anti-Skid Bathroom Patlas • Direct Factory Dispatch from Vaishno Devi Industrial Estate, Gerupalya, Kumbalgodu, Bengaluru - 560074 across Karnataka, Tamil Nadu, Andhra Pradesh, Telangana &amp; Kerala.
+            <strong className="text-slate-400 font-semibold">Popular Searches:</strong> Shree Metro • Shri Metro Products • Shree Merto Bangalore •  Plastic Moulded Furniture Manufacturer in Bangalore • High-Grade Purity Polypropylene &amp; Co-Polymers Chairs • Heavy-Duty 200 kg Tested Monobloc Armchairs • Wholesale Banquet &amp; Marriage Hall Chairs Karnataka • Armless Event Seating • Cafeteria &amp; Restaurant Plastic Chairs • Relax Lounge Chairs • Kids &amp; Baby Study Chairs • Knockdown Plastic Dining Tables • Center Tables &amp; Teapoys • Ribbed Commercial Stools &amp; Anti-Skid Bathroom Patlas • Direct Factory Dispatch from Vaishno Devi Industrial Estate, Gerupalya, Kumbalgodu, Bengaluru - 560074 across Karnataka, Tamil Nadu, Andhra Pradesh, Telangana &amp; Kerala.
           </p>
         </div>
       </div>

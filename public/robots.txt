@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /shri-metro-admin
+Disallow: /shrimetro-admin
+Disallow: /smp-admin-7888
 
-Sitemap: https://shrimetroproducts.in/sitemap.xml
-
+Sitemap: https://www.shrimetroproducts.in/sitemap.xml

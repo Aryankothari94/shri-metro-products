@@ -1,11 +1,19 @@
 import { useEffect } from 'react';
 
-const SITE_URL = 'https://shrimetroproducts.in';
+const SITE_URL = 'https://www.shrimetroproducts.in';
 
 const BASE_KEYWORDS = [
   'Shri Metro',
-  'Shri Metro Plastic Moulded Furniture',
+  'Shree Metro',
+  'Shri Merto',
+  'Shree Merto',
   'Shri Metro Products',
+  'Shree Metro Products',
+  'ShriMetro',
+  'ShreeMetro',
+  'Shree Metro Bangalore',
+  'Shri Metro Kumbalgodu',
+  'Shree Metro Kumbalgodu',
   'plastic chairs manufacturer in Bangalore',
   'moulded plastic furniture manufacturer India',
   'wholesale plastic chairs Bangalore',
@@ -24,7 +32,8 @@ const BASE_KEYWORDS = [
   'UV stabilized outdoor plastic furniture',
   'Kumbalgodu plastic furniture factory',
   'Vaishno Devi Industrial Estate Gerupalya Kumbalgodu',
-  'Rakesh R Jain Shri Metro'
+  'Rakesh R Jain Shri Metro',
+  'Rakesh Jain Shree Metro'
 ];
 
 function setMetaTag(selector, attrName, attrValue, content) {
@@ -83,9 +92,9 @@ export default function SeoHead({
       'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
     );
 
-    let title = 'Shri Metro | #1 Plastic Moulded Furniture Manufacturer in Bangalore | Wholesale Chairs, Tables & Stools';
+    let title = 'Shri Metro (Shree Metro) | Plastic Moulded Furniture Manufacturer Bangalore | Heavy-Duty Chairs & Tables';
     let description =
-      "Shri Metro is Bangalore's leading manufacturer & wholesale supplier of heavy-duty plastic moulded furniture made from high grade purity polypropylene and co-polymers. Direct factory pricing on 43+ models of Monobloc Chairs, Banquet Chairs, Armless Chairs, Cafeteria Chairs, Relax Chairs, Baby Chairs, Dining Tables, Center Tables, Stools & Patlas from Kumbalgodu, Bengaluru.";
+      "Shri Metro (also searched as Shree Metro, Shree Merto & Shri Metro Products) is Bangalore's premier manufacturer & wholesale supplier of heavy-duty plastic moulded furniture made from high grade purity polypropylene and co-polymers. Direct factory pricing on 43+ models from Kumbalgodu, Bengaluru.";
     let keywords = [...BASE_KEYWORDS];
     let canonicalUrl = `${SITE_URL}/`;
     let ogImage = `${SITE_URL}/logo-emblem.png`;
@@ -197,6 +206,8 @@ export default function SeoHead({
           manufacturer: {
             '@type': 'Organization',
             name: company?.name || 'Shri Metro',
+            alternateName: ['Shree Metro', 'Shree Merto', 'Shri Merto', 'Shri Metro Products', 'Shree Metro Products'],
+            url: SITE_URL,
             address: 'Site no: 10, 11 Gerupalya, Vaishno Devi Industrial Estate, Kumbalgodu, Bangalore - 560074'
           },
           additionalProperty: [
